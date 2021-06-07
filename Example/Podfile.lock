@@ -1,0 +1,23 @@
+PODS:
+  - Bootpay (0.1.0):
+    - CryptoSwift
+  - CryptoSwift (1.4.0)
+
+DEPENDENCIES:
+  - Bootpay (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - CryptoSwift
+
+EXTERNAL SOURCES:
+  Bootpay:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Bootpay: 1964404128450f5998725abd5d86925bbdc112d3
+  CryptoSwift: 7cc902df1784de3b389a387756c7d710f197730c
+
+PODFILE CHECKSUM: cadddef0956b7e5978ab59d1efc3c401e6cc3db0
+
+COCOAPODS: 1.10.1
