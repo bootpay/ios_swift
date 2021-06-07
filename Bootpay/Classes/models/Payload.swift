@@ -5,9 +5,37 @@
 //  Created by Taesup Yoon on 2021/05/10.
 //
 
-import Foundation
+import ObjectMapper
 
-public class Payload: NSObject, Codable {
+public class Payload: NSObject, Mappable, Codable {
+    public override init() {}
+    public required init?(map: Map) {
+        super.init()
+        mapping(map: map)
+    }
+    
+    public func mapping(map: Map) {
+        applicationId <- map["applicationId"]
+        pg <- map["pg"]
+        method <- map["method"]
+        methods <- map["methods"]
+        name <- map["name"]
+        price <- map["price"]
+        taxFree <- map["taxFree"]
+        
+        orderId <- map["orderId"]
+        useOrderId <- map["useOrderId"]
+        params <- map["params"]
+        
+        accountExpireAt <- map["accountExpireAt"]
+        showAgreeWindow <- map["showAgreeWindow"]
+        userToken <- map["userToken"]
+        
+        extra <- map["extra"]
+        userInfo <- map["userInfo"]
+        items <- map["items"]
+    }
+    
     @objc public var applicationId = ""
     @objc public var pg: String?
     @objc public var method: String?

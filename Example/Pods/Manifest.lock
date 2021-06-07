@@ -1,7 +1,9 @@
 PODS:
-  - Bootpay (0.1.0):
+  - Bootpay (0.1.3):
     - CryptoSwift
+    - ObjectMapper
   - CryptoSwift (1.4.0)
+  - ObjectMapper (4.2.0)
 
 DEPENDENCIES:
   - Bootpay (from `../`)
@@ -9,14 +11,16 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - CryptoSwift
+    - ObjectMapper
 
 EXTERNAL SOURCES:
   Bootpay:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Bootpay: 1964404128450f5998725abd5d86925bbdc112d3
+  Bootpay: bb660bca168522cbace0f4728a4dce9a22513996
   CryptoSwift: 7cc902df1784de3b389a387756c7d710f197730c
+  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
 
 PODFILE CHECKSUM: cadddef0956b7e5978ab59d1efc3c401e6cc3db0
 

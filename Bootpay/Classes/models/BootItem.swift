@@ -5,9 +5,27 @@
 //  Created by Taesup Yoon on 2021/05/10.
 //
 
-import Foundation
+import ObjectMapper
 
-public class BootItem: NSObject, Codable {
+public class BootItem: NSObject, Mappable, Codable {
+    
+    public override init() {}
+    public required init?(map: Map) {
+        super.init()
+        mapping(map: map)
+    }
+    
+    public func mapping(map: Map) {
+        itemName <- map["itemName"]
+        qty <- map["qty"]
+        unique <- map["unique"]
+        
+        price <- map["price"]
+        cat1 <- map["cat1"]
+        cat2 <- map["cat2"] 
+        cat3 <- map["cat3"]
+    }
+    
     @objc public var itemName = "" //아이템 이름
     @objc public var qty: Int = 0  //상품 판매된 수량
     @objc public var unique: String? //상품의 고유 PK

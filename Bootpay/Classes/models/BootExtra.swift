@@ -4,9 +4,34 @@
 //
 //  Created by Taesup Yoon on 2021/05/10.
 //
-import Foundation
+import ObjectMapper
 
-public class BootExtra: NSObject, Codable {
+
+public class BootExtra: NSObject, Mappable, Codable {
+    
+    
+    public override init() {}
+    public required init?(map: Map) {
+        super.init()
+        mapping(map: map)
+    }
+    
+    public func mapping(map: Map) {
+        startAt <- map["startAt"]
+        endAt <- map["endAt"]
+        expireMonth <- map["expireMonth"]
+        vbankResult <- map["vbankResult"]
+        quotas <- map["quotas"]
+        appScheme <- map["appScheme"]
+        
+        locale <- map["locale"]
+        offerPeriod <- map["offerPeriod"]
+        
+        popup <- map["popup"]
+        quickPopup <- map["quickPopup"]
+        
+    }
+    
     @objc public var startAt: String? // 정기 결제 시작일 - 시작일을 지정하지 않으면 그 날 당일로부터 결제가 가능한 Billing key 지급
     @objc public var endAt: String? // 정기결제 만료일 -  기간 없음 - 무제한
     @objc public var expireMonth = 0 //정기결제가 적용되는 개월 수 (정기결제 사용시)

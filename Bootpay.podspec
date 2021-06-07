@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Bootpay'
-  s.version          = '0.1.2'
+  s.version          = '0.1.4'
   s.summary          = 'A short description of Bootpay.'
 
 # This description is used to generate tags and improve search results.
@@ -40,5 +40,6 @@ TODO: Add long description of the pod here.
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   
-  s.dependency 'CryptoSwift'  
+  s.dependency 'CryptoSwift'
+  s.dependency 'ObjectMapper'
 end

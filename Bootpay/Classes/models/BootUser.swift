@@ -5,9 +5,30 @@
 //  Created by Taesup Yoon on 2021/05/10.
 //
 
-import Foundation
+import ObjectMapper
 
-public class BootUser: NSObject, Codable {
+public class BootUser: NSObject, Mappable, Codable {
+    
+    public override init() {}
+    public required init?(map: Map) {
+        super.init()
+        mapping(map: map)
+    }
+    
+    public func mapping(map: Map) {
+        id <- map["id"]
+        userId <- map["userId"]
+        username <- map["username"]
+        
+        email <- map["email"]
+        gender <- map["gender"]
+        birth <- map["birth"]
+        
+        phone <- map["phone"]
+        area <- map["area"]
+        addr <- map["addr"]
+    }
+    
     @objc public var id: String?
     @objc public var userId: String?
     @objc public var username: String?
