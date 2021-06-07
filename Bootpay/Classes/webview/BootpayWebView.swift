@@ -8,8 +8,8 @@
 import WebKit
 
 
-class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
-    var webview: WKWebView!
+public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+    @objc public var webview: WKWebView!
     
     var beforeUrl = ""
     var isFirstLoadFinish = false
@@ -100,7 +100,7 @@ class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessag
         return popupView
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if(message.name == BootpayConstants.BRIDGE_NAME) {
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {
