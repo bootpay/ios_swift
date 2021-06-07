@@ -8,7 +8,7 @@
 import WebKit
 
 
-public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+@objc public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
     @objc public var webview: WKWebView!
     
     var beforeUrl = ""
@@ -35,14 +35,14 @@ public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScrip
         self.addSubview(webview)
     }
     
-    func bootpayConnect() {
+    @objc func bootpayConnect() {
         if let url = URL(string: BootpayConstants.CDN_URL) {
             webview.load(URLRequest(url: url))
         }
     }
     
     //Flutter에서 Webview direct 연결시 필요한 함수
-    public func setPayload(_ payload: Payload) {
+    @objc public func setPayload(_ payload: Payload) {
         Bootpay.shared.payload = payload
     }
     
