@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/bootpay/Bootpay'
+  s.homepage         = 'https://github.com/bootpay/ios_swift'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'bootpay' => 'ehowlsla@bootpay.co.kr' }
-  s.source           = { :git => 'https://github.com/bootpay/Bootpay.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/bootpay/ios_swift.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
