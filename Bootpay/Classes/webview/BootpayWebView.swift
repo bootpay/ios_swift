@@ -41,6 +41,11 @@ public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScrip
         }
     }
     
+    //Flutter에서 Webview direct 연결시 필요한 함수
+    public func setPayload(_ payload: Payload) {
+        Bootpay.shared.payload = payload
+    }
+    
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard let payload = Bootpay.shared.payload else { return }
         Bootpay.shared.webview = webView
