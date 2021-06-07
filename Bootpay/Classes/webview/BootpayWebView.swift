@@ -41,7 +41,7 @@ public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScrip
         }
     }
     
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard let payload = Bootpay.shared.payload else { return }
         Bootpay.shared.webview = webView
         if isFirstLoadFinish == false {
@@ -60,7 +60,7 @@ public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScrip
         }
     }
     
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         Bootpay.shared.webview = webView
         
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
@@ -78,7 +78,7 @@ public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScrip
         }
     }
     
-    func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
         if(challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
             let cred = URLCredential(trust: challenge.protectionSpace.serverTrust!)
             completionHandler(.useCredential, cred)
@@ -87,7 +87,7 @@ public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScrip
         }
     }
     
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         
         let popupView = WKWebView(frame: webView.bounds, configuration: configuration)
         #if os(iOS)
