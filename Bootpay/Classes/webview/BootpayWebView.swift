@@ -14,10 +14,10 @@ import WebKit
     var beforeUrl = ""
     var isFirstLoadFinish = false
      
-    init() {
+    @objc public init() {
         super.init(frame: UIScreen.main.bounds)
         initComponent()
-        bootpayConnect()
+        startBootpay()
     }
     
     required init(coder: NSCoder) {
@@ -35,14 +35,30 @@ import WebKit
         self.addSubview(webview)
     }
     
-    @objc func bootpayConnect() {
+    @objc public func startBootpay() {
         if let url = URL(string: BootpayConstants.CDN_URL) {
             webview.load(URLRequest(url: url))
         }
     }
     
-    //Flutter에서 Webview direct 연결시 필요한 함수
-    @objc public func setPayload(_ payload: Payload) {
+    //flutter 에서 호출되는 함수
+    @objc public func goBack() {
+        webview.goBack()
+    }
+    
+    //flutter 에서 호출되는 함수
+    @objc public func transactionConfirm(data: [String: Any]) {
+        Bootpay.transactionConfirm(data: data)
+    }
+    
+    //flutter 에서 호출되는 함수
+    @objc public func removePaymentWindow() {
+        Bootpay.removePaymentWindow()
+    }
+    
+    //flutter 에서 호출되는 함수
+    @objc public func setPayload(_ data: [String: Any]) {
+        let payload = Payload(JSON: data)
         Bootpay.shared.payload = payload
     }
     

@@ -18,25 +18,28 @@ import WebKit
     var time = 0 // 미접속 시간
     var key = ""
     var iv = ""
+    var ENV_TYPE = BootpayConstants.ENV_SWIFT
         
     var webview: WKWebView?
     var payload: Payload?
     var parentController: UIViewController?
     
-    var error: (([String : Any]) -> Void)?
-    var ready: (([String : Any]) -> Void)?
-    var confirm: (([String : Any]) -> Bool)?
-    var cancel: (([String : Any]) -> Void)?
-    var done: (([String : Any]) -> Void)?
-    var easyCancel: (([String : Any]) -> Void)?
-    var easyError: (([String : Any]) -> Void)?
-    var easySuccess: (([String : Any]) -> Void)?
-    var close: (() -> Void)?
+    @objc public var error: (([String : Any]) -> Void)?
+    @objc public var ready: (([String : Any]) -> Void)?
+    @objc public var confirm: (([String : Any]) -> Bool)?
+    @objc public var cancel: (([String : Any]) -> Void)?
+    @objc public var done: (([String : Any]) -> Void)?
+    @objc public var easyCancel: (([String : Any]) -> Void)?
+    @objc public var easyError: (([String : Any]) -> Void)?
+    @objc public var easySuccess: (([String : Any]) -> Void)?
+    @objc public var close: (() -> Void)?
     
     public override init() {
         super.init()
         self.key = getRandomKey(32)
         self.iv = getRandomKey(16)
+//        Payload.j
+        
     }
     
     @objc(requestPayment::::)
@@ -68,7 +71,7 @@ import WebKit
         if shared.parentController != nil {
             shared.parentController?.dismiss(animated: true, completion: nil)
             shared.parentController = nil
-        } else {
+        } else if shared.ENV_TYPE == BootpayConstants.ENV_SWIFT_UI {
             shared.close?()
         }
         shared.webview = nil

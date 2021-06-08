@@ -12,6 +12,11 @@ struct BootpayConstants {
 //    static let CDN_URL = "https://www.google.com"
     static let BRIDGE_NAME = "BootpayiOS"
     
+    static let ENV_SWIFT = 0
+    static let ENV_SWIFT_UI = 1
+    static let ENV_REACT_NATIVE = 2
+    static let ENV_FLUTTER = 3
+    
     static func dicToJsonString(_ data: [String: Any]) -> String {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
