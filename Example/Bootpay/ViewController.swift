@@ -43,8 +43,8 @@ class ViewController: UIViewController {
         
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "payletter"
-        payload.method = "card"
+        payload.pg = "kcp"
+        payload.method = "npay"
         payload.name = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.popup = 1

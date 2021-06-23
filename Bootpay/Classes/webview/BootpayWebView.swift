@@ -203,7 +203,7 @@ import WebKit
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             completionHandler(true)
         }))
-        alertController.addAction(UIAlertAction(title: "취소", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: "닫기", style: .default, handler: { (action) in
             completionHandler(false)
         }))
         
