@@ -44,11 +44,12 @@ class ViewController: UIViewController {
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.pg = "kcp"
-        payload.method = "card"
+        payload.method = "npay"
         payload.name = "테스트 아이템"
         payload.extra = BootExtra()
-        payload.extra?.popup = 0
-        payload.extra?.quickPopup = 0
+        payload.extra?.popup = 1
+        payload.extra?.quickPopup = 1
+        
 
         let user = BootUser()
         user.username = "테스트 유저"

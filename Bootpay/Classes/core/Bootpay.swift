@@ -37,9 +37,7 @@ import WebKit
     public override init() {
         super.init()
         self.key = getRandomKey(32)
-        self.iv = getRandomKey(16)
-//        Payload.j
-        
+        self.iv = getRandomKey(16) 
     }
     
     @objc(requestPayment::::)
@@ -62,7 +60,7 @@ import WebKit
     public static func transactionConfirm(data: [String: Any]) {
         if let webView = shared.webview {
             let json = BootpayConstants.dicToJsonString(data).replace(target: "'", withString: "\\'")
-            webView.evaluateJavaScript("window.BootPay.transactionConfirm(\(json));", completionHandler: nil)
+            webView.evaluateJavaScript("window.BootPay.transactionConfirm(\(json));")
         }
     }
     

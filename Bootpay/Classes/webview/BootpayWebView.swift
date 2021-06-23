@@ -29,10 +29,24 @@ import WebKit
         
         let configuration = WKWebViewConfiguration()
         configuration.userContentController.add(self, name: BootpayConstants.BRIDGE_NAME)
-        webview = WKWebView(frame: self.bounds, configuration: configuration)
+        
+        var topPadding = CGFloat(0)
+        var bottomPadding = CGFloat(0)
+        if #available(iOS 11.0, *) {
+            let window = UIApplication.shared.keyWindow
+            topPadding = window?.safeAreaInsets.top ?? CGFloat(0)
+            bottomPadding = window?.safeAreaInsets.bottom ?? CGFloat(0)
+        }
+        
+        webview = WKWebView(frame: CGRect(x: 0,
+                                          y: topPadding,
+                                          width: UIScreen.main.bounds.width,
+                                          height: UIScreen.main.bounds.height - topPadding - bottomPadding),
+                            configuration: configuration)
         webview.uiDelegate = self
         webview.navigationDelegate = self
         self.addSubview(webview)
+        Bootpay.shared.webview = webview
     }
     
     @objc public func startBootpay() {
@@ -64,7 +78,7 @@ import WebKit
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard let payload = Bootpay.shared.payload else { return }
-        Bootpay.shared.webview = webView
+//        Bootpay.shared.webview = webView
         if isFirstLoadFinish == false {
             isFirstLoadFinish = true
             
@@ -82,7 +96,7 @@ import WebKit
     }
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        Bootpay.shared.webview = webView
+//        Bootpay.shared.webview = webView
         
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
         beforeUrl = url.absoluteString
@@ -115,15 +129,19 @@ import WebKit
     
     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         
-        let popupView = WKWebView(frame: webView.bounds, configuration: configuration)
+        let popupView = WKWebView(frame: self.bounds, configuration: configuration)
         #if os(iOS)
         popupView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         #endif
         popupView.navigationDelegate = self
         popupView.uiDelegate = self
 
-        webView.addSubview(popupView)
+        self.addSubview(popupView)
         return popupView
+    }
+        
+    public func webViewDidClose(_ webView: WKWebView) {
+      webView.removeFromSuperview() 
     }
     
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
