@@ -174,6 +174,48 @@ import WebKit
             }
         }
     }
+    
+    public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+        let alertController = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in
+            completionHandler()
+        }
+        let cancelAction = UIAlertAction(title: "닫기", style: .default) { _ in
+            completionHandler()
+        }
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        DispatchQueue.main.async {
+            if var topController = UIApplication.shared.keyWindow?.rootViewController {
+                while let presentedViewController = topController.presentedViewController {
+                    topController = presentedViewController
+                }
+                topController.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo,
+                 completionHandler: @escaping (Bool) -> Void) {
+        
+        
+        let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            completionHandler(true)
+        }))
+        alertController.addAction(UIAlertAction(title: "취소", style: .default, handler: { (action) in
+            completionHandler(false)
+        }))
+        
+        DispatchQueue.main.async {
+            if var topController = UIApplication.shared.keyWindow?.rootViewController {
+                while let presentedViewController = topController.presentedViewController {
+                    topController = presentedViewController
+                }
+                topController.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
 }
 
 extension BootpayWebView {
