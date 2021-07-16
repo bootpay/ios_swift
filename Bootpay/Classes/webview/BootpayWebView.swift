@@ -105,11 +105,11 @@ import WebKit
             startAppToApp(url)
             decisionHandler(.cancel)
         } else if(!url.absoluteString.starts(with: "http")) {
-            if(UIApplication.shared.canOpenURL(url)) {
-                startAppToApp(url)
-            } else {
-                startItunesToInstall(url)
-            }
+//            if(UIApplication.shared.canOpenURL(url)) {
+//                startAppToApp(url)
+//            } else {
+//                startItunesToInstall(url)
+//            }
             startAppToApp(url)
 //            decisionHandler(.allow)
             decisionHandler(.cancel)

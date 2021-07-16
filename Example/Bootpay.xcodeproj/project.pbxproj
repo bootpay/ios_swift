@@ -15,6 +15,8 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		87866F5E2667098D00D3E4B8 /* Pods_Bootpay_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87866F5D2667098D00D3E4B8 /* Pods_Bootpay_Example.framework */; };
+		87E4F0D126A161890021C3F1 /* NativeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E4F0D026A161890021C3F1 /* NativeController.swift */; };
+		87E4F0D326A161950021C3F1 /* WebAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E4F0D226A161950021C3F1 /* WebAppController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		6A21274C738A5FA35A66D923 /* Bootpay.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Bootpay.podspec; path = ../Bootpay.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		70AB355D8F6D493B0234917F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		87866F5D2667098D00D3E4B8 /* Pods_Bootpay_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_Bootpay_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		87E4F0D026A161890021C3F1 /* NativeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeController.swift; sourceTree = "<group>"; };
+		87E4F0D226A161950021C3F1 /* WebAppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAppController.swift; sourceTree = "<group>"; };
 		88B17C87C4A678DE9140C2BB /* Pods-Bootpay_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bootpay_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Bootpay_Tests/Pods-Bootpay_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CBEFB1576505BF731E9E3D09 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +100,8 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				87E4F0D026A161890021C3F1 /* NativeController.swift */,
+				87E4F0D226A161950021C3F1 /* WebAppController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -338,7 +344,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87E4F0D326A161950021C3F1 /* WebAppController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				87E4F0D126A161890021C3F1 /* NativeController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
