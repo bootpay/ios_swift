@@ -67,155 +67,79 @@ pod 'Bootpay'
 
 
 ```swift
+
 import UIKit
-import SwiftyBootpay
+import Bootpay
 
-class ViewController: UIViewController {
-    var vc: BootpayController!
+class NativeController: UIViewController {
 
-    func goBuy() {
-        // 통계정보를 위해 사용되는 정보
-        // 주문 정보에 담길 상품정보로 배열 형태로 add가 가능함
-        let item1 = BootpayItem().params {
-            $0.item_name = "B사 마스카라" // 주문정보에 담길 상품명
-            $0.qty = 1 // 해당 상품의 주문 수량
-            $0.unique = "123" // 해당 상품의 고유 키
-            $0.price = 1000 // 상품의 가격
-        }
-        let item2 = BootpayItem().params {
-            $0.item_name = "C사 셔츠" // 주문정보에 담길 상품명
-            $0.qty = 1 // 해당 상품의 주문 수량
-            $0.unique = "1234" // 해당 상품의 고유 키
-            $0.price = 10000 // 상품의 가격
-            $0.cat1 = "패션"
-            $0.cat2 = "여성상의"
-            $0.cat3 = "블라우스"
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        setUI()
+    }
+    
+    func setUI() {
+        self.view.backgroundColor = .white
+        let btn = UIButton()
+        btn.setTitle("결제하기", for: .normal)
+        btn.addTarget(self, action: #selector(showBootpay), for: .touchUpInside)
+        btn.frame = CGRect(
+            x: self.view.frame.width/2 - 40,
+            y: self.view.frame.height/2 - 40,
+            width: 80,
+            height: 80
+        )
+        btn.setTitleColor(.darkGray, for: .normal)
+        self.view.addSubview(btn)
+    }
+    
+    @objc func showBootpay() {
+        let payload = Payload()
+        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
+                
+        payload.price = 1000
+        payload.orderId = String(NSTimeIntervalSince1970)
+        payload.pg = "payletter"
+        payload.method = "card"
+        payload.name = "테스트 아이템"
+        payload.extra = BootExtra()
+        payload.extra?.popup = 0
+        payload.extra?.quickPopup = 0
+        
 
-        // 커스텀 변수로, 서버에서 해당 값을 그대로 리턴 받음
-        let customParams: [String: String] = [
-            "callbackParam1": "value12",
-            "callbackParam2": "value34",
-            "callbackParam3": "value56",
-            "callbackParam4": "value78",
-            ]
-
-        // 구매자 정보
-        let userInfo: [String: String] = [
-            "username": "사용자 이름",
-            "email": "user1234@gmail.com",
-            "addr": "사용자 주소",
-            "phone": "010-1234-4567"
-        ]
-
-        // 구매자 정보
-        let bootUser = BootpayUser()
-        bootUser.params {
-           $0.username = "사용자 이름"
-           $0.email = "user1234@gmail.com"
-           $0.area = "서울" // 사용자 주소
-           $0.phone = "010-1234-4567"
-        }
-
-        let payload = BootpayPayload()
-        payload.params {
-           $0.price = 1000 // 결제할 금액
-           $0.name = "블링블링's 마스카라" // 결제할 상품명
-           $0.order_id = "1234_1234_124" // 결제 고유번호
-           $0.params = customParams // 커스텀 변수
-    //         $0.user_info = bootUser
-           $0.pg =  // 결제할 PG사
-           $0.method = 
-           $0.ux = UX.PG_DIALOG
-           //            $0.account_expire_at = "2019-09-25" // 가상계좌 입금기간 제한 ( yyyy-mm-dd 포멧으로 입력해주세요. 가상계좌만 적용됩니다. 오늘 날짜보다 더 뒤(미래)여야 합니다 )
-           //            $0.method = "card" // 결제수단
-           $0.show_agree_window = false
-        }
-
-        let extra = BootpayExtra()
-        extra.quotas = [0, 2, 3] // 5만원 이상일 경우 할부 허용범위 설정 가능, (예제는 일시불, 2개월 할부, 3개월 할부 허용)
-
-        var items = [BootpayItem]()
-        items.append(item1)
-        items.append(item2)
-
-        Bootpay.request(self, sendable: self, payload: payload, user: bootUser, items: items, extra: extra, addView: true)
+        let user = BootUser()
+        user.username = "테스트 유저"
+        user.phone = "01040334678"
+        payload.userInfo = user
+                
+        Bootpay.requestPayment(viewController: self, payload: payload)
+            .onCancel { data in
+                print("-- cancel: \(data)")
+            }
+            .onReady { data in
+                print("-- ready: \(data)")
+            }
+            .onConfirm { data in
+                print("-- confirm: \(data)")
+                return true //재고가 있어서 결제를 최종 승인하려 할 경우
+//                            return false //재고가 없어서 결제를 승인하지 않을때
+            }
+            .onDone { data in
+                print("-- done: \(data)")
+            }
+            .onError { data in
+                print("-- error: \(data)")
+            }
+            .onClose {
+                print("-- close")
+            }
     }
 }
-```
-{% endtab %}
-
-{% tab title="Object-C" %}
-```objectivec
-#import "ViewController.h"
-
-@interface ViewController () <BootpayRequestProtocol>
-
-@end
-
-@implementation ViewController
-
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self presentBootpayController];
-}
-
-
-- (void) presentBootpayController {
-    BootpayItem *item1 = [[BootpayItem alloc] init];
-        item1.item_name = @"미"키's 마우스"; // 주문정보에 담길 상품명
-        item1.qty = 1; // 해당 상품의 주문 수량
-        item1.unique = @"ITEM_CODE_MOUSE"; // 해당 상품의 고유 키
-        item1.price = 1000; // 상품의 가격
-
-        BootpayItem *item2 = [[BootpayItem alloc] init];
-        item2.item_name = @"키보드";
-        item2.qty = 1; // 해당 상품의 주문 수량
-        item2.unique = @"ITEM_CODE_KEYBOARD"; // 해당 상품의 고유 키
-        item2.price = 10000; // 상품의 가격
-        item2.cat1 = @"패션";
-        item2.cat2 = @"여"성'상의";
-        item2.cat3 = @"블라우스";
-
-        NSArray *items = @[item1, item2];
-
-        // 커스텀 변수로, 서버에서 해당 값을 그대로 리턴 받음
-        NSMutableDictionary *customParams = [[NSMutableDictionary alloc] init];
-        [customParams setValue: @"value12" forKey: @"callbackParam1"];
-        [customParams setValue: @"value34" forKey: @"callbackParam2"];
-
-        // 구매자 정보
-        BootpayUser *bootUser = [[BootpayUser alloc] init];
-        bootUser.username = @"사용자 이름";
-        bootUser.email = @"user1234@gmail.com";
-        bootUser.area = @"서울";
-        bootUser.phone = @"010-1234-5678";
-
-        BootpayPayload *payload = [[BootpayPayload alloc] init];
-        payload.price = 1000;
-        payload.name = @"블링블링's 마스카라";
-        payload.order_id = @"1234_1234_1234";
-        payload.params = customParams;
-        payload.pg = [[ pg ]]
-        payload.method = [[ method ]]
-        payload.ux = BootpayUX.PG_DIALOG;
-
-
-        BootpayExtra *bootExtra = [[BootpayExtra alloc] init];
-        bootExtra.quotas = @[ @0, @2, @3];
-
-        [Bootpay request_objc:self :self :payload :bootUser :items :bootExtra :nil :nil :nil];
-}
-
-@end
-```
-{% endtab %}
-{% endtabs %}
-
-{% hint style="info" %}
+``` 
+ 
  결제 진행 상태에 따라 LifeCycle 함수가 실행됩니다. 각 함수에 대한 상세 설명은 아래를 참고하세요.
-{% endhint %}
+
 
 ```swift
 //MARK: Bootpay Callback Protocol
@@ -262,8 +186,8 @@ extension ViewController: BootpayRequestProtocol {
 }
 ```
 
-{% tabs %}
-{% tab title="onError 함수" %}
+### onError 함수
+
 결제 진행 중 오류가 발생된 경우 호출되는 함수입니다. 진행중 에러가 발생되는 경우는 다음과 같습니다.
 
 1. **부트페이 관리자에서 활성화 하지 않은 PG, 결제수단을 사용하고자 할 때**
@@ -282,9 +206,8 @@ extension ViewController: BootpayRequestProtocol {
   receipt_id: "5fffab350c20b903e88a2cff"
 }
 ```
-{% endtab %}
 
-{% tab title="onCancel 함수" %}
+### onCancel 함수
 결제 진행 중 사용자가 PG 결제창에서 취소 혹은 닫기 버튼을 눌러 나온 경우 입니다. ****
 
  data 포맷은 아래와 같습니다.
@@ -296,9 +219,9 @@ extension ViewController: BootpayRequestProtocol {
   receipt_id: "5fffab350c20b903e88a2cff"
 }
 ```
-{% endtab %}
 
-{% tab title="onReady 함수" %}
+### onReady 함수
+
 가상계좌 발급이 완료되면 호출되는 함수입니다. 가상계좌는 다른 결제와 다르게 입금할 계좌 번호 발급 이후 입금 후에 Feedback URL을 통해 통지가 됩니다. 발급된 가상계좌 정보를 ready 함수를 통해 확인하실 수 있습니다.
 
   data 포맷은 아래와 같습니다.
@@ -332,10 +255,12 @@ extension ViewController: BootpayRequestProtocol {
   username: "홍길동"
 }
 ```
-{% endtab %}
 
-{% tab title="onConfirm 함수" %}
-결제 승인이 되기 전 호출되는 함수입니다. 승인 이전 관련 로직을 서버 혹은 클라이언트에서 수행 후 결제를 승인해도 될 경우`BootPay.transactionConfirm(data); 또는 return true;`
+### onConfirm 함수
+
+결제 승인이 되기 전 호출되는 함수입니다. 승인 이전 관련 로직을 서버 혹은 클라이언트에서 수행 후 결제를 승인해도 될 경우 
+
+`BootPay.transactionConfirm(data); 또는 return true;`
 
 코드를 실행해주시면 PG에서 결제 승인이 진행이 됩니다.
 
@@ -381,10 +306,7 @@ PG에서 거래 승인 이후에 호출 되는 함수입니다. 결제 완료 �
   tax_free: 0,
   url: "https://d-cdn.bootapi.com"
 }
-```
-{% endtab %}
-{% endtabs %}
-
+```  
 
 
 
