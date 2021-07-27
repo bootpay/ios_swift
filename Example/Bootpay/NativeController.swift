@@ -45,6 +45,25 @@ class NativeController: UIViewController {
         payload.extra?.popup = 0
         payload.extra?.quickPopup = 0
         
+        let item1 = BootItem()
+        item1.itemName = "나는 아이템1"
+        item1.qty = 1
+        item1.unique = "item_01"
+        item1.price = 500
+        item1.cat1 = "TOP"
+        item1.cat2 = "티셔츠"
+        item1.cat3 = "반팔티"
+        
+        let item2 = BootItem()
+        item2.itemName = "나는 아이템1"
+        item2.qty = 2
+        item2.unique = "item_02"
+        item2.price = 250
+        item2.cat1 = "TOP"
+        item2.cat2 = "데님"
+        item2.cat3 = "청자켓"
+        payload.items = [item1, item2]
+        
 
         let user = BootUser()
         user.username = "테스트 유저"
