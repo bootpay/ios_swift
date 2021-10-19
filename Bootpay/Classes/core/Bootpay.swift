@@ -18,10 +18,11 @@ import WebKit
     var time = 0 // 미접속 시간
     var key = ""
     var iv = ""
+    var application_id: String? // 통계를 위한 파라미터
     var ENV_TYPE = BootpayConstants.ENV_SWIFT
         
     var webview: WKWebView?
-    var payload: Payload?
+    var payload: Payload? = Payload()
     var parentController: UIViewController?
     
     @objc public var error: (([String : Any]) -> Void)?
@@ -73,7 +74,7 @@ import WebKit
             shared.close?()
         }
         shared.webview = nil
-        shared.payload = nil
+        shared.payload = Payload()
         
         shared.error = nil
         shared.ready = nil
@@ -134,10 +135,10 @@ extension Bootpay {
 }
 
 extension Bootpay {
-    public static func getUUId() -> String {
-        if shared.uuid == "" { shared.uuid = BootpayDefaultHelper.getString(key: "uuid") }
-        return shared.uuid
-    }
+//    public static func getUUId() -> String {
+//        if shared.uuid == "" { shared.uuid = BootpayDefaultHelper.getString(key: "uuid") }
+//        return shared.uuid
+//    }
     
     public static func getSk() -> String {
         if shared.sk == "" { return BootpayDefaultHelper.getString(key: "sk") }
@@ -217,5 +218,23 @@ extension Bootpay {
         
     static func getSessionKey() -> String {
         return "\(shared.key.toBase64())##\(shared.iv.toBase64())"
+    }
+    
+    static func stringify(_ json: Any, prettyPrinted: Bool = false) -> String {
+        var options: JSONSerialization.WritingOptions = []
+        if prettyPrinted {
+            options = JSONSerialization.WritingOptions.prettyPrinted
+        }
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: json, options: options)
+            if let string = String(data: data, encoding: String.Encoding.utf8) {
+                return string
+            }
+        } catch {
+            print(error)
+        }
+        
+        return ""
     }
 }

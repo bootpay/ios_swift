@@ -45,7 +45,7 @@ class WebAppController: UIViewController {
                                width: UIScreen.main.bounds.width,
                                height: UIScreen.main.bounds.height - topPadding - bottomPadding)
         
-        if let url = URL(string: "https://www.google.com") {
+        if let url = URL(string: "http://www.google.com") {
             webview.webview.load(URLRequest(url: url))
         }
         

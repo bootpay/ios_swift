@@ -48,7 +48,7 @@ struct BootpayConstants {
         return "window.BootPay.setAnalyticsData({"
             + "sk: '\(Bootpay.getSk())', "
             + "sk_time: \(Bootpay.getSkTime()), "
-            + "uuid: '\(Bootpay.getUUId())'"
+        + "uuid: '\(Bootpay.shared.getUUID())'"
             + "});"
     }
         

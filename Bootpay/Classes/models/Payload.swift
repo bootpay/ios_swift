@@ -54,7 +54,7 @@ public class Payload: NSObject, Mappable, Codable {
     @objc public var userToken: String? //카드 간편결제, 생체결제시 필요한 파라미터
     
     @objc public var extra: BootExtra?
-    @objc public var userInfo: BootUser?
+    @objc public var userInfo: BootUser? = BootUser()
     @objc public var items: [BootItem]?
     
     fileprivate func methodsToJson() -> String {

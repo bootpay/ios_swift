@@ -14,7 +14,43 @@ class NativeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+       
         setUI()
+        bootpayAnalyticsUserTrace()
+        bootpayAnalyticsPageTrace()
+    }
+    
+    func bootpayAnalyticsUserTrace() {
+        //회원이 로그인 했을때 한번 호출하여, 통계를 쌓는다
+        BootpayAnalytics.postLogin(id: "1234",
+                                   email: "testUser@gmail.com",
+                                   gender: 1,
+                                   birth: "1994-10-14",
+                                   phone: "01012341234",
+                                   area: "서울",
+                                   applicationId: "5b8f6a4d396fa665fdc2b5e9" //ios application id
+        )
+    }
+    
+    func bootpayAnalyticsPageTrace() {
+        //url이나 앱 화면 변경시 상품페이지 정보를 보내, 통계를 쌓는다
+        let item1 = BootpayStatItem()
+        item1.itemName = "나는 아이템1"
+        item1.unique = "item_01"
+        item1.price = 500
+        item1.cat1 = "TOP"
+        item1.cat2 = "티셔츠"
+        item1.cat3 = "반팔티"
+        
+        let item2 = BootpayStatItem()
+        item2.itemName = "나는 아이템1" 
+        item2.unique = "item_02"
+        item2.price = 250
+        item2.cat1 = "TOP"
+        item2.cat2 = "데님"
+        item2.cat3 = "청자켓"
+        
+        BootpayAnalytics.start("main_page_1234", items: [item1, item2])
     }
     
     func setUI() {
@@ -38,8 +74,8 @@ class NativeController: UIViewController {
                 
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "payletter"
-        payload.method = "card"
+        payload.pg = "payapp"
+        payload.method = "vbank"
         payload.name = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.popup = 0

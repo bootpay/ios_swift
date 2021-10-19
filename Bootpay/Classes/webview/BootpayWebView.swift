@@ -119,6 +119,14 @@ import WebKit
     }
     
     public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+//        guard let serverTrust = challenge.protectionSpace.serverTrust else {
+//                completionHandler(.cancelAuthenticationChallenge, nil)
+//                return
+//            }
+//        let exceptions = SecTrustCopyExceptions(serverTrust)
+//        SecTrustSetExceptions(serverTrust, exceptions)
+//        completionHandler(.useCredential, URLCredential(trust: serverTrust));
+        
         if(challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
             let cred = URLCredential(trust: challenge.protectionSpace.serverTrust!)
             completionHandler(.useCredential, cred)
