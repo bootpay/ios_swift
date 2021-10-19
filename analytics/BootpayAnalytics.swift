@@ -11,7 +11,7 @@ import Foundation
 
 //MARK: Bootpay Rest Api for Analytics
 @objc public class BootpayAnalytics:  NSObject {
-    @objc public static func postLogin(id: String, email: String, gender: Int,
+    @objc public static func userTrace(id: String, email: String, gender: Int,
                                        birth: String, phone: String, area: String, applicationId: String?) {
         if Bootpay.shared.payload?.userInfo?.id == "" { Bootpay.shared.payload?.userInfo?.id = id }
         if Bootpay.shared.payload?.userInfo?.email == "" { Bootpay.shared.payload?.userInfo?.email = email }
@@ -45,12 +45,12 @@ import Foundation
         } catch {}
     }
     
-    @objc public static func postLogin() {
+    @objc public static func userTrace() {
         if(Bootpay.shared.payload?.userInfo?.id == "") {
             NSLog("Bootpay Analytics Warning: postLogin() not Work!! Please check id is not empty")
             return
         }
-        postLogin(id: Bootpay.shared.payload?.userInfo?.id ?? "",
+        userTrace(id: Bootpay.shared.payload?.userInfo?.id ?? "",
                   email: Bootpay.shared.payload?.userInfo?.email ?? "",
                   gender: Bootpay.shared.payload?.userInfo?.gender ?? -1,
                   birth: Bootpay.shared.payload?.userInfo?.birth ?? "",
@@ -60,11 +60,11 @@ import Foundation
         )
     }
     
-    @objc public static  func start(_ url: String, _ page_type: String? = nil) {
-        start(url, items: [], page_type)
+    @objc public static  func pageTrace(_ url: String, _ page_type: String? = nil) {
+        pageTrace(url, items: [], page_type)
     }
     
-    @objc public static  func start(_ url: String, items: [BootpayStatItem], _ page_type: String? = nil) {
+    @objc public static  func pageTrace(_ url: String, items: [BootpayStatItem], _ page_type: String? = nil) {
         let uri = "https://analytics.bootpay.co.kr/call"
         
         if let json = items.toJSONString() {

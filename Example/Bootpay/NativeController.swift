@@ -22,7 +22,7 @@ class NativeController: UIViewController {
     
     func bootpayAnalyticsUserTrace() {
         //회원이 로그인 했을때 한번 호출하여, 통계를 쌓는다
-        BootpayAnalytics.postLogin(id: "1234",
+        BootpayAnalytics.userTrace(id: "1234",
                                    email: "testUser@gmail.com",
                                    gender: 1,
                                    birth: "1994-10-14",
@@ -43,14 +43,14 @@ class NativeController: UIViewController {
         item1.cat3 = "반팔티"
         
         let item2 = BootpayStatItem()
-        item2.itemName = "나는 아이템1" 
+        item2.itemName = "나는 아이템1"
         item2.unique = "item_02"
         item2.price = 250
         item2.cat1 = "TOP"
         item2.cat2 = "데님"
         item2.cat3 = "청자켓"
         
-        BootpayAnalytics.start("main_page_1234", items: [item1, item2])
+        BootpayAnalytics.pageTrace("main_page_1234", items: [item1, item2])
     }
     
     func setUI() {
