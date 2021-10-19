@@ -9,7 +9,7 @@
 import Foundation
 
 struct BootpayConstants {
-    static let CDN_URL = "https://inapp.bootpay.co.kr/3.3.2/production.html";
+    static let CDN_URL = "https://inapp.bootpay.co.kr/3.3.3/production.html";
 //    static let CDN_URL = "https://www.google.com"
     static let BRIDGE_NAME = "BootpayiOS"
     

@@ -16,7 +16,7 @@ class NativeController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
        
         setUI()
-        bootpayAnalyticsUserTrace()
+//        bootpayAnalyticsUserTrace()
         bootpayAnalyticsPageTrace()
     }
     
@@ -50,7 +50,7 @@ class NativeController: UIViewController {
         item2.cat2 = "데님"
         item2.cat3 = "청자켓"
         
-        BootpayAnalytics.pageTrace("main_page_1234", items: [item1, item2])
+        BootpayAnalytics.pageTrace("main_page_1234", applicationId: "5b8f6a4d396fa665fdc2b5e9")
     }
     
     func setUI() {

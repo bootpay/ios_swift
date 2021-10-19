@@ -86,11 +86,9 @@ import WebKit
             
             let scriptList = BootpayConstants.getJSBeforePayStart(quickPopup == 1)
             for script in scriptList {
-                print(script)
                 webView.evaluateJavaScript(script, completionHandler: nil)
             }
             let scriptPay = BootpayConstants.getJSPay(payload: payload)
-            print(scriptPay)
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
         }
     }

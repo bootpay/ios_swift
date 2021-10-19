@@ -60,37 +60,37 @@ import Foundation
         )
     }
     
-    @objc public static  func pageTrace(_ url: String, _ page_type: String? = nil) {
-        pageTrace(url, items: [], page_type)
+    @objc public static  func pageTrace(_ url: String, applicationId: String? = nil, _ page_type: String? = nil) {
+        pageTrace(url, applicationId: applicationId, items: [], page_type)
     }
     
-    @objc public static  func pageTrace(_ url: String, items: [BootpayStatItem], _ page_type: String? = nil) {
+    @objc public static  func pageTrace(_ url: String, applicationId: String? = nil, items: [BootpayStatItem], _ page_type: String? = nil) {
         let uri = "https://analytics.bootpay.co.kr/call"
         
-        if let json = items.toJSONString() {
-            let params = [
-                "ver": Bootpay.shared.ver,
-                "application_id": Bootpay.shared.payload?.applicationId ?? "",
-                "uuid": Bootpay.shared.getUUID(),
-                "referer": "",
-                "sk": Bootpay.shared.sk,
-                "user_id": Bootpay.shared.payload?.userInfo?.id ?? "",
-                "url": url,
-                "page_type": page_type ?? "",
-                "items": json
-            ]
+        let params = [
+            "ver": Bootpay.shared.ver,
+            "application_id": applicationId ?? Bootpay.shared.payload?.applicationId ?? "",
+            "uuid": Bootpay.shared.getUUID(),
+            "referer": "",
+            "sk": Bootpay.shared.sk,
+            "user_id": Bootpay.shared.payload?.userInfo?.id ?? "",
+            "url": url,
+            "page_type": page_type ?? "ios",
+            "items": items
+        ] as [String : Any]
+        
+        let json = Bootpay.stringify(params)
+                 
+        do {
             
-            let json = Bootpay.stringify(params)
-            do {
-                let aesBody = try json.aesEncrypt(key: Bootpay.shared.key, iv: Bootpay.shared.iv)
-                let params = [
-                    "data": aesBody,
-                    "session_key": Bootpay.getSessionKey()
-                ]
-                post(url: uri, params: params, isLogin: false)
-                
-            } catch {}
-        }
+            let aesBody = try json.aesEncrypt(key: Bootpay.shared.key, iv: Bootpay.shared.iv)
+            let params = [
+                "data": aesBody,
+                "session_key": Bootpay.getSessionKey()
+            ]
+            post(url: uri, params: params, isLogin: false)
+            
+        } catch {}
     }
     
     @objc public static func post(url: String, params: [String: Any], isLogin: Bool) {
@@ -100,13 +100,19 @@ import Foundation
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         do{
             let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions())
+            
+            
+            
             request.httpBody = jsonData
             let task = session.dataTask(with: request as URLRequest as URLRequest, completionHandler: {(data, response, error) in
                 guard error == nil else { return }
                 if isLogin == false { return }
                 guard let data = data else { return }
+                
+                
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                        
                         if let data = json["data"] as? [String : Any], let user_id = data["user_id"] as? String {
                             Bootpay.shared.payload?.userInfo?.id = user_id
                         }
@@ -117,7 +123,7 @@ import Foundation
             })
             task.resume()
         }catch _ {
-            print ("Oops something happened buddy")
+            print ("something error")
         }
     }
 }
