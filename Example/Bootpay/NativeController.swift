@@ -70,7 +70,7 @@ class NativeController: UIViewController {
     
     @objc func showBootpay() {
         let payload = Payload()
-        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id 
+        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
         
                 
         payload.price = 1000
@@ -106,7 +106,7 @@ class NativeController: UIViewController {
 
         let user = BootUser()
         user.username = "테스트 유저"
-        user.phone = "01040334678"
+        user.phone = "01012345678"
         payload.userInfo = user
                 
         Bootpay.requestPayment(viewController: self, payload: payload)
