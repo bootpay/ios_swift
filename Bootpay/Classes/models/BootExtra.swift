@@ -30,6 +30,8 @@ public class BootExtra: NSObject, Mappable, Codable {
         popup <- map["popup"]
         quickPopup <- map["quickPopup"]
         
+        carrier <- map["carrier"]
+        ageLimit <- map["ageLimit"]
     }
     
     @objc public var startAt: String? // 정기 결제 시작일 - 시작일을 지정하지 않으면 그 날 당일로부터 결제가 가능한 Billing key 지급
@@ -47,6 +49,10 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var escrow = 0
     @objc public var iosCloseButton = false
     @objc public var onestore = BootOneStore()
+    
+    @objc public var carrier: String? //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능 
+    @objc public var ageLimit: Int = 0 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
+    
     
     @objc public var theme = "purple" //통합 결제창 색상 지정 (purple, red, custom 지정 가능 )
     @objc public var customBackground: String? //theme가 custom인 경우 배경 색 지정 가능 ( ex: #f2f2f2 )
