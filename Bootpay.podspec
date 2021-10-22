@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Bootpay'
-  s.version          = '3.3.31'
+  s.version          = '3.3.32'
   s.summary          = 'A short description of Bootpay.'
 
 # This description is used to generate tags and improve search results.

@@ -98,10 +98,13 @@ import WebKit
         
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
         beforeUrl = url.absoluteString
+         
         
         if(isItunesURL(url.absoluteString)) {
             startAppToApp(url)
             decisionHandler(.cancel)
+        } else if(url.absoluteString.starts(with: "about:blank")) {
+            decisionHandler(.allow)
         } else if(!url.absoluteString.starts(with: "http")) {
 //            if(UIApplication.shared.canOpenURL(url)) {
 //                startAppToApp(url)

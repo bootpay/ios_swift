@@ -16,7 +16,7 @@ class NativeController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
        
         setUI()
-//        bootpayAnalyticsUserTrace()
+        bootpayAnalyticsUserTrace()
         bootpayAnalyticsPageTrace()
     }
     
@@ -70,13 +70,14 @@ class NativeController: UIViewController {
     
     @objc func showBootpay() {
         let payload = Payload()
-        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
+//        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
+        payload.applicationId = "59f95ca684382624094ea74a" //ios application id
         
                 
-        payload.price = 1000
+        payload.price = 0
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.pg = "danal"
-        payload.method = "card"
+        payload.method = "auth"
         payload.name = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.popup = 0

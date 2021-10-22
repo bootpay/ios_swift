@@ -107,11 +107,12 @@ import Foundation
             let task = session.dataTask(with: request as URLRequest as URLRequest, completionHandler: {(data, response, error) in
                 guard error == nil else { return }
                 if isLogin == false { return }
+                
                 guard let data = data else { return }
                 
                 
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] { 
                         
                         if let data = json["data"] as? [String : Any], let user_id = data["user_id"] as? String {
                             Bootpay.shared.payload?.userInfo?.id = user_id
