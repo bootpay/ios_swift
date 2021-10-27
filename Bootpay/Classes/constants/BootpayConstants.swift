@@ -77,6 +77,8 @@ struct BootpayConstants {
             payload.extra = extra
         }
         payload.userInfo?.setEncodedValueAll()
+         
+        
         return [
             "BootPay.request(",
             getPayloadJson(payload),

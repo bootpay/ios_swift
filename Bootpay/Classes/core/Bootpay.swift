@@ -41,6 +41,22 @@ import WebKit
         self.iv = getRandomKey(16) 
     }
     
+    
+    #if os(macOS)
+    @objc(requestPayment::)
+    public static func requestPayment(viewController: BTViewController,
+                                      payload: Payload) {
+        
+        shared.parentController = viewController
+        shared.payload = payload
+        
+        loadSessionValues()
+        
+        let vc = BootpayController()
+        viewController.presentAsSheet(vc)
+    }
+    #elseif os(iOS)
+    
     @objc(requestPayment::::)
     public static func requestPayment(viewController: UIViewController,
                                       payload: Payload,
@@ -57,6 +73,8 @@ import WebKit
         return self
     }
     
+    #endif
+    
     @objc(transactionConfirm:)
     public static func transactionConfirm(data: [String: Any]) {
         if let webView = shared.webview {
@@ -68,7 +86,13 @@ import WebKit
     @objc(removePaymentWindow)
     public static func removePaymentWindow() {
         if shared.parentController != nil {
-            shared.parentController?.dismiss(animated: true, completion: nil)
+        #if os(macOS)
+        shared.parentController?.dismiss(nil)
+        #elseif os(iOS)
+        shared.parentController?.dismiss(animated: true, completion: nil)
+        #endif
+            
+//            shared.parentController?.dismiss(animated: true, completion: nil)
             shared.parentController = nil
         } else if shared.ENV_TYPE == BootpayConstants.ENV_SWIFT_UI {
             shared.close?()

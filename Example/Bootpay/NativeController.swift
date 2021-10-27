@@ -50,7 +50,11 @@ class NativeController: UIViewController {
         item2.cat2 = "데님"
         item2.cat3 = "청자켓"
         
-        BootpayAnalytics.pageTrace("main_page_1234", applicationId: "5b8f6a4d396fa665fdc2b5e9")
+        BootpayAnalytics.pageTrace(
+            "main_page_1234", // 앱 페이지 url 또는 화면이름
+            applicationId: "5b8f6a4d396fa665fdc2b5e9",
+            items: [item1, item2]
+        )
     }
     
     func setUI() {
@@ -74,17 +78,19 @@ class NativeController: UIViewController {
         payload.applicationId = "59f95ca684382624094ea74a" //ios application id
         
                 
-        payload.price = 0
+        payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.pg = "danal"
-        payload.method = "auth"
+        payload.method = "phone"
         payload.name = "테스트 아이템"
         payload.extra = BootExtra()
-        payload.extra?.popup = 0
-        payload.extra?.quickPopup = 0
+        payload.extra?.popup = 1
+        payload.extra?.quickPopup = 1
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
         
+        
+        //통계를 위한 상품데이터 
         let item1 = BootItem()
         item1.itemName = "나는 아이템1"
         item1.qty = 1

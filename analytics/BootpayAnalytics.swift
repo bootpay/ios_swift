@@ -60,8 +60,8 @@ import Foundation
         )
     }
     
-    @objc public static  func pageTrace(_ url: String, applicationId: String? = nil, _ page_type: String? = nil) {
-        pageTrace(url, applicationId: applicationId, items: [], page_type)
+    @objc public static  func pageTrace(_ url: String, applicationId: String? = nil, _ page_type: String? = nil, _ items: [BootpayStatItem]?) {
+        pageTrace(url, applicationId: applicationId, items: items ?? [], page_type)
     }
     
     @objc public static  func pageTrace(_ url: String, applicationId: String? = nil, items: [BootpayStatItem], _ page_type: String? = nil) {
@@ -76,7 +76,7 @@ import Foundation
             "user_id": Bootpay.shared.payload?.userInfo?.id ?? "",
             "url": url,
             "page_type": page_type ?? "ios",
-            "items": items
+            "items": items.map { $0.toJSON() }
         ] as [String : Any]
         
         let json = Bootpay.stringify(params)
@@ -112,7 +112,7 @@ import Foundation
                 
                 
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] { 
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {  
                         
                         if let data = json["data"] as? [String : Any], let user_id = data["user_id"] as? String {
                             Bootpay.shared.payload?.userInfo?.id = user_id

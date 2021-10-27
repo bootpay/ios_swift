@@ -15,7 +15,13 @@ import WebKit
     var isFirstLoadFinish = false
      
     @objc public init() {
+        
+        #if os(macOS)
+        super.init(frame: NSScreen.main!.frame)
+        #elseif os(iOS)
         super.init(frame: UIScreen.main.bounds)
+        #endif
+        
         initComponent()
         startBootpay()
     }

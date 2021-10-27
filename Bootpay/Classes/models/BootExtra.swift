@@ -37,7 +37,7 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var startAt: String? // 정기 결제 시작일 - 시작일을 지정하지 않으면 그 날 당일로부터 결제가 가능한 Billing key 지급
     @objc public var endAt: String? // 정기결제 만료일 -  기간 없음 - 무제한
     @objc public var expireMonth = 0 //정기결제가 적용되는 개월 수 (정기결제 사용시)
-    @objc public var vbankResult = true //가상계좌 결과창을 볼지 말지 (가상계좌 사용시)
+    @objc public var vbankResult = 1 //가상계좌 결과창을 볼지 말지 (가상계좌 사용시)
     @objc public var quotas = [Int]() //할부허용 범위 (5만원 이상 구매시)
     @objc public var appScheme: String? //app2app 결제시 return 받을 intent scheme
     
