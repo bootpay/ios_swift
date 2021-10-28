@@ -21,7 +21,7 @@ import WebKit
     var application_id: String? // 통계를 위한 파라미터
     var ENV_TYPE = BootpayConstants.ENV_SWIFT
         
-    var webview: WKWebView?
+    public var webview: WKWebView?
     var payload: Payload? = Payload()
     var parentController: UIViewController?
     
