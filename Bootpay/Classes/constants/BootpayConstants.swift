@@ -9,9 +9,9 @@
 import Foundation
 
 public struct BootpayConstants {
-    static let CDN_URL = "https://inapp.bootpay.co.kr/3.3.3/production.html";
+    public static let CDN_URL = "https://inapp.bootpay.co.kr/3.3.3/production.html";
 //    static let CDN_URL = "https://www.google.com"
-    static let BRIDGE_NAME = "BootpayiOS"
+    public static let BRIDGE_NAME = "BootpayiOS"
     
     static let ENV_SWIFT = 0
     static let ENV_SWIFT_UI = 1
@@ -33,7 +33,7 @@ public struct BootpayConstants {
     }
     
     
-    static func getJSBeforePayStart(_ quickPopup: Bool) -> [String] {
+    public static func getJSBeforePayStart(_ quickPopup: Bool) -> [String] {
         var array = [String]()
         #if os(iOS)
         array.append("BootPay.setDevice('IOS');")
@@ -63,7 +63,7 @@ public struct BootpayConstants {
         return urlschema
     }
     
-    static func getJSPay(payload: Payload) -> String {
+    public static func getJSPay(payload: Payload) -> String {
         if let extra = payload.extra {
             if extra.appScheme != nil {
                 //가맹점이 설정한 appScheme 값을 그대로 둔다
