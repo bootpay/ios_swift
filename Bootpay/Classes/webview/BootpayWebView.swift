@@ -8,7 +8,7 @@
 import WebKit
 
 
-@objc public class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+@objc open class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
     @objc public var webview: WKWebView!
     
     var beforeUrl = ""
@@ -26,7 +26,7 @@ import WebKit
         startBootpay()
     }
     
-    required init(coder: NSCoder) {
+    required public init(coder: NSCoder) {
         super.init(coder: coder)!
     }
     
@@ -159,7 +159,7 @@ import WebKit
       webView.removeFromSuperview() 
     }
     
-    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if(message.name == BootpayConstants.BRIDGE_NAME) {
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {
@@ -234,7 +234,7 @@ import WebKit
 }
 
 extension BootpayWebView {
-    internal func doJavascript(_ script: String) {
+    open func doJavascript(_ script: String) {
         webview.evaluateJavaScript(script, completionHandler: nil)
     }
     

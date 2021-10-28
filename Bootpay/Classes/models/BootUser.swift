@@ -39,7 +39,7 @@ public class BootUser: NSObject, Mappable, Codable {
     @objc public var area: String?
     @objc public var addr: String?
         
-    func setEncodedValueAll() {
+    open func setEncodedValueAll() {
         if let id = self.id {
             self.id = id.replace(target: "\"", withString: "'").replace(target: "'", withString: "\\'").replace(target: "'\n", withString: "")
         }

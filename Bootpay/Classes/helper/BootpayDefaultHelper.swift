@@ -8,17 +8,17 @@
 import Foundation
 
 //MARK: UserDefault Standard For Session
-class BootpayDefaultHelper {
-    static func getInt(key: String) -> Int {
+open class BootpayDefaultHelper {
+    static public func getInt(key: String) -> Int {
         return UserDefaults.standard.integer(forKey: key)
     }
     
-    static func getString(key: String) -> String {
+    static public func getString(key: String) -> String {
         guard let value = UserDefaults.standard.string(forKey: key) else { return "" }
         return value
     }
     
-    static func setValue(_ key: String, value: Any) {
+    static public func setValue(_ key: String, value: Any) {
         UserDefaults.standard.set(value, forKey: key)
     }
 }

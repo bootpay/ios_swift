@@ -107,6 +107,17 @@ import WebKit
         shared.done = nil
         shared.cancel = nil
     }
+    
+    
+    public static func goConfirm(_ data: [String : Any]) {
+        if let confirm = shared.confirm {
+            if(confirm(data)) {
+                transactionConfirm(data: data)
+            } else {
+                removePaymentWindow()
+            }
+        }
+    }
 }
 
 extension Bootpay {
@@ -159,10 +170,10 @@ extension Bootpay {
 }
 
 extension Bootpay {
-//    public static func getUUId() -> String {
-//        if shared.uuid == "" { shared.uuid = BootpayDefaultHelper.getString(key: "uuid") }
-//        return shared.uuid
-//    }
+    public static func getUUId() -> String {
+        if shared.uuid == "" { shared.uuid = BootpayDefaultHelper.getString(key: "uuid") }
+        return shared.uuid
+    }
     
     public static func getSk() -> String {
         if shared.sk == "" { return BootpayDefaultHelper.getString(key: "sk") }

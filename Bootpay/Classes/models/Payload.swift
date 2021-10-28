@@ -7,7 +7,7 @@
 
 import ObjectMapper
 
-public class Payload: NSObject, Mappable, Codable {
+open class Payload: NSObject, Mappable, Codable {
     public override init() {}
     public required init?(map: Map) {
         super.init()
