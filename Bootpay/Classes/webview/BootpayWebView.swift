@@ -213,7 +213,7 @@ import WebKit
                 }
                 return
             }
-            guard let action = body["action"] as? String else { return }
+            guard let action = body["action"] as? String else { return } 
             
             if action == "BootpayCancel" {
                 Bootpay.shared.cancel?(body)
