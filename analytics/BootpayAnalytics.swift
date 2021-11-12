@@ -70,7 +70,7 @@ import Foundation
         let params = [
             "ver": Bootpay.shared.ver,
             "application_id": applicationId ?? Bootpay.shared.payload?.applicationId ?? "",
-            "uuid": Bootpay.shared.getUUID(),
+            "uuid": Bootpay.getUUID(),
             "referer": "",
             "sk": Bootpay.shared.sk,
             "user_id": Bootpay.shared.payload?.userInfo?.id ?? "",

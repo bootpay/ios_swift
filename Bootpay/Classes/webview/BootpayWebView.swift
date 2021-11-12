@@ -8,11 +8,13 @@
 import WebKit
 
 
-@objc open class BootpayWebView: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+@objc open class BootpayWebView: BTView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
     @objc public var webview: WKWebView!
     
     var beforeUrl = ""
     var isFirstLoadFinish = false
+    var topBlindView: BTView?
+    var topBlindButton: UIButton?
      
     @objc public init() {
         
@@ -36,23 +38,65 @@ import WebKit
         let configuration = WKWebViewConfiguration()
         configuration.userContentController.add(self, name: BootpayConstants.BRIDGE_NAME)
         
-        var topPadding = CGFloat(0)
-        var bottomPadding = CGFloat(0)
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.keyWindow
-            topPadding = window?.safeAreaInsets.top ?? CGFloat(0)
-            bottomPadding = window?.safeAreaInsets.bottom ?? CGFloat(0)
-        }
+        #if os(macOS)
+            webview = WKWebView(frame: self.bounds, configuration: configuration)
+        #elseif os(iOS)
+            if #available(iOS 11.0, *) {
+                let window = UIApplication.shared.keyWindow
+                webview = WKWebView(frame: CGRect(x: 0,
+                                                  y: 0,
+                                                  width: UIScreen.main.bounds.width,
+                                                  height: UIScreen.main.bounds.height - (window?.safeAreaInsets.bottom ?? UIScreen.main.bounds.height) - (window?.safeAreaInsets.top ?? 0)),
+                                    configuration: configuration)
+            } else {
+                webview = WKWebView(frame: CGRect(x: 0,
+                                                  y: 0,
+                                                  width: UIScreen.main.bounds.width,
+                                                  height: UIScreen.main.bounds.height),
+                                    configuration: configuration)
+            }
+        #endif
         
-        webview = WKWebView(frame: CGRect(x: 0,
-                                          y: topPadding,
-                                          width: UIScreen.main.bounds.width,
-                                          height: UIScreen.main.bounds.height - topPadding - bottomPadding),
-                            configuration: configuration)
         webview.uiDelegate = self
         webview.navigationDelegate = self
         self.addSubview(webview)
         Bootpay.shared.webview = webview
+    }
+    
+    func updateBlindViewIfNaverLogin(_ url: String) {
+        if(url.starts(with: "https://nid.naver.com/")) { //show
+            if topBlindView == nil { topBlindView = UIView() }
+            else { topBlindView?.removeFromSuperview() }
+            if topBlindButton == nil { topBlindButton = UIButton() }
+            else { topBlindButton?.removeFromSuperview() }
+            
+            topBlindView?.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 50)
+            topBlindView?.backgroundColor = .white
+            self.addSubview(topBlindView!)
+            
+            topBlindButton?.frame = CGRect(x: self.frame.width - 50, y: 0, width: 50, height: 50)
+            topBlindButton?.setTitle("X", for: .normal)
+            topBlindButton?.setTitleColor(.black, for: .normal)
+            topBlindButton?.addTarget(self, action: #selector(closeView), for: .touchUpInside)
+            self.addSubview(topBlindButton!)
+            
+        } else { //hide
+            topBlindView?.removeFromSuperview()
+            topBlindView = nil
+            topBlindButton?.removeFromSuperview()
+            topBlindButton = nil
+        }
+    }    
+    
+    @objc public func closeView() {
+        
+        var params = [String: Any]()
+        params["code"] = -102
+        params["action"] = "BootpayCancel"
+        params["message"] = "사용자가 창을 닫았습니다."
+        
+        Bootpay.shared.cancel?(params)
+        removePaymentWindow()
     }
     
     @objc public func startBootpay() {
@@ -104,7 +148,8 @@ import WebKit
         
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
         beforeUrl = url.absoluteString
-         
+       
+        updateBlindViewIfNaverLogin(url.absoluteString)
         
         if(isItunesURL(url.absoluteString)) {
             startAppToApp(url)
@@ -144,7 +189,7 @@ import WebKit
     
     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         
-        let popupView = WKWebView(frame: self.bounds, configuration: configuration)
+        let popupView = WKWebView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height), configuration: configuration)
         #if os(iOS)
         popupView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         #endif

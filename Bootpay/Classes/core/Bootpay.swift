@@ -19,7 +19,7 @@ import WebKit
     var key = ""
     var iv = ""
     var application_id: String? // 통계를 위한 파라미터
-    var ENV_TYPE = BootpayConstants.ENV_SWIFT
+    public var ENV_TYPE = BootpayConstants.ENV_SWIFT
         
     public var webview: WKWebView?
     var payload: Payload? = Payload()
@@ -190,7 +190,7 @@ extension Bootpay {
         loadSkTime()
     }
     
-    public func getUUID() -> String {
+    public static func getUUID() -> String {
         var uuid = BootpayDefaultHelper.getString(key: "uuid")
         if uuid == "" {
             uuid = UUID().uuidString
