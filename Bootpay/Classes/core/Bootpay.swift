@@ -190,7 +190,7 @@ extension Bootpay {
         loadSkTime()
     }
     
-    public static func getUUID() -> String {
+    @objc public static func getUUID() -> String {
         var uuid = BootpayDefaultHelper.getString(key: "uuid")
         if uuid == "" {
             uuid = UUID().uuidString
