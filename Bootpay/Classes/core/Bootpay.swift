@@ -73,6 +73,24 @@ import WebKit
         return self
     }
     
+    @objc(requestPaymentStr::::)
+    public static func requestPayment(viewController: UIViewController,
+                                      payload: String,
+                                      _ animated: Bool = true,
+                                      _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+        guard let payload = Payload(JSONString: payload) else { return self }
+        
+        shared.parentController = viewController
+        shared.payload = payload
+        
+        loadSessionValues()
+        
+        let vc = BootpayController()
+        vc.modalPresentationStyle = modalPresentationStyle //or .overFullScreen for transparency
+        viewController.present(vc, animated: animated, completion: nil)
+        return self
+    }
+    
     #endif
     
     @objc(transactionConfirm:)

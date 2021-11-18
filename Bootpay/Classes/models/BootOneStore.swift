@@ -17,9 +17,9 @@ public class BootOneStore: NSObject, Mappable, Codable {
     }
     
     public func mapping(map: Map) {
-        adId <- map["adId"]
-        simOperator <- map["simOperator"]
-        installerPackageName <- map["installerPackageName"] 
+        adId <- map["ad_id"]
+        simOperator <- map["sim_operator"]
+        installerPackageName <- map["installer_package_name"] 
     }
     
     @objc public var adId = "UNKNOWN_ADID";

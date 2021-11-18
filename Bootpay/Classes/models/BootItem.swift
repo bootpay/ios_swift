@@ -16,7 +16,7 @@ public class BootItem: NSObject, Mappable, Codable {
     }
     
     public func mapping(map: Map) {
-        itemName <- map["itemName"]
+        itemName <- map["item_name"]
         qty <- map["qty"]
         unique <- map["unique"]
         

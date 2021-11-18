@@ -17,7 +17,7 @@ public class BootUser: NSObject, Mappable, Codable {
     
     public func mapping(map: Map) {
         id <- map["id"]
-        userId <- map["userId"]
+        userId <- map["user_id"]
         username <- map["username"]
         
         email <- map["email"]

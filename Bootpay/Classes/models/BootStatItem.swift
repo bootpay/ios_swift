@@ -16,8 +16,8 @@ public class BootpayStatItem: NSObject, Mappable, Codable {
     }
     
     public func mapping(map: Map) {
-        itemName <- map["itemName"]
-        itemImg <- map["itemImg"]
+        itemName <- map["item_name"]
+        itemImg <- map["item_img"]
         unique <- map["unique"]
         price <- map["price"]        
         cat1 <- map["cat1"]

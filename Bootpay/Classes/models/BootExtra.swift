@@ -17,21 +17,25 @@ public class BootExtra: NSObject, Mappable, Codable {
     }
     
     public func mapping(map: Map) {
-        startAt <- map["startAt"]
-        endAt <- map["endAt"]
-        expireMonth <- map["expireMonth"]
-        vbankResult <- map["vbankResult"]
+        startAt <- map["start_at"]
+        endAt <- map["end_at"]
+        expireMonth <- map["expire_month"]
+        vbankResult <- map["vbank_result"]
         quotas <- map["quotas"]
-        appScheme <- map["appScheme"]
+        appScheme <- map["app_scheme"]
         
         locale <- map["locale"]
-        offerPeriod <- map["offerPeriod"]
+        offerPeriod <- map["offer_period"]
         
         popup <- map["popup"]
-        quickPopup <- map["quickPopup"]
+        quickPopup <- map["quick_popup"]
+        
+        dispCashResult <- map["disp_cash_result"]
+        escrow <- map["escrow"]
+        onestore <- map["onestore"]
         
         carrier <- map["carrier"]
-        ageLimit <- map["ageLimit"]
+        ageLimit <- map["age_limit"]
     }
     
     @objc public var startAt: String? // 정기 결제 시작일 - 시작일을 지정하지 않으면 그 날 당일로부터 결제가 가능한 Billing key 지급
@@ -57,5 +61,4 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var theme = "purple" //통합 결제창 색상 지정 (purple, red, custom 지정 가능 )
     @objc public var customBackground: String? //theme가 custom인 경우 배경 색 지정 가능 ( ex: #f2f2f2 )
     @objc public var customFontColor: String? //theme가 custom인 경우 폰트색 지정 가능 ( ex: #333333 )
-    @objc public var topMargin: Double = 0.0 
 }

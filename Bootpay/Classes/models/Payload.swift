@@ -15,24 +15,24 @@ open class Payload: NSObject, Mappable, Codable {
     }
     
     public func mapping(map: Map) {
-        applicationId <- map["applicationId"]
+        applicationId <- map["application_id"]
         pg <- map["pg"]
         method <- map["method"]
         methods <- map["methods"]
         name <- map["name"]
         price <- map["price"]
-        taxFree <- map["taxFree"]
+        taxFree <- map["tax_free"]
         
-        orderId <- map["orderId"]
-        useOrderId <- map["useOrderId"]
+        orderId <- map["order_id"]
+        useOrderId <- map["use_order_id"]
         params <- map["params"]
         
-        accountExpireAt <- map["accountExpireAt"]
-        showAgreeWindow <- map["showAgreeWindow"]
-        userToken <- map["userToken"]
+        accountExpireAt <- map["account_expire_at"]
+        showAgreeWindow <- map["show_agree_window"]
+        userToken <- map["user_token"]
         
         extra <- map["extra"]
-        userInfo <- map["userInfo"]
+        userInfo <- map["user_info"]
         items <- map["items"]
     }
     
