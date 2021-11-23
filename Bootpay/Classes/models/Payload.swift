@@ -46,11 +46,11 @@ open class Payload: NSObject, Mappable, Codable {
     @objc public var taxFree = Double(0)
     
     @objc public var orderId = ""
-    @objc public var useOrderId = false
+    @objc public var useOrderId = 0
     @objc public var params: String?
     
     @objc public var accountExpireAt: String? // 가상계좌 입금 만료 기한
-    @objc public var showAgreeWindow = false
+    @objc public var showAgreeWindow = 0
     @objc public var userToken: String? //카드 간편결제, 생체결제시 필요한 파라미터
     
     @objc public var extra: BootExtra?

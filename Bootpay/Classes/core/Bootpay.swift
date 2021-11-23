@@ -74,7 +74,7 @@ import WebKit
     }
     
     @objc(requestPaymentStr::::)
-    public static func requestPayment(viewController: UIViewController,
+    public static func requestPaymentStr(viewController: UIViewController,
                                       payload: String,
                                       _ animated: Bool = true,
                                       _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
