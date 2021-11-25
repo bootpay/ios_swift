@@ -8,11 +8,12 @@
 import WebKit
 
 
-@objc open class BootpayWebView: BTView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+@objc public class BootpayWebView: BTView {
     @objc public var webview: WKWebView!
     
     var beforeUrl = ""
     var isFirstLoadFinish = false
+    var isStartBootpay = false
     var topBlindView: BTView?
     var topBlindButton: UIButton?
      
@@ -25,7 +26,6 @@ import WebKit
         #endif
         
         initComponent()
-        startBootpay()
     }
     
     required public init(coder: NSCoder) {
@@ -102,6 +102,7 @@ import WebKit
     @objc public func startBootpay() {
         if let url = URL(string: BootpayConstants.CDN_URL) {
             webview.load(URLRequest(url: url))
+            self.isStartBootpay = true
         }
     }
     
@@ -126,12 +127,14 @@ import WebKit
         Bootpay.shared.payload = payload
     }
     
+}
+
+extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+    
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard let payload = Bootpay.shared.payload else { return }
-//        Bootpay.shared.webview = webView
-        if isFirstLoadFinish == false {
-            isFirstLoadFinish = true
-            
+        if isFirstLoadFinish == false && self.isStartBootpay == true  {
+            isFirstLoadFinish = true            
             let quickPopup = payload.extra?.quickPopup ?? 0
             
             let scriptList = BootpayConstants.getJSBeforePayStart(quickPopup == 1)

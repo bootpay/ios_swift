@@ -12,6 +12,6 @@ class BootpayController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(bootpayWebView)
+        bootpayWebView.startBootpay()
     }
-    
 }
