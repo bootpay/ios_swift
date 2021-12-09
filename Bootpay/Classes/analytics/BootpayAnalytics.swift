@@ -6,9 +6,7 @@
 //  Copyright © 2017년 bootpay.co.kr. All rights reserved.
 //
 import Foundation
-
  
-
 //MARK: Bootpay Rest Api for Analytics
 @objc public class BootpayAnalytics:  NSObject {
     @objc public static func userTrace(id: String, email: String, gender: Int,
