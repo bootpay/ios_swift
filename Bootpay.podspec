@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Bootpay'
-  s.version          = '3.3.3832'
-  s.summary          = 'Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9, macos 10.12 이상부터 사용가능합니다.'
+  s.version          = '3.3.384'
+  s.summary          = 'Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9 이상부터 사용가능합니다.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-  Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9, macos 10.12 이상부터 사용가능합니다.
+  Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9 이상부터 사용가능합니다.
                        DESC
 
   s.homepage         = 'https://github.com/bootpay/ios_swift'
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
-  s.osx.deployment_target = '10.12'
+#  s.osx.deployment_target = '10.12'
 
   s.source_files = 'Bootpay/Classes/**/*'
   

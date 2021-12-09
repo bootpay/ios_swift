@@ -74,7 +74,7 @@ public class BootpayConstants {
             payload.extra = extra
         }
         payload.userInfo?.setEncodedValueAll()
-         
+        
         
         return [
             "BootPay.request(",

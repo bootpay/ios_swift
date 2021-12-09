@@ -38,9 +38,13 @@ import WebKit
         let configuration = WKWebViewConfiguration()
         configuration.userContentController.add(self, name: BootpayConstants.BRIDGE_NAME)
         
+        
+        
         #if os(macOS)
             webview = WKWebView(frame: self.bounds, configuration: configuration)
-            webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+//            webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+         
         #elseif os(iOS)
             if #available(iOS 11.0, *) {
                 let window = UIApplication.shared.keyWindow
@@ -56,7 +60,12 @@ import WebKit
                                                   height: UIScreen.main.bounds.height),
                                     configuration: configuration)
             }
+        
         #endif
+        
+//        if(DeviceHelper.nativeMac == DeviceHelper.currentDevice) {
+//            webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        }
         
         webview.uiDelegate = self
         webview.navigationDelegate = self
@@ -139,6 +148,8 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 webView.evaluateJavaScript(script, completionHandler: nil)
             }
             let scriptPay = BootpayConstants.getJSPay(payload: payload)
+            
+            print(scriptPay);
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
         }
     }

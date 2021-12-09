@@ -21,7 +21,7 @@ public class BootExtra: NSObject, Mappable, Codable {
         endAt <- map["end_at"]
         expireMonth <- map["expire_month"]
         vbankResult <- map["vbank_result"]
-        quotas <- map["quotas"]
+        quota <- map["quota"]
         appScheme <- map["app_scheme"]
         
         locale <- map["locale"]
@@ -42,7 +42,7 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var endAt: String? // 정기결제 만료일 -  기간 없음 - 무제한
     @objc public var expireMonth = 0 //정기결제가 적용되는 개월 수 (정기결제 사용시)
     @objc public var vbankResult = 1 //가상계좌 결과창을 볼지 말지 (가상계좌 사용시)
-    @objc public var quotas = [Int]() //할부허용 범위 (5만원 이상 구매시)
+    @objc public var quota: String? //할부허용 범위 (5만원 이상 구매시)
     @objc public var appScheme: String? //app2app 결제시 return 받을 intent scheme
     
     @objc public var locale = "ko" //결제창 언어지원

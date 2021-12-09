@@ -23,7 +23,7 @@ import WebKit
         
     public var webview: WKWebView?
     @objc public var payload: Payload? = Payload()
-    var parentController: UIViewController?
+    var parentController: BTViewController?
     
     @objc public var error: (([String : Any]) -> Void)?
     @objc public var ready: (([String : Any]) -> Void)?
