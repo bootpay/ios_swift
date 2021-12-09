@@ -9,14 +9,11 @@
 import Foundation
 
 public class BootpayConstants {
-    public static let CDN_URL = "https://inapp.bootpay.co.kr/3.3.3/production.html";
-//    static let CDN_URL = "https://www.google.com"
+    public static let CDN_URL = "https://inapp.bootpay.co.kr/3.3.3/production.html"; 
     public static let BRIDGE_NAME = "BootpayiOS"
     
     public static let ENV_SWIFT = 0
     public static let ENV_SWIFT_UI = 1
-    public static let ENV_REACT_NATIVE = 2
-    public static let ENV_FLUTTER = 3
     
     static func dicToJsonString(_ data: [String: Any]) -> String {
         do {

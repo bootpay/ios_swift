@@ -40,6 +40,7 @@ import WebKit
         
         #if os(macOS)
             webview = WKWebView(frame: self.bounds, configuration: configuration)
+            webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         #elseif os(iOS)
             if #available(iOS 11.0, *) {
                 let window = UIApplication.shared.keyWindow
@@ -105,23 +106,19 @@ import WebKit
             self.isStartBootpay = true
         }
     }
-    
-    //flutter 에서 호출되는 함수
+     
     @objc public func goBack() {
         webview.goBack()
     }
-    
-    //flutter 에서 호출되는 함수
+     
     @objc public func transactionConfirm(data: [String: Any]) {
         Bootpay.transactionConfirm(data: data)
     }
-    
-    //flutter 에서 호출되는 함수
+     
     @objc public func removePaymentWindow() {
         Bootpay.removePaymentWindow()
     }
-    
-    //flutter 에서 호출되는 함수
+     
     @objc public func setPayload(_ data: [String: Any]) {
         let payload = Payload(JSON: data)
         Bootpay.shared.payload = payload
