@@ -5,8 +5,7 @@
 //  Created by Taesup Yoon on 2021/05/12.
 //
 
-
-class BootpayController: UIViewController {
+class BootpayController: BTViewController {
     let bootpayWebView = BootpayWebView()
     
     override func viewDidLoad() {
