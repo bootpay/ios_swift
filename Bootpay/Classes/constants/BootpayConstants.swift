@@ -73,7 +73,7 @@ public class BootpayConstants {
             extra.appScheme = getURLSchema()
             payload.extra = extra
         }
-        payload.userInfo?.setEncodedValueAll()
+        payload.user?.setEncodedValueAll()
         
         
         return [

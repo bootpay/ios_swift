@@ -11,12 +11,12 @@ import Foundation
 @objc public class BootpayAnalytics:  NSObject {
     @objc public static func userTrace(id: String, email: String, gender: Int,
                                        birth: String, phone: String, area: String, applicationId: String?) {
-        if Bootpay.shared.payload?.userInfo?.id == "" { Bootpay.shared.payload?.userInfo?.id = id }
-        if Bootpay.shared.payload?.userInfo?.email == "" { Bootpay.shared.payload?.userInfo?.email = email }
-        if Bootpay.shared.payload?.userInfo?.gender == 0 { Bootpay.shared.payload?.userInfo?.gender = gender }
-        if Bootpay.shared.payload?.userInfo?.birth == "" { Bootpay.shared.payload?.userInfo?.birth = birth }
-        if Bootpay.shared.payload?.userInfo?.phone == "" { Bootpay.shared.payload?.userInfo?.phone = phone }
-        if Bootpay.shared.payload?.userInfo?.area == "" { Bootpay.shared.payload?.userInfo?.area = area }
+        if Bootpay.shared.payload?.user?.id == "" { Bootpay.shared.payload?.user?.id = id }
+        if Bootpay.shared.payload?.user?.email == "" { Bootpay.shared.payload?.user?.email = email }
+        if Bootpay.shared.payload?.user?.gender == 0 { Bootpay.shared.payload?.user?.gender = gender }
+        if Bootpay.shared.payload?.user?.birth == "" { Bootpay.shared.payload?.user?.birth = birth }
+        if Bootpay.shared.payload?.user?.phone == "" { Bootpay.shared.payload?.user?.phone = phone }
+        if Bootpay.shared.payload?.user?.area == "" { Bootpay.shared.payload?.user?.area = area }
         
         let uri = "https://analytics.bootpay.co.kr/login"
         var params: [String: Any]
@@ -44,16 +44,16 @@ import Foundation
     }
     
     @objc public static func userTrace() {
-        if(Bootpay.shared.payload?.userInfo?.id == "") {
+        if(Bootpay.shared.payload?.user?.id == "") {
             NSLog("Bootpay Analytics Warning: postLogin() not Work!! Please check id is not empty")
             return
         }
-        userTrace(id: Bootpay.shared.payload?.userInfo?.id ?? "",
-                  email: Bootpay.shared.payload?.userInfo?.email ?? "",
-                  gender: Bootpay.shared.payload?.userInfo?.gender ?? -1,
-                  birth: Bootpay.shared.payload?.userInfo?.birth ?? "",
-                  phone: Bootpay.shared.payload?.userInfo?.phone ?? "",
-                  area: Bootpay.shared.payload?.userInfo?.area ?? "",
+        userTrace(id: Bootpay.shared.payload?.user?.id ?? "",
+                  email: Bootpay.shared.payload?.user?.email ?? "",
+                  gender: Bootpay.shared.payload?.user?.gender ?? -1,
+                  birth: Bootpay.shared.payload?.user?.birth ?? "",
+                  phone: Bootpay.shared.payload?.user?.phone ?? "",
+                  area: Bootpay.shared.payload?.user?.area ?? "",
                   applicationId: Bootpay.shared.application_id ?? Bootpay.shared.payload?.applicationId ?? ""
         )
     }
@@ -71,7 +71,7 @@ import Foundation
             "uuid": Bootpay.getUUID(),
             "referer": "",
             "sk": Bootpay.shared.sk,
-            "user_id": Bootpay.shared.payload?.userInfo?.id ?? "",
+            "user_id": Bootpay.shared.payload?.user?.id ?? "",
             "url": url,
             "page_type": page_type ?? "ios",
             "items": items.map { $0.toJSON() }
@@ -113,7 +113,7 @@ import Foundation
                     if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {  
                         
                         if let data = json["data"] as? [String : Any], let user_id = data["user_id"] as? String {
-                            Bootpay.shared.payload?.userInfo?.id = user_id
+                            Bootpay.shared.payload?.user?.id = user_id
                         }
                     }
                 } catch let error {

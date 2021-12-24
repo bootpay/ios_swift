@@ -17,48 +17,43 @@ public class BootExtra: NSObject, Mappable, Codable {
     }
     
     public func mapping(map: Map) {
-        startAt <- map["start_at"]
-        endAt <- map["end_at"]
-        expireMonth <- map["expire_month"]
-        vbankResult <- map["vbank_result"]
-        quota <- map["quota"]
-        appScheme <- map["app_scheme"]
-        
+        cardQuota <- map["card_quota"]
+        sellerName <- map["seller_name"]
+        deliveryDay <- map["delivery_day"]
         locale <- map["locale"]
         offerPeriod <- map["offer_period"]
         
+        displayCashReceipt <- map["display_cash_receipt"]
+        depositExpiration <- map["deposit_expiration"]
+        appScheme <- map["app_scheme"]
+        useCardPoint <- map["use_card_point"]
+        directCard <- map["direct_card"]
+        
+        useOrderId <- map["use_order_id"]
+        internationalCardOnly <- map["international_card_only"]
+        phoneCarrier <- map["phone_carrier"]
+        directAppCard <- map["direct_app_card"]
+        directSamsungpay <- map["direct_samsungpay"]
+        testDeposit <- map["test_deposit"]
         popup <- map["popup"]
-        quickPopup <- map["quick_popup"]
-        
-        dispCashResult <- map["disp_cash_result"]
-        escrow <- map["escrow"]
-        onestore <- map["onestore"]
-        
-        carrier <- map["carrier"]
-        ageLimit <- map["age_limit"]
     }
     
-    @objc public var startAt: String? // 정기 결제 시작일 - 시작일을 지정하지 않으면 그 날 당일로부터 결제가 가능한 Billing key 지급
-    @objc public var endAt: String? // 정기결제 만료일 -  기간 없음 - 무제한
-    @objc public var expireMonth = 0 //정기결제가 적용되는 개월 수 (정기결제 사용시)
-    @objc public var vbankResult = 1 //가상계좌 결과창을 볼지 말지 (가상계좌 사용시)
-    @objc public var quota: String? //할부허용 범위 (5만원 이상 구매시)
-    @objc public var appScheme: String? //app2app 결제시 return 받을 intent scheme
-    
+    @objc public var cardQuota: String? //할부허용 범위 (5만원 이상 구매시)
+    @objc public var sellerName: String? //노출되는 판매자명 설정
+    @objc public var deliveryDay: Int = 1 //배송일자
     @objc public var locale = "ko" //결제창 언어지원
     @objc public var offerPeriod: String? //결제창 제공기간에 해당하는 string 값, 지원하는 PG만 적용됨
-    @objc public var popup = 0 //1이면 popup, 0이면 iframe 연동
-    @objc public var quickPopup = 0 //1: popup 호출시 버튼을 띄우지 않는다. 0: 일 경우 버튼을 호출한다
-    @objc public var dispCashResult = "Y" // 현금영수증 보일지 말지.. 가상계좌 KCP 옵션
-    @objc public var escrow = 0
-    @objc public var iosCloseButton = false
-    @objc public var onestore = BootOneStore()
-    
-    @objc public var carrier: String? //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능 
-    @objc public var ageLimit: Int = 0 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
-    
-    
-    @objc public var theme = "purple" //통합 결제창 색상 지정 (purple, red, custom 지정 가능 )
-    @objc public var customBackground: String? //theme가 custom인 경우 배경 색 지정 가능 ( ex: #f2f2f2 )
-    @objc public var customFontColor: String? //theme가 custom인 경우 폰트색 지정 가능 ( ex: #333333 )
+    @objc public var displayCashReceipt = true // 현금영수증 보일지 말지.. 가상계좌 KCP 옵션
+    @objc public var depositExpiration = "" //가상계좌 입금 만료일자 설정
+    @objc public var appScheme: String? //모바일 앱에서 결제 완료 후 돌아오는 옵션 ( 아이폰만 적용 )
+    @objc public var useCardPoint = true //카드 포인트 사용 여부 (토스만 가능)
+    @objc public var directCard = "" //해당 카드로 바로 결제창 (토스만 가능)
+    @objc public var useOrderId = false //가맹점 order_id로 PG로 전송
+    @objc public var internationalCardOnly = false //해외 결제카드 선택 여부 (토스만 가능)
+    @objc public var phoneCarrier: String? //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
+    @objc public var directAppCard = "" //카드사앱으로 direct 호출
+    @objc public var directSamsungpay = "" //삼성페이 바로 띄우기
+    @objc public var testDeposit = "" //가상계좌 모의 입금
+    @objc public var popup = false //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함 
+     
 }

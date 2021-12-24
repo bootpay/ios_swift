@@ -80,6 +80,7 @@
 		852BB9805AE4D625FCA21E5A8827F813 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FA8EE31AEFFEB6A024D7D564A96ED6 /* FromJSON.swift */; };
 		853287669B0469A1677FED81CE99CC9E /* CBCMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E14BA0F25CBFA76F7912DC449A67356 /* CBCMAC.swift */; };
 		874693DA802804F07F4B0B3580CF9CC2 /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1EA1D76D399A068CC87533875B354 /* DateTransform.swift */; };
+		879D7DCD27730CF5008DB0EE /* BootpayConstantV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879D7DCC27730CF5008DB0EE /* BootpayConstantV2.swift */; };
 		87A1DE5327545266000162E0 /* BootpayAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A1DE5227545266000162E0 /* BootpayAnalytics.swift */; };
 		87D9320D2761CFCE00533073 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D9320C2761CFCE00533073 /* DeviceHelper.swift */; };
 		88A0DF6E0B4A5B8339EE16916E5B5200 /* TransformOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D4CC46F52B79DD4092DC5E3FD65A32 /* TransformOperators.swift */; };
@@ -275,6 +276,7 @@
 		84FA8EE31AEFFEB6A024D7D564A96ED6 /* FromJSON.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FromJSON.swift; path = Sources/FromJSON.swift; sourceTree = "<group>"; };
 		8582868CD30292E6F58B19AD2FCC5564 /* Pods-Bootpay_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Bootpay_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		867534F2D7D4818FC5CC674D7EBA6A7A /* Updatable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Updatable.swift; path = Sources/CryptoSwift/Updatable.swift; sourceTree = "<group>"; };
+		879D7DCC27730CF5008DB0EE /* BootpayConstantV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootpayConstantV2.swift; sourceTree = "<group>"; };
 		87A1DE5227545266000162E0 /* BootpayAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootpayAnalytics.swift; sourceTree = "<group>"; };
 		87D9320C2761CFCE00533073 /* DeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
 		882D903575112AF2EF6952C0C22A7113 /* Pods-Bootpay_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Bootpay_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -507,6 +509,7 @@
 			isa = PBXGroup;
 			children = (
 				625FA500465416FE5FE9B8F9DC508F23 /* BootpayConstants.swift */,
+				879D7DCC27730CF5008DB0EE /* BootpayConstantV2.swift */,
 			);
 			name = constants;
 			path = Bootpay/Classes/constants;
@@ -1093,6 +1096,7 @@
 				9A7A2BA1638CBDD36A296DF76650D229 /* BootpayDefaultHelper.swift in Sources */,
 				91010BCB5869B592B63DC5EEEEDD8EAB /* BootpayWebView.swift in Sources */,
 				1EB86E0F28E9FF078850972631915147 /* BootStatItem.swift in Sources */,
+				879D7DCD27730CF5008DB0EE /* BootpayConstantV2.swift in Sources */,
 				56FE7EEACB92FA3CE596AE08FCB44097 /* BootUser.swift in Sources */,
 				87D9320D2761CFCE00533073 /* DeviceHelper.swift in Sources */,
 				DE08A8B5B4A63DF1B40AF25D28867A3B /* Payload.swift in Sources */,

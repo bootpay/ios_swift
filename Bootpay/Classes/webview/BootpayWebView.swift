@@ -36,7 +36,7 @@ import WebKit
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always  // 현대카드 등 쿠키설정 이슈 해결을 위해 필요
         
         let configuration = WKWebViewConfiguration()
-        configuration.userContentController.add(self, name: BootpayConstants.BRIDGE_NAME)
+        configuration.userContentController.add(self, name: BootpayConstantV2.BRIDGE_NAME)
         
         
         
@@ -110,7 +110,7 @@ import WebKit
     }
     
     @objc public func startBootpay() {
-        if let url = URL(string: BootpayConstants.CDN_URL) {
+        if let url = URL(string: BootpayConstantV2.CDN_URL) {
             webview.load(URLRequest(url: url))
             self.isStartBootpay = true
         }
@@ -120,8 +120,8 @@ import WebKit
         webview.goBack()
     }
      
-    @objc public func transactionConfirm(data: [String: Any]) {
-        Bootpay.transactionConfirm(data: data)
+    @objc public func confirm(data: [String: Any]) {
+        Bootpay.confirm(data: data)
     }
      
     @objc public func removePaymentWindow() {
@@ -141,13 +141,13 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         guard let payload = Bootpay.shared.payload else { return }
         if isFirstLoadFinish == false && self.isStartBootpay == true  {
             isFirstLoadFinish = true            
-            let quickPopup = payload.extra?.quickPopup ?? 0
+//            let quickPopup = payload.extra?.quickPopup ?? false
             
-            let scriptList = BootpayConstants.getJSBeforePayStart(quickPopup == 1)
+            let scriptList = BootpayConstantV2.getJSBeforePayStart()
             for script in scriptList {
                 webView.evaluateJavaScript(script, completionHandler: nil)
             }
-            let scriptPay = BootpayConstants.getJSPay(payload: payload)
+            let scriptPay = BootpayConstantV2.getJSPay(payload: payload, requestType: Bootpay.shared.request_type)
             
             print(scriptPay);
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
@@ -216,33 +216,35 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     }
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if(message.name == BootpayConstants.BRIDGE_NAME) {
+        if(message.name == BootpayConstantV2.BRIDGE_NAME) {
             guard let body = message.body as? [String: Any] else {
-                if message.body as? String == "close" {
-                    Bootpay.shared.close?()
-                    Bootpay.removePaymentWindow()
-                }
+//                if message.body as? String == "close" {
+//                    Bootpay.shared.close?()
+//                    Bootpay.removePaymentWindow()
+//                }
                 return
             }
-            guard let action = body["action"] as? String else { return } 
+            guard let event = body["event"] as? String else { return }
             
-            if action == "BootpayCancel" {
+            if event == "cancel" {
                 Bootpay.shared.cancel?(body)
-            } else if action == "BootpayError" {
+                Bootpay.removePaymentWindow()
+            } else if event == "error" {
                 Bootpay.shared.error?(body)
-            } else if action == "BootpayBankReady" {
+            } else if event == "issued" {
                 Bootpay.shared.ready?(body)
-            } else if action == "BootpayConfirm" {
+            } else if event == "confirm" {
                 if let confirm = Bootpay.shared.confirm {
                     if(confirm(body)) {
-                        Bootpay.transactionConfirm(data: body)
+                        Bootpay.confirm(data: body)
                     } else {
                         Bootpay.removePaymentWindow()
                     }
                 }
-            } else if action == "BootpayDone" {
+            } else if event == "done" {
                 Bootpay.shared.done?(body)
-            }
+                Bootpay.removePaymentWindow()
+            }  
         }
     }
     
