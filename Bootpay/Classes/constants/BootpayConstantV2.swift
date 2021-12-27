@@ -44,7 +44,7 @@ public class BootpayConstantV2 {
         array.append("Bootpay.setLogLevel(4);")
         array.append(getAnalyticsData())
         if(BootpayBuildConfig.DEBUG) { array.append("Bootpay.setEnvironmentMode('development');") }
-//        if(quickPopup) { array.append("Bootpay.startQuickPopup();") }
+        array.append(close()) 
         return array
     }
     
@@ -114,25 +114,30 @@ public class BootpayConstantV2 {
     
     static func confirm() -> String {
 //        return ".confirm(function (data) {webkit.messageHandlers.\(BootpayConstants.BRIDGE_NAME).postMessage(data);})"
-        return "if (res.event === 'confirm') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }";
+        return "if (res.event === 'confirm') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }"
     }
     
     static func done() -> String {
-        return "else if(res.event === 'done') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }";
+        return "else if(res.event === 'done') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }"
     }
     
     static func issued() -> String {
-        return "else if(res.event === 'issued') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }";
+        return "else if(res.event === 'issued') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }"
     }
     
     
     static func error() -> String {
 //        return ".error(function (data) {webkit.messageHandlers.\(BootpayConstants.BRIDGE_NAME).postMessage(data);})"
-        return "if(res.event === 'error') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }";
+        return "if(res.event === 'error') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }"
     }
     
     static func cancel() -> String {
-        return "else if(res.event === 'cancel') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }";
+        return "else if(res.event === 'cancel') { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage(res); }"
+    }
+    
+    
+    static func close() -> String {
+        return  "document.addEventListener('bootpayclose', function (e) { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage('결제창이 닫혔습니다'); });"
     }
      
         
@@ -141,4 +146,6 @@ public class BootpayConstantV2 {
         encoder.keyEncodingStrategy = .convertToSnakeCase
         return String(data: try! encoder.encode(payload), encoding: .utf8)!
     }
+    
+
 }

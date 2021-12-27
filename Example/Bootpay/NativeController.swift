@@ -211,7 +211,10 @@ print("ios")
             }
             .onError { data in
                 print("-- error: \(data)")
-            } 
+            }
+            .onClose {
+                print("close")
+            }
     }
 }
 

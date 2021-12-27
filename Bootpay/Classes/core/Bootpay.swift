@@ -34,7 +34,7 @@ import WebKit
     @objc public var easyCancel: (([String : Any]) -> Void)?
     @objc public var easyError: (([String : Any]) -> Void)?
     @objc public var easySuccess: (([String : Any]) -> Void)?
-//    @objc public var close: (([String : Any]) -> Void)?
+    @objc public var close: (() -> Void)?
     
     public override init() {
         super.init()
@@ -176,8 +176,14 @@ import WebKit
 }
 
 extension Bootpay {
-    @objc public static func onError(_ action: @escaping ([String : Any]) -> Void) -> Void {
+    
+    @objc public static func onClose(_ action: @escaping () -> Void) {
+        shared.close = action
+    }
+    
+    @objc public static func onError(_ action: @escaping ([String : Any]) -> Void) -> Bootpay.Type {
         shared.error = action
+        return self
     }
 
     @objc public static func onReady(_ action: @escaping ([String : Any]) -> Void) -> Bootpay.Type {
