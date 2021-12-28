@@ -36,6 +36,7 @@ public class BootExtra: NSObject, Mappable, Codable {
         directSamsungpay <- map["direct_samsungpay"]
         testDeposit <- map["test_deposit"]
         popup <- map["popup"]
+        separatelyConfirmed <- map["separately_confirmed"]
     }
     
     @objc public var cardQuota: String? //할부허용 범위 (5만원 이상 구매시)
@@ -54,6 +55,7 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var directAppCard = "" //카드사앱으로 direct 호출
     @objc public var directSamsungpay = "" //삼성페이 바로 띄우기
     @objc public var testDeposit = "" //가상계좌 모의 입금
-    @objc public var popup = false //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함 
+    @objc public var popup = false //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함
+    @objc public var separatelyConfirmed = true; // confirm 이벤트를 호출할지 말지, false일 경우 자동승인
      
 }

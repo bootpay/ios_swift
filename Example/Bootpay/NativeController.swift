@@ -99,10 +99,10 @@ print("ios")
         payload.applicationId = "59bfc733e13f337dbd6ca489" //ios application id
         
          
-        payload.price = 100000
+        payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "payletter"
-        payload.method = "card"
+        payload.pg = "danal"
+        payload.method = "phone"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.popup = false
@@ -117,7 +117,7 @@ print("ios")
         item1.name = "나는 아이템1"
         item1.qty = 1
         item1.id = "item_01"
-        item1.price = 50000
+        item1.price = 500
         item1.cat1 = "TOP"
         item1.cat2 = "티셔츠"
         item1.cat3 = "반팔티"
@@ -126,7 +126,7 @@ print("ios")
         item2.name = "나는 아이템1"
         item2.qty = 2
         item2.id = "item_02"
-        item2.price = 25000
+        item2.price = 250
         item2.cat1 = "TOP"
         item2.cat2 = "데님"
         item2.cat3 = "청자켓"
