@@ -80,8 +80,7 @@ public class BootpayConstantV2 {
             extra.appScheme = getURLSchema()
             payload.extra = extra
         }
-        payload.user?.setEncodedValueAll()
-        
+        payload.user?.setEncodedValueAll() 
         
         var requestMethod = "requestPayment"
         if(requestType == BootpayConstantV2.REQUEST_TYPE_PAYMENT) {
@@ -137,7 +136,7 @@ public class BootpayConstantV2 {
     
     
     static func close() -> String {
-        return  "document.addEventListener('bootpayclose', function (e) { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage('결제창이 닫혔습니다'); });"
+        return  "document.addEventListener('bootpayclose', function (e) { webkit.messageHandlers.\(BootpayConstantV2.BRIDGE_NAME).postMessage('close'); });"
     }
      
         

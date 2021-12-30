@@ -102,7 +102,7 @@ print("ios")
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.pg = "danal"
-        payload.method = "phone"
+        payload.method = "card"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.popup = false
@@ -147,8 +147,8 @@ print("ios")
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
-            .onReady { data in
-                print("-- ready: \(data)")
+            .onIssued { data in
+                print("-- issued: \(data)")
             }
             .onConfirm { data in
                 print("-- confirm: \(data)")
@@ -160,7 +160,10 @@ print("ios")
             }
             .onError { data in
                 print("-- error: \(data)")
-            } 
+            }
+            .onClose {
+                print("-- close")
+            }
     }
     
     
@@ -172,7 +175,7 @@ print("ios")
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
-            .onReady { data in
+            .onIssued { data in
                 print("-- ready: \(data)")
             }
             .onConfirm { data in
@@ -187,6 +190,9 @@ print("ios")
             .onError { data in
                 print("-- error: \(data)")
             }
+            .onClose {
+                print("-- close")
+            }
     }
     
     
@@ -198,7 +204,7 @@ print("ios")
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
-            .onReady { data in
+            .onIssued { data in
                 print("-- ready: \(data)")
             }
             .onConfirm { data in

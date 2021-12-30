@@ -27,7 +27,7 @@ import WebKit
     var parentController: BTViewController?
     
     @objc public var error: (([String : Any]) -> Void)?
-    @objc public var ready: (([String : Any]) -> Void)?
+    @objc public var issued: (([String : Any]) -> Void)?
     @objc public var confirm: (([String : Any]) -> Bool)?
     @objc public var cancel: (([String : Any]) -> Void)?
     @objc public var done: (([String : Any]) -> Void)?
@@ -156,7 +156,7 @@ import WebKit
         shared.payload = Payload()
         
         shared.error = nil
-        shared.ready = nil
+        shared.issued = nil
 //        shared.close = nil
         shared.confirm = nil
         shared.done = nil
@@ -186,8 +186,8 @@ extension Bootpay {
         return self
     }
 
-    @objc public static func onReady(_ action: @escaping ([String : Any]) -> Void) -> Bootpay.Type {
-        shared.ready = action
+    @objc public static func onIssued(_ action: @escaping ([String : Any]) -> Void) -> Bootpay.Type {
+        shared.issued = action
         return self
     }
      

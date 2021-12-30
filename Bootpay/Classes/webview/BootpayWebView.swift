@@ -216,10 +216,10 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if(message.name == BootpayConstantV2.BRIDGE_NAME) {
-            print(message.body)
+            print("message: \(message.body)")
             
             guard let body = message.body as? [String: Any] else {
-                if message.body as? String == "bootpayclose" {
+                if message.body as? String == "close" {
                     Bootpay.shared.close?()
                     Bootpay.removePaymentWindow()
                 }
@@ -232,7 +232,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             } else if event == "error" {
                 Bootpay.shared.error?(body)
             } else if event == "issued" {
-                Bootpay.shared.ready?(body) 
+                Bootpay.shared.issued?(body) 
             } else if event == "confirm" {
                 if let confirm = Bootpay.shared.confirm {
                     if(confirm(body)) {

@@ -54,8 +54,8 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var phoneCarrier: String? //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
     @objc public var directAppCard = "" //카드사앱으로 direct 호출
     @objc public var directSamsungpay = "" //삼성페이 바로 띄우기
-    @objc public var testDeposit = "" //가상계좌 모의 입금
-    @objc public var popup = false //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함
-    @objc public var separatelyConfirmed = true; // confirm 이벤트를 호출할지 말지, false일 경우 자동승인
+    @objc public var testDeposit = false //가상계좌 모의 입금
+    @objc public var popup = true //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함
+    @objc public var separatelyConfirmed = false; // confirm 이벤트를 호출할지 말지, false일 경우 자동승인
      
 }
