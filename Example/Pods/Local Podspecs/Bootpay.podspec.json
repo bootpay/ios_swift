@@ -1,19 +1,19 @@
 {
   "name": "Bootpay",
-  "version": "0.1.3",
-  "summary": "A short description of Bootpay.",
-  "description": "TODO: Add long description of the pod here.",
+  "version": "3.3.384",
+  "summary": "Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9 이상부터 사용가능합니다.",
+  "description": "Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9 이상부터 사용가능합니다.",
   "homepage": "https://github.com/bootpay/ios_swift",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "bootpay": "ehowlsla@bootpay.co.kr"
+    "bootpay": "bootpay.co.kr@gmail.com"
   },
   "source": {
     "git": "https://github.com/bootpay/ios_swift.git",
-    "tag": "0.1.3"
+    "tag": "3.3.384"
   },
   "platforms": {
     "ios": "9.0"

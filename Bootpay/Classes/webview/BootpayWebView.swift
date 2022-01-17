@@ -8,7 +8,7 @@
 import WebKit
 
 
-@objc public class BootpayWebView: BTView {
+@objc open class BootpayWebView: BTView {
     @objc public var webview: WKWebView!
     
     var beforeUrl = ""
