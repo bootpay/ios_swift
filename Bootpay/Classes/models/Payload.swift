@@ -7,6 +7,12 @@
 
 import ObjectMapper
 
+//extension NSDictionary: Codable {
+//    
+//    public func encode(to encoder: Encoder) throws {
+//    }
+//}
+
 open class Payload: NSObject, Mappable, Codable {
     public override init() {}
     public required init?(map: Map) {
@@ -47,7 +53,7 @@ open class Payload: NSObject, Mappable, Codable {
     
     @objc public var orderId = ""
     @objc public var useOrderId = 0
-    @objc public var params: String?
+    @objc public var params: [String:String]  = [:]
     
     @objc public var accountExpireAt: String? // 가상계좌 입금 만료 기한
     @objc public var showAgreeWindow = 0

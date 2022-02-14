@@ -8,6 +8,13 @@
 
 import Foundation
 
+extension Encodable {
+  var dictionary: [String: Any]? {
+    guard let data = try? JSONEncoder().encode(self) else { return nil }
+    return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
+  }
+}
+
 public class BootpayConstants {
     public static let CDN_URL = "https://inapp.bootpay.co.kr/3.3.3/production.html"; 
     public static let BRIDGE_NAME = "BootpayiOS"
@@ -115,8 +122,17 @@ public class BootpayConstants {
         
     static private func getPayloadJson(_ payload: Payload) -> String {
         let encoder = JSONEncoder()
-//        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         encoder.keyEncodingStrategy = .convertToSnakeCase
         return String(data: try! encoder.encode(payload), encoding: .utf8)!
     }
+}
+
+extension Encodable {
+  func asDictionary() throws -> [String: Any] {
+    let data = try JSONEncoder().encode(self)
+    guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+      throw NSError()
+    }
+    return dictionary
+  }
 }

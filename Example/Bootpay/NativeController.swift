@@ -9,6 +9,15 @@
 import UIKit
 import Bootpay
 
+
+extension String
+{
+    func replace(target: String, withString: String) -> String
+    {
+        return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
+    }
+}
+
 class NativeController: UIViewController {
 
     override func viewDidLoad() {
@@ -80,6 +89,22 @@ print("ios")
         self.view.addSubview(btn)
     }
     
+    
+    
+    func dicToJson(_ data: [String: Any]) -> String {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+            let jsonStr = String(data: jsonData, encoding: .utf8)
+            if let jsonStr = jsonStr {
+                return jsonStr
+            }
+            return ""
+        } catch {
+            print(error.localizedDescription)
+            return ""
+        }
+    }
+    
     @objc func showBootpay() {
         let payload = Payload()
         payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id 
@@ -117,6 +142,16 @@ print("ios")
         item2.cat2 = "데님"
         item2.cat3 = "청자켓"
         payload.items = [item1, item2]
+        
+        
+        let customParams: [String: String] = [
+            "callbackParam1": "value12",
+            "callbackParam2": "value34",
+            "callbackParam3": "value56",
+            "callbackParam4": "value78",
+        ]
+        
+        payload.params = customParams
         
 
         let user = BootUser()
