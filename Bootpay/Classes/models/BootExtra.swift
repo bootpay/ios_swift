@@ -36,6 +36,7 @@ public class BootExtra: NSObject, Mappable, Codable {
         
         carrier <- map["carrier"]
         ageLimit <- map["age_limit"]
+        isShowCloseButton <- map["is_show_close_button"]
     }
     
     @objc public var startAt: String? // 정기 결제 시작일 - 시작일을 지정하지 않으면 그 날 당일로부터 결제가 가능한 Billing key 지급
@@ -61,4 +62,6 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var theme = "purple" //통합 결제창 색상 지정 (purple, red, custom 지정 가능 )
     @objc public var customBackground: String? //theme가 custom인 경우 배경 색 지정 가능 ( ex: #f2f2f2 )
     @objc public var customFontColor: String? //theme가 custom인 경우 폰트색 지정 가능 ( ex: #333333 )
+    
+    @objc public var isShowCloseButton: Int = 1 //닫기를 제공하지 않는 PG사의 닫기버튼을 부트페이가 제공할지 
 }

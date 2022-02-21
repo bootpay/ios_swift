@@ -148,8 +148,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 webView.evaluateJavaScript(script, completionHandler: nil)
             }
             let scriptPay = BootpayConstants.getJSPay(payload: payload)
-            
-            print(scriptPay);
+             
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
         }
     }

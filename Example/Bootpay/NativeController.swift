@@ -112,12 +112,13 @@ print("ios")
                 
         payload.price = 50000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "danal"
+        payload.pg = "payapp"
         payload.method = "card"
         payload.name = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.popup = 0
         payload.extra?.quickPopup = 0
+        payload.extra?.isShowCloseButton = 0
         payload.extra?.quota = "0,2,3"
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
