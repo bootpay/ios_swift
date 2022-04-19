@@ -141,7 +141,7 @@ public class BootpayConstantV2 {
      
         
     static private func getPayloadJson(_ payload: Payload) -> String {
-        let encoder = JSONEncoder()
+        let encoder = JSONEncoder() 
         encoder.keyEncodingStrategy = .convertToSnakeCase
         return String(data: try! encoder.encode(payload), encoding: .utf8)!
     }

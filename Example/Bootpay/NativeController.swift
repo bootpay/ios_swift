@@ -9,6 +9,15 @@
 import UIKit
 import Bootpay
 
+
+extension String
+{
+    func replace(target: String, withString: String) -> String
+    {
+        return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
+    }
+}
+
 class NativeController: UIViewController {
 
     override func viewDidLoad() {
@@ -101,13 +110,14 @@ print("ios")
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "danal"
+        payload.pg = "payapp"
         payload.method = "card"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.popup = false
 //        payload.extra?.quickPopup = false
         payload.extra?.cardQuota = "0,2,3"
+        
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
         
@@ -132,12 +142,39 @@ print("ios")
         item2.cat3 = "청자켓"
         payload.items = [item1, item2]
         
+        
+        let customParams: [String: String] = [
+            "callbackParam1": "value12",
+            "callbackParam2": "value34",
+            "callbackParam3": "value56",
+            "callbackParam4": "value78",
+        ]
+        
+        print(dicToJson(customParams).replace(target: "'", withString: "\\'").replace(target: "'\n", withString: ""))
+        payload.params = dicToJson(customParams).replace(target: "'", withString: "\\'").replace(target: "'\n", withString: "")
+        
 
         let user = BootUser()
         user.username = "테스트 유저"
         user.phone = "01012345678"
         payload.user = user
         return payload
+    }
+    
+    
+    
+    func dicToJson(_ data: [String: Any]) -> String {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+            let jsonStr = String(data: jsonData, encoding: .utf8)
+            if let jsonStr = jsonStr {
+                return jsonStr
+            }
+            return ""
+        } catch {
+            print(error.localizedDescription)
+            return ""
+        }
     }
     
     @objc func requestPayment() {
