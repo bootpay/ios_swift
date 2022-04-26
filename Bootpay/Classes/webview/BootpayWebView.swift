@@ -120,8 +120,8 @@ import WebKit
         webview.goBack()
     }
      
-    @objc public func confirm(data: [String: Any]) {
-        Bootpay.confirm(data: data)
+    @objc public func transactionConfirm() {
+        Bootpay.transactionConfirm()
     }
      
     @objc public func removePaymentWindow() {
@@ -237,10 +237,11 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             } else if event == "confirm" {
                 if let confirm = Bootpay.shared.confirm {
                     if(confirm(body)) {
-                        Bootpay.confirm(data: body)
-                    } else {
-                        Bootpay.removePaymentWindow()
+                        Bootpay.transactionConfirm()
                     }
+//                    else {
+//                        Bootpay.removePaymentWindow()
+//                    }
                 }
             } else if event == "done" {
                 Bootpay.shared.done?(body)

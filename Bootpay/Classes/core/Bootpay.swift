@@ -116,13 +116,13 @@ import WebKit
     
     #endif
     
-    @objc(confirm:)
-    public static func confirm(data: [String: Any]) {
+    @objc(transactionConfirm)
+    public static func transactionConfirm() {
         if let webView = shared.webview {
-            let json = BootpayConstant.dicToJsonString(data).replace(target: "'", withString: "\\'")
+//            let json = BootpayConstant.dicToJsonString(data).replace(target: "'", withString: "\\'")
             
             let script = [
-                "window.Bootpay.confirm(\(json))",
+                "window.Bootpay.confirm()",
                 ".then( function (res) {",
                 BootpayConstant.confirm(),
                 BootpayConstant.issued(),
@@ -164,15 +164,17 @@ import WebKit
     }
     
     
-    public static func goConfirm(_ data: [String : Any]) {
-        if let sharedConfirm = shared.confirm {
-            if(sharedConfirm(data)) {
-                confirm(data: data)
-            } else {
-                removePaymentWindow()
-            }
-        }
-    }
+//    public static func goConfirm(_ data: [String : Any]) {
+//        if let sharedConfirm = shared.confirm {
+//            if(sharedConfirm(data)) {
+//                transactionConfirm()
+////                (data: data)
+//            }
+////            else {
+////                removePaymentWindow()
+////            }
+//        }
+//    }
 }
 
 extension Bootpay {

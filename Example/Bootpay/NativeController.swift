@@ -192,8 +192,9 @@ print("ios")
             }
             .onConfirm { data in
                 print("-- confirm: \(data)")
-//                return true //재고가 있어서 결제를 최종 승인하려 할 경우
-                            return false //재고가 없어서 결제를 승인하지 않을때
+                return true //재고가 있어서 결제를 최종 승인하려 할 경우
+//                Bootpay.transactionConfirm()
+//                return false //재고가 없어서 결제를 승인하지 않을때
             }
             .onDone { data in
                 print("-- done: \(data)")
