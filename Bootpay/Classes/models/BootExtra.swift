@@ -35,8 +35,13 @@ public class BootExtra: NSObject, Mappable, Codable {
         directAppCard <- map["direct_app_card"]
         directSamsungpay <- map["direct_samsungpay"]
         testDeposit <- map["test_deposit"]
-        popup <- map["popup"]
+        enableErrorWebhook <- map["enable_error_webhook"]
         separatelyConfirmed <- map["separately_confirmed"]
+        confirmOnlyRestApi <- map["confirm_only_rest_api"]
+        openType <- map["open_type"]
+        redirectUrl <- map["redirect_url"]
+        displaySuccessResult <- map["display_success_result"]
+        displayErrorResult <- map["display_error_result"]
     }
     
     @objc public var cardQuota: String? //할부허용 범위 (5만원 이상 구매시)
@@ -52,10 +57,15 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var useOrderId = false //가맹점 order_id로 PG로 전송
     @objc public var internationalCardOnly = false //해외 결제카드 선택 여부 (토스만 가능)
     @objc public var phoneCarrier: String? //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
-    @objc public var directAppCard = "" //카드사앱으로 direct 호출
-    @objc public var directSamsungpay = "" //삼성페이 바로 띄우기
+    @objc public var directAppCard = false //카드사앱으로 direct 호출
+    @objc public var directSamsungpay = false //삼성페이 바로 띄우기
     @objc public var testDeposit = false //가상계좌 모의 입금
-    @objc public var popup = true //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함
-    @objc public var separatelyConfirmed = false; // confirm 이벤트를 호출할지 말지, false일 경우 자동승인
-     
+    @objc public var enableErrorWebhook = false //결제 오류시 Feedback URL로 webhook
+//    @objc public var popup = true //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함
+    @objc public var separatelyConfirmed = true // confirm 이벤트를 호출할지 말지, false일 경우 자동승인
+    @objc public var confirmOnlyRestApi = false //REST API로만 승인 처리
+    @objc public var openType = "iframe" //페이지 오픈 type, [iframe, popup, redirect] 중 택 1
+    @objc public var redirectUrl: String? //open_type이 redirect일 경우 페이지 이동할 URL (  오류 및 결제 완료 모두 수신 가능 )
+    @objc public var displaySuccessResult = false //결제 완료되면 부트페이가 제공하는 완료창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
+    @objc public var displayErrorResult = true //결제가 실패하면 부트페이가 제공하는 실패창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
 }

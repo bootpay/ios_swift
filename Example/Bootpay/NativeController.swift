@@ -19,6 +19,9 @@ extension String
 }
 
 class NativeController: UIViewController {
+    
+    var _applicationId = "5b8f6a4d396fa665fdc2b5e9" //production
+//    String applicationId = "" //development
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +48,7 @@ print("ios")
                                    birth: "1994-10-14",
                                    phone: "01012341234",
                                    area: "서울",
-                                   applicationId: "5b8f6a4d396fa665fdc2b5e9" //ios application id
+                                   applicationId: _applicationId //ios application id
         )
     }
     
@@ -69,7 +72,7 @@ print("ios")
         
         BootpayAnalytics.pageTrace(
             "main_page_1234", // 앱 페이지 url 또는 화면이름
-            applicationId: "5b8f6a4d396fa665fdc2b5e9",
+            applicationId: _applicationId,
             items: [item1, item2]
         )
     }
@@ -105,18 +108,18 @@ print("ios")
     func generatePayload() -> Payload {
         let payload = Payload()
 //        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
-        payload.applicationId = "59bfc733e13f337dbd6ca489" //ios application id
+        payload.applicationId = _applicationId //ios application id
         
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "payapp"
+        payload.pg = "nicepay"
         payload.method = "card"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
-        payload.extra?.popup = false
+//        payload.extra?.popup = false
 //        payload.extra?.quickPopup = false
-        payload.extra?.cardQuota = "0,2,3"
+        payload.extra?.cardQuota = "3"
         
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
@@ -189,8 +192,8 @@ print("ios")
             }
             .onConfirm { data in
                 print("-- confirm: \(data)")
-                return true //재고가 있어서 결제를 최종 승인하려 할 경우
-//                            return false //재고가 없어서 결제를 승인하지 않을때
+//                return true //재고가 있어서 결제를 최종 승인하려 할 경우
+                            return false //재고가 없어서 결제를 승인하지 않을때
             }
             .onDone { data in
                 print("-- done: \(data)")

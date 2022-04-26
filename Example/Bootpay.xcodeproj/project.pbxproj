@@ -48,6 +48,7 @@
 		6A21274C738A5FA35A66D923 /* Bootpay.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Bootpay.podspec; path = ../Bootpay.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		70AB355D8F6D493B0234917F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		87866F5D2667098D00D3E4B8 /* Pods_Bootpay_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_Bootpay_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		87AFBBDC2817934B00742F80 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		87D932092761CC3200533073 /* Bootpay_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bootpay_Example.entitlements; sourceTree = "<group>"; };
 		87E4F0D026A161890021C3F1 /* NativeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeController.swift; sourceTree = "<group>"; };
 		87E4F0D226A161950021C3F1 /* WebAppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAppController.swift; sourceTree = "<group>"; };
@@ -142,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				6A21274C738A5FA35A66D923 /* Bootpay.podspec */,
+				87AFBBDC2817934B00742F80 /* CHANGELOG.md */,
 				70AB355D8F6D493B0234917F /* README.md */,
 				CBEFB1576505BF731E9E3D09 /* LICENSE */,
 			);
