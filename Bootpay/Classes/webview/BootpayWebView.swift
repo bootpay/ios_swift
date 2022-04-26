@@ -36,7 +36,7 @@ import WebKit
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always  // 현대카드 등 쿠키설정 이슈 해결을 위해 필요
         
         let configuration = WKWebViewConfiguration()
-        configuration.userContentController.add(self, name: BootpayConstantV2.BRIDGE_NAME)
+        configuration.userContentController.add(self, name: BootpayConstant.BRIDGE_NAME)
         
         
         
@@ -110,7 +110,7 @@ import WebKit
     }
     
     @objc public func startBootpay() {
-        if let url = URL(string: BootpayConstantV2.CDN_URL) {
+        if let url = URL(string: BootpayConstant.CDN_URL) {
             webview.load(URLRequest(url: url))
             self.isStartBootpay = true
         }
@@ -143,11 +143,11 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             isFirstLoadFinish = true            
 //            let quickPopup = payload.extra?.quickPopup ?? false
             
-            let scriptList = BootpayConstantV2.getJSBeforePayStart()
+            let scriptList = BootpayConstant.getJSBeforePayStart()
             for script in scriptList {
                 webView.evaluateJavaScript(script, completionHandler: nil)
             }
-            let scriptPay = BootpayConstantV2.getJSPay(payload: payload, requestType: Bootpay.shared.request_type)
+            let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.request_type)
             
             
             
@@ -217,7 +217,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     }
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if(message.name == BootpayConstantV2.BRIDGE_NAME) { 
+        if(message.name == BootpayConstant.BRIDGE_NAME) { 
             
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {

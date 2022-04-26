@@ -19,8 +19,8 @@ import WebKit
     var key = ""
     var iv = ""
     var application_id: String? // 통계를 위한 파라미터
-    public var ENV_TYPE = BootpayConstantV2.ENV_SWIFT
-    var request_type = BootpayConstantV2.REQUEST_TYPE_PAYMENT
+    public var ENV_TYPE = BootpayConstant.ENV_SWIFT
+    var request_type = BootpayConstant.REQUEST_TYPE_PAYMENT
         
     public var webview: WKWebView?
     @objc public var payload: Payload? = Payload()
@@ -63,7 +63,7 @@ import WebKit
                                       payload: Payload,
                                       _ animated: Bool = true,
                                       _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        shared.request_type = BootpayConstantV2.REQUEST_TYPE_PAYMENT
+        shared.request_type = BootpayConstant.REQUEST_TYPE_PAYMENT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
                                  animated,
@@ -77,7 +77,7 @@ import WebKit
                                       payload: Payload,
                                       _ animated: Bool = true,
                                       _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        shared.request_type = BootpayConstantV2.REQUEST_TYPE_SUBSCRIPT
+        shared.request_type = BootpayConstant.REQUEST_TYPE_SUBSCRIPT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
                                  animated,
@@ -91,7 +91,7 @@ import WebKit
                                       payload: Payload,
                                       _ animated: Bool = true,
                                       _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        shared.request_type = BootpayConstantV2.REQUEST_TYPE_AUTH
+        shared.request_type = BootpayConstant.REQUEST_TYPE_AUTH
         presentBootpayController(viewController: viewController,
                                  payload: payload,
                                  animated,
@@ -119,17 +119,17 @@ import WebKit
     @objc(confirm:)
     public static func confirm(data: [String: Any]) {
         if let webView = shared.webview {
-            let json = BootpayConstantV2.dicToJsonString(data).replace(target: "'", withString: "\\'")
+            let json = BootpayConstant.dicToJsonString(data).replace(target: "'", withString: "\\'")
             
             let script = [
                 "window.Bootpay.confirm(\(json))",
                 ".then( function (res) {",
-                BootpayConstantV2.confirm(),
-                BootpayConstantV2.issued(),
-                BootpayConstantV2.done(),
+                BootpayConstant.confirm(),
+                BootpayConstant.issued(),
+                BootpayConstant.done(),
                 "}, function (res) {",
-                BootpayConstantV2.error(),
-                BootpayConstantV2.cancel(), 
+                BootpayConstant.error(),
+                BootpayConstant.cancel(), 
                 "})"
             ].reduce("", +)
             
@@ -148,7 +148,7 @@ import WebKit
             
 //            shared.parentController?.dismiss(animated: true, completion: nil)
             shared.parentController = nil
-        } else if shared.ENV_TYPE == BootpayConstantV2.ENV_SWIFT_UI {
+        } else if shared.ENV_TYPE == BootpayConstant.ENV_SWIFT_UI {
             
 //            shared.close?()
         }
