@@ -36,7 +36,7 @@ import WebKit
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always  // 현대카드 등 쿠키설정 이슈 해결을 위해 필요
         
         let configuration = WKWebViewConfiguration()
-        configuration.userContentController.add(self, name: BootpayConstants.BRIDGE_NAME)
+        configuration.userContentController.add(self, name: BootpayConstant.BRIDGE_NAME)
         
         
         
@@ -96,7 +96,7 @@ import WebKit
             topBlindButton?.removeFromSuperview()
             topBlindButton = nil
         }
-    }    
+    }
     
     @objc public func closeView() {
         
@@ -110,7 +110,7 @@ import WebKit
     }
     
     @objc public func startBootpay() {
-        if let url = URL(string: BootpayConstants.CDN_URL) {
+        if let url = URL(string: BootpayConstant.CDN_URL) {
             webview.load(URLRequest(url: url))
             self.isStartBootpay = true
         }
@@ -120,8 +120,8 @@ import WebKit
         webview.goBack()
     }
      
-    @objc public func transactionConfirm(data: [String: Any]) {
-        Bootpay.transactionConfirm(data: data)
+    @objc public func confirm(data: [String: Any]) {
+        Bootpay.confirm(data: data)
     }
      
     @objc public func removePaymentWindow() {
@@ -140,16 +140,24 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard let payload = Bootpay.shared.payload else { return }
         if isFirstLoadFinish == false && self.isStartBootpay == true  {
-            isFirstLoadFinish = true            
-            let quickPopup = payload.extra?.quickPopup ?? 0
+            isFirstLoadFinish = true
+//            let quickPopup = payload.extra?.quickPopup ?? false
             
-            let scriptList = BootpayConstants.getJSBeforePayStart(quickPopup == 1)
+            let scriptList = BootpayConstant.getJSBeforePayStart()
             for script in scriptList {
                 webView.evaluateJavaScript(script, completionHandler: nil)
             }
-            let scriptPay = BootpayConstants.getJSPay(payload: payload)
-             
+            let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.request_type)
+            
+            
+            
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
+//            print(scriptPay);
+//            webView.evaluateJavaScript(scriptPay, completionHandler:{(result, error) in
+//                if let error = error {
+//                    print(error)
+//                }
+//            })
         }
     }
     
@@ -167,13 +175,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         } else if(url.absoluteString.starts(with: "about:blank")) {
             decisionHandler(.allow)
         } else if(!url.absoluteString.starts(with: "http")) {
-//            if(UIApplication.shared.canOpenURL(url)) {
-//                startAppToApp(url)
-//            } else {
-//                startItunesToInstall(url)
-//            }
             startAppToApp(url)
-//            decisionHandler(.allow)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
@@ -211,11 +213,12 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     }
         
     public func webViewDidClose(_ webView: WKWebView) {
-      webView.removeFromSuperview() 
+      webView.removeFromSuperview()
     }
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if(message.name == BootpayConstants.BRIDGE_NAME) {
+        if(message.name == BootpayConstant.BRIDGE_NAME) {
+            
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {
                     Bootpay.shared.close?()
@@ -223,24 +226,25 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 }
                 return
             }
-            guard let action = body["action"] as? String else { return } 
+            guard let event = body["event"] as? String else { return }
             
-            if action == "BootpayCancel" {
+            if event == "cancel" {
                 Bootpay.shared.cancel?(body)
-            } else if action == "BootpayError" {
+            } else if event == "error" {
                 Bootpay.shared.error?(body)
-            } else if action == "BootpayBankReady" {
-                Bootpay.shared.ready?(body)
-            } else if action == "BootpayConfirm" {
+            } else if event == "issued" {
+                Bootpay.shared.issued?(body)
+            } else if event == "confirm" {
                 if let confirm = Bootpay.shared.confirm {
                     if(confirm(body)) {
-                        Bootpay.transactionConfirm(data: body)
+                        Bootpay.confirm(data: body)
                     } else {
                         Bootpay.removePaymentWindow()
                     }
                 }
-            } else if action == "BootpayDone" {
+            } else if event == "done" {
                 Bootpay.shared.done?(body)
+//                Bootpay.removePaymentWindow()
             }
         }
     }
@@ -264,6 +268,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             }
         }
     }
+     
     
     public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo,
                  completionHandler: @escaping (Bool) -> Void) {
@@ -322,19 +327,6 @@ extension BootpayWebView {
       return url.queryItems?.first(where: { $0.name == param })?.value
     }
     
-    func startAppToApp(_ url: URL) {
-        #if os(iOS)
-        if #available(iOS 10, *) {
-            UIApplication.shared.open(url, options: [:], completionHandler: { result in
-                if(result == false) {
-                    self.startItunesToInstall(url)
-                }
-            })
-        } else {
-            UIApplication.shared.openURL(url)
-        }
-        #endif
-    }
     
     func startItunesToInstall(_ url: URL) {
         let sUrl = url.absoluteString
@@ -402,6 +394,28 @@ extension BootpayWebView {
         }
     }
     
+    func startAppToApp(_ url: URL) {
+//        #if os(iOS)
+//        if #available(iOS 10, *) {
+//            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//        } else {
+//            UIApplication.shared.openURL(url)
+//        }
+//        #endif
+        
+        #if os(iOS)
+        if #available(iOS 10, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: { result in
+                if(result == false) {
+                    self.startItunesToInstall(url)
+                }
+            })
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+        #endif
+    }
+     
     func isMatch(_ urlString: String, _ pattern: String) -> Bool {
         let regex = try! NSRegularExpression(pattern: pattern, options: [])
         let result = regex.matches(in: urlString, options: [], range: NSRange(location: 0, length: urlString.count))
