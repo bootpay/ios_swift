@@ -10,10 +10,25 @@ import ObjectMapper
 public class BootExtra: NSObject, Mappable, Codable {
     
     
-    public override init() {}
+    public override init() {
+        super.init()
+        self.appScheme = self.externalURLScheme()
+    }
     public required init?(map: Map) {
         super.init()
+        
         mapping(map: map)
+        
+        
+    }
+    
+    func externalURLScheme() -> String? {
+        guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [AnyObject],
+            let urlTypeDictionary = urlTypes.first as? [String: AnyObject],
+            let urlSchemes = urlTypeDictionary["CFBundleURLSchemes"] as? [AnyObject],
+            let externalURLScheme = urlSchemes.first as? String else { return nil }
+
+        return externalURLScheme
     }
     
     public func mapping(map: Map) {
@@ -64,8 +79,9 @@ public class BootExtra: NSObject, Mappable, Codable {
 //    @objc public var popup = true //네이버페이 등 특정 PG 일 경우 popup을 true로 해야함
     @objc public var separatelyConfirmed = true // confirm 이벤트를 호출할지 말지, false일 경우 자동승인
     @objc public var confirmOnlyRestApi = false //REST API로만 승인 처리
-    @objc public var openType = "iframe" //페이지 오픈 type, [iframe, popup, redirect] 중 택 1
-    @objc public var redirectUrl: String? //open_type이 redirect일 경우 페이지 이동할 URL (  오류 및 결제 완료 모두 수신 가능 )
+    @objc public var openType = "redirect" //페이지 오픈 type, [iframe, popup, redirect] 중 택 1
+    @objc public var useBootpayInappSdk = true //native app에서는 redirect를 완성도있게 지원하기 위한 옵션
+    @objc public var redirectUrl: String? = "https://api.bootpay.co.kr/v2" //open_type이 redirect일 경우 페이지 이동할 URL (  오류 및 결제 완료 모두 수신 가능 )
     @objc public var displaySuccessResult = false //결제 완료되면 부트페이가 제공하는 완료창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
     @objc public var displayErrorResult = true //결제가 실패하면 부트페이가 제공하는 실패창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
 }

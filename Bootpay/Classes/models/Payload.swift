@@ -28,7 +28,7 @@ open class Payload: NSObject, Mappable, Codable {
         authenticationId <- map["authentication_id"]
         
 //        useOrderId <- map["use_order_id"]
-        params <- map["params"]
+        metadata <- map["metadata"]
         
 //        accountExpireAt <- map["account_expire_at"]
         showAgreeWindow <- map["show_agree_window"]
@@ -54,7 +54,8 @@ open class Payload: NSObject, Mappable, Codable {
     @objc public var authenticationId = ""
     
 //    @objc public var useOrderId = false
-    @objc public var params: String?
+//    @objc public var metadata: String?
+    @objc public var metadata: [String:String]?
     
 //    @objc public var accountExpireAt: String? // 가상계좌 입금 만료 기한
     @objc public var showAgreeWindow = false

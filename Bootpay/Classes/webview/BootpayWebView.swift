@@ -37,6 +37,7 @@ import WebKit
         
         let configuration = WKWebViewConfiguration()
         configuration.userContentController.add(self, name: BootpayConstant.BRIDGE_NAME)
+//        configuration.userContentController.add(self, name: "postMessageListener")
         
         
         
@@ -152,7 +153,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             
             
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
-//            print(scriptPay);
+            print(scriptPay);
 //            webView.evaluateJavaScript(scriptPay, completionHandler:{(result, error) in
 //                if let error = error {
 //                    print(error)
@@ -217,37 +218,77 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     }
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        print("message.body: \(message.body)")
+              
         if(message.name == BootpayConstant.BRIDGE_NAME) {
+             
             
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {
                     Bootpay.shared.close?()
                     Bootpay.removePaymentWindow()
+                } else {
+                    let dic = convertStringToDictionary(text: message.body as! String)
+                    guard let dic = dic else { return }
+                    parseBootpayEvent(data: dic, isRedirect: true)
                 }
                 return
             }
-            guard let event = body["event"] as? String else { return }
+            parseBootpayEvent(data: body, isRedirect: false)
+        }
+    }
+    
+    func parseBootpayEvent(data: [String: Any], isRedirect: Bool) {
+        guard let event = data["event"] as? String else { return }
+        
+        if event == "cancel" {
+            Bootpay.shared.cancel?(data)
+            if(isRedirect) {
+                //redirect는 닫기 이벤트를 안줘서 처리해야함
+                Bootpay.shared.close?()
+                Bootpay.removePaymentWindow()
+            }
+        } else if event == "error" {
+            Bootpay.shared.error?(data)
             
-            if event == "cancel" {
-                Bootpay.shared.cancel?(body)
-            } else if event == "error" {
-                Bootpay.shared.error?(body)
-            } else if event == "issued" {
-                Bootpay.shared.issued?(body)
-            } else if event == "confirm" {
-                if let confirm = Bootpay.shared.confirm {
-                    if(confirm(body)) {
-                        Bootpay.transactionConfirm()
-                    }
-//                    else {
-//                        Bootpay.removePaymentWindow()
-//                    }
+            //결과를 보는 설정이면 남겨두어야 함
+            //redirect는 닫기 이벤트를 안줘서 처리해야함
+            if(Bootpay.shared.payload?.extra?.displayErrorResult == false && isRedirect) {
+                Bootpay.shared.close?()
+                Bootpay.removePaymentWindow()
+            }
+        } else if event == "issued" {
+            Bootpay.shared.issued?(data)
+        } else if event == "confirm" {
+            if let confirm = Bootpay.shared.confirm {
+                if(confirm(data)) {
+                    Bootpay.transactionConfirm()
                 }
-            } else if event == "done" {
-                Bootpay.shared.done?(body)
-//                Bootpay.removePaymentWindow()
+            }
+        } else if event == "done" {
+            Bootpay.shared.done?(data)
+            if(Bootpay.shared.payload?.extra?.displaySuccessResult == false && isRedirect) {
+                //redirect는 닫기 이벤트를 안줘서 처리해야함
+                Bootpay.shared.close?()
+                Bootpay.removePaymentWindow()
+            }
+        } else if event == "close" {
+            //결과페이지에서 닫기 버튼 클릭시 
+            Bootpay.shared.close?()
+            Bootpay.removePaymentWindow()
+        }
+    }
+    
+    func convertStringToDictionary(text: String) -> [String:Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
+                return json
+            } catch {
+                print("Something went wrong")
             }
         }
+        return nil
     }
     
     public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {

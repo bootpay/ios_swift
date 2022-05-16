@@ -1,3 +1,8 @@
+## 4.0.5
+
+* opentype redirect default 옵션 적용
+* webview url 4.0.5 적용   
+
 ## 4.0.2
 
 * Bootpay.confirm(data) -> Bootpay.transacionConfirm() 으로 수정 

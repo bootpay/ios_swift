@@ -11,8 +11,8 @@ import Foundation
 
 public class BootpayConstant {
     
-    public static let CDN_URL = "https://webview.bootpay.co.kr/4.0.0";
-    public static let BRIDGE_NAME = "BootpayiOS"
+    public static let CDN_URL = "https://webview.bootpay.co.kr/4.0.5";
+    public static let BRIDGE_NAME = "Bootpay";
     
     public static let ENV_SWIFT = 0
     public static let ENV_SWIFT_UI = 1
@@ -40,8 +40,9 @@ public class BootpayConstant {
         var array = [String]()
         #if os(iOS)
         array.append("Bootpay.setDevice('IOS');")
+        array.append("Bootpay.setVersion('\(BootpayBuildConfig.VERSION)', 'ios')")
         #endif
-        array.append("Bootpay.setLogLevel(4);")
+//        array.append("Bootpay.setLogLevel(4);")
         array.append(getAnalyticsData())
         if(BootpayBuildConfig.DEBUG) { array.append("Bootpay.setEnvironmentMode('development');") }
         array.append(close())

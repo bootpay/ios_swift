@@ -21,7 +21,7 @@ extension String
 class NativeController: UIViewController {
     
     var _applicationId = "5b8f6a4d396fa665fdc2b5e9" //production
-//    String applicationId = "" //development
+//    var _applicationId = "5b9f51264457636ab9a07cdd" //development
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,13 +113,20 @@ print("ios")
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "nicepay"
-        payload.method = "card"
+        payload.pg = "나이스페이"
+        payload.method = "네이버페이"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
+        
+        
+        
+        
 //        payload.extra?.popup = false
 //        payload.extra?.quickPopup = false
         payload.extra?.cardQuota = "3"
+//        payload.extra?.appScheme = "bootpayFlutter"
+        
+//        app_scheme
         
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
@@ -152,9 +159,9 @@ print("ios")
             "callbackParam3": "value56",
             "callbackParam4": "value78",
         ]
-        
-        print(dicToJson(customParams).replace(target: "'", withString: "\\'").replace(target: "'\n", withString: ""))
-        payload.params = dicToJson(customParams).replace(target: "'", withString: "\\'").replace(target: "'\n", withString: "")
+         
+        payload.metadata = customParams
+//        payload.metadata = dicToJson(customParams).replace(target: "'", withString: "\\'").replace(target: "'\n", withString: "")
         
 
         let user = BootUser()
