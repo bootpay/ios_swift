@@ -1,3 +1,6 @@
+## 4.1.2
+* swift_version 명시적으로 지정  
+
 ## 4.1.1
 * naverpay back 클릭시 redirect 모드에서 흰화면 -> 새로고침 현상으로 개선 
 
