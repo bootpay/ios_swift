@@ -78,7 +78,7 @@ print("ios")
     }
     
     func setUI() {
-        for i in 0...2 {
+        for i in 0...3 {
             self.view.backgroundColor = .white
             let btn = UIButton()
             
@@ -86,10 +86,13 @@ print("ios")
                 btn.setTitle("1. PG일반 테스트", for: .normal)
                 btn.addTarget(self, action: #selector(requestPayment), for: .touchUpInside)
             } else if(i == 1) {
-                btn.setTitle("2. 정기결제 테스트", for: .normal)
-                btn.addTarget(self, action: #selector(requestSubscription), for: .touchUpInside)
+                btn.setTitle("2. 통합결제 테스트", for: .normal)
+                btn.addTarget(self, action: #selector(requestTotalPayment), for: .touchUpInside)
             } else if(i == 2) {
-                btn.setTitle("3. 본인인증 테스트", for: .normal)
+                btn.setTitle("3. 정기결제 테스트", for: .normal)
+                btn.addTarget(self, action: #selector(requestSubscription), for: .touchUpInside)
+            } else if(i == 3) {
+                btn.setTitle("4. 본인인증 테스트", for: .normal)
                 btn.addTarget(self, action: #selector(requestAuthentication), for: .touchUpInside)
             }
             
@@ -107,27 +110,17 @@ print("ios")
     
     func generatePayload() -> Payload {
         let payload = Payload()
-//        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
         payload.applicationId = _applicationId //ios application id
-        
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "나이스페이"
-        payload.method = "네이버페이"
+        payload.pg = "이지페이"
+        payload.method = "카드"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
-        
-        
-        
-        
-//        payload.extra?.popup = false
-//        payload.extra?.quickPopup = false
+         
         payload.extra?.cardQuota = "3"
 //        payload.extra?.appScheme = "bootpayFlutter"
-        
-//        app_scheme
-        
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
         
@@ -214,10 +207,41 @@ print("ios")
             }
     }
     
+    @objc func requestTotalPayment() {
+        let payload = generatePayload()
+        payload.pg = ""
+        payload.method = ""
+                
+        Bootpay.requestPayment(viewController: self, payload: payload)
+            .onCancel { data in
+                print("-- cancel: \(data)")
+            }
+            .onIssued { data in
+                print("-- issued: \(data)")
+            }
+            .onConfirm { data in
+                print("-- confirm: \(data)")
+                return true //재고가 있어서 결제를 최종 승인하려 할 경우
+//                Bootpay.transactionConfirm()
+//                return false //재고가 없어서 결제를 승인하지 않을때
+            }
+            .onDone { data in
+                print("-- done: \(data)")
+            }
+            .onError { data in
+                print("-- error: \(data)")
+            }
+            .onClose {
+                print("-- close")
+            }
+        
+    }
+    
     
     @objc func requestSubscription() {
         let payload = generatePayload()
-        payload.method = "카드정기결제"
+        payload.pg = "나이스페이"
+        payload.method = "카드자동"
                 
         Bootpay.requestSubscription(viewController: self, payload: payload)
             .onCancel { data in
@@ -246,6 +270,8 @@ print("ios")
     
     @objc func requestAuthentication() {
         let payload = generatePayload()
+        payload.pg = "다날"
+        payload.method = "본인인증"
         
                 
         Bootpay.requestAuthentication(viewController: self, payload: payload)

@@ -1,3 +1,6 @@
+## 4.0.6
+* webview url 4.0.6 적용 
+
 ## 4.0.5
 
 * opentype redirect default 옵션 적용

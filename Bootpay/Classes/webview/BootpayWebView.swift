@@ -47,20 +47,26 @@ import WebKit
 //            webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
          
         #elseif os(iOS)
-            if #available(iOS 11.0, *) {
-                let window = UIApplication.shared.keyWindow
-                webview = WKWebView(frame: CGRect(x: 0,
-                                                  y: 0,
-                                                  width: UIScreen.main.bounds.width,
-                                                  height: UIScreen.main.bounds.height - (window?.safeAreaInsets.bottom ?? UIScreen.main.bounds.height) - (window?.safeAreaInsets.top ?? 0)),
-                                    configuration: configuration)
-            } else {
-                webview = WKWebView(frame: CGRect(x: 0,
-                                                  y: 0,
-                                                  width: UIScreen.main.bounds.width,
-                                                  height: UIScreen.main.bounds.height),
-                                    configuration: configuration)
-            }
+//            if #available(iOS 11.0, *) {
+//                let window = UIApplication.shared.keyWindow
+//                webview = WKWebView(frame: CGRect(x: 0,
+//                                                  y: 0,
+//                                                  width: UIScreen.main.bounds.width,
+//                                                  height: UIScreen.main.bounds.height - (window?.safeAreaInsets.bottom ?? UIScreen.main.bounds.height) - (window?.safeAreaInsets.top ?? 0)),
+//                                    configuration: configuration)
+//            } else {
+//                webview = WKWebView(frame: CGRect(x: 0,
+//                                                  y: 0,
+//                                                  width: UIScreen.main.bounds.width,
+//                                                  height: UIScreen.main.bounds.height),
+//                                    configuration: configuration)
+//            }
+        
+        webview = WKWebView(frame: CGRect(x: 0,
+                                          y: 0,
+                                          width: UIScreen.main.bounds.width,
+                                          height: UIScreen.main.bounds.height),
+                            configuration: configuration)
         
         #endif
         
@@ -253,12 +259,17 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             
             //결과를 보는 설정이면 남겨두어야 함
             //redirect는 닫기 이벤트를 안줘서 처리해야함
-            if(Bootpay.shared.payload?.extra?.displayErrorResult == false && isRedirect) {
+            if(Bootpay.shared.payload?.extra?.displayErrorResult != true && isRedirect) {
                 Bootpay.shared.close?()
                 Bootpay.removePaymentWindow()
             }
         } else if event == "issued" {
             Bootpay.shared.issued?(data)
+            if(Bootpay.shared.payload?.extra?.displaySuccessResult != true && isRedirect) {
+                //redirect는 닫기 이벤트를 안줘서 처리해야함
+                Bootpay.shared.close?()
+                Bootpay.removePaymentWindow()
+            }
         } else if event == "confirm" {
             if let confirm = Bootpay.shared.confirm {
                 if(confirm(data)) {
@@ -267,7 +278,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             }
         } else if event == "done" {
             Bootpay.shared.done?(data)
-            if(Bootpay.shared.payload?.extra?.displaySuccessResult == false && isRedirect) {
+            if(Bootpay.shared.payload?.extra?.displaySuccessResult != true && isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
                 Bootpay.shared.close?()
                 Bootpay.removePaymentWindow()

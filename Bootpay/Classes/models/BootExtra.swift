@@ -12,14 +12,12 @@ public class BootExtra: NSObject, Mappable, Codable {
     
     public override init() {
         super.init()
-        self.appScheme = self.externalURLScheme()
+        self.appScheme = self.externalURLScheme() 
+//        self.appScheme = (self.externalURLScheme() ?? "") + "://"
     }
     public required init?(map: Map) {
-        super.init()
-        
+        super.init() 
         mapping(map: map)
-        
-        
     }
     
     func externalURLScheme() -> String? {
@@ -57,6 +55,7 @@ public class BootExtra: NSObject, Mappable, Codable {
         redirectUrl <- map["redirect_url"]
         displaySuccessResult <- map["display_success_result"]
         displayErrorResult <- map["display_error_result"]
+        useWelcomepayment <- map["use_welcomepayment"]
     }
     
     @objc public var cardQuota: String? //할부허용 범위 (5만원 이상 구매시)
@@ -84,4 +83,5 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var redirectUrl: String? = "https://api.bootpay.co.kr/v2" //open_type이 redirect일 경우 페이지 이동할 URL (  오류 및 결제 완료 모두 수신 가능 )
     @objc public var displaySuccessResult = false //결제 완료되면 부트페이가 제공하는 완료창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
     @objc public var displayErrorResult = true //결제가 실패하면 부트페이가 제공하는 실패창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
+    @objc public var useWelcomepayment = false //웰컴 재판모듈 진행시 true
 }
