@@ -150,8 +150,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             for script in scriptList {
                 webView.evaluateJavaScript(script, completionHandler: nil)
             }
-            let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.request_type)
-            print(scriptPay)
+            let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.request_type) 
 
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
         }
