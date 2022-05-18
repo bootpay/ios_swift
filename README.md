@@ -110,7 +110,7 @@ class NativeController: UIViewController {
 
         let user = BootUser()
         user.username = "테스트 유저"
-        user.phone = "01040334678"
+        user.phone = "01012345678"
         payload.userInfo = user
                 
         Bootpay.requestPayment(viewController: self, payload: payload)
