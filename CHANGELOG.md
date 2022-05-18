@@ -1,3 +1,6 @@
+## 4.1.1
+* naverpay back 클릭시 redirect 모드에서 흰화면 -> 새로고침 현상으로 개선 
+
 ## 4.1.0
 * webview url 4.0.6 적용 
 
