@@ -78,29 +78,29 @@ import WebKit
         Bootpay.shared.webview = webview
     }
     
-    func updateBlindViewIfNaverLogin(_ url: String) {
-        if(url.starts(with: "https://nid.naver.com/")) { //show
-            if topBlindView == nil { topBlindView = UIView() }
-            else { topBlindView?.removeFromSuperview() }
-            if topBlindButton == nil { topBlindButton = UIButton() }
-            else { topBlindButton?.removeFromSuperview() }
-            
-            topBlindView?.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 50)
-            topBlindView?.backgroundColor = .white
-            self.addSubview(topBlindView!)
-            
-            topBlindButton?.frame = CGRect(x: self.frame.width - 50, y: 0, width: 50, height: 50)
-            topBlindButton?.setTitle("X", for: .normal)
-            topBlindButton?.setTitleColor(.black, for: .normal)
-            topBlindButton?.addTarget(self, action: #selector(closeView), for: .touchUpInside)
-            self.addSubview(topBlindButton!)
-            
-        } else { //hide
-            topBlindView?.removeFromSuperview()
-            topBlindView = nil
-            topBlindButton?.removeFromSuperview()
-            topBlindButton = nil
+    func updateBlindViewIfNaverLogin(_ webView: WKWebView, _ url: String) {
+        if(url.starts(with: "https://nid.naver.com")) { //show
+            webView.evaluateJavaScript("document.getElementById('back').remove();")
         }
+//        if(url.starts(with: "https://nid.naver.com/")) { //show
+//            if topBlindView == nil { topBlindView = UIView() }
+//            else { topBlindView?.removeFromSuperview() }
+//            topBlindView?.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 100)
+//            topBlindView?.backgroundColor = .red
+//            webView.superview?.addSubview(topBlindView!)
+//
+////            topBlindButton?.frame = CGRect(x: self.frame.width - 50, y: 0, width: 50, height: 50)
+////            topBlindButton?.setTitle("X", for: .normal)
+////            topBlindButton?.setTitleColor(.black, for: .normal)
+////            topBlindButton?.addTarget(self, action: #selector(closeView), for: .touchUpInside)
+////            self.addSubview(topBlindButton!)
+//
+//        } else { //hide
+//            topBlindView?.removeFromSuperview()
+//            topBlindView = nil
+////            topBlindButton?.removeFromSuperview()
+////            topBlindButton = nil
+//        }
     }
     
     @objc public func closeView() {
@@ -162,10 +162,9 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
         beforeUrl = url.absoluteString
-        
-        print(url.absoluteString)
+         
        
-        updateBlindViewIfNaverLogin(url.absoluteString)
+        updateBlindViewIfNaverLogin(webView, url.absoluteString)
         
         if(isItunesURL(url.absoluteString)) {
             startAppToApp(url)
