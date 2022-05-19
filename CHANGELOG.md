@@ -1,3 +1,6 @@
+## 4.1.6
+* 케이뱅크 앱스키마 추가, redirect callback event 개선  
+
 ## 4.1.5
 * redirect callback event 처리 수정  
 

@@ -161,6 +161,8 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
         beforeUrl = url.absoluteString
+        
+        print(url.absoluteString)
          
        
         updateBlindViewIfNaverLogin(webView, url.absoluteString)
@@ -404,7 +406,6 @@ extension BootpayWebView {
         } else if(sUrl.starts(with: "shinsegaeeasypayment")) {
             itunesUrl = "https://apps.apple.com/kr/app/ssgpay/id666237916"
         } else if(sUrl.starts(with: "cloudpay")) {
-        
             itunesUrl = "https://apps.apple.com/kr/app/%ED%95%98%EB%82%98%EC%B9%B4%EB%93%9C-%EC%9B%90%ED%81%90%ED%8E%98%EC%9D%B4/id847268987"
         } else if(sUrl.starts(with: "hanawalletmembers")) {
             itunesUrl = "https://apps.apple.com/kr/app/n-wallet/id492190784"
@@ -430,6 +431,8 @@ extension BootpayWebView {
             itunesUrl = "https://apps.apple.com/kr/app/kakaotalk/id362057947"
         } else if(sUrl.starts(with: "chaipayment")) {
             itunesUrl = "https://apps.apple.com/kr/app/%EC%B0%A8%EC%9D%B4/id1459979272"
+        } else if(sUrl.starts(with: "ukbanksmartbanknonloginpay")) {
+            itunesUrl = "https://itunes.apple.com/kr/developer/%EC%BC%80%EC%9D%B4%EB%B1%85%ED%81%AC/id1178872626?mt=8"
         }
         
         if(itunesUrl.count > 0) {
