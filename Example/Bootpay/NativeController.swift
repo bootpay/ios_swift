@@ -118,6 +118,7 @@ print("ios")
         payload.method = "네이버페이"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
+        payload.extra?.openType = "popup"
          
         payload.extra?.cardQuota = "3" 
 //        payload.extra?.appScheme = "bootpayFlutter"

@@ -214,7 +214,10 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
               
+        
+        
         if(message.name == BootpayConstant.BRIDGE_NAME) {
+             
             
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {
@@ -223,15 +226,17 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 } else {
                     let dic = convertStringToDictionary(text: message.body as! String)
                     guard let dic = dic else { return }
-                    parseBootpayEvent(data: dic, isRedirect: true)
+                    parseBootpayEvent(data: dic)
                 }
                 return
             }
-            parseBootpayEvent(data: body, isRedirect: false)
+            parseBootpayEvent(data: body)
         }
     }
     
-    func parseBootpayEvent(data: [String: Any], isRedirect: Bool) {
+    func parseBootpayEvent(data: [String: Any]) {
+        var isRedirect = false
+        if(Bootpay.shared.payload?.extra?.openType == "redirect") { isRedirect = true }
         guard let event = data["event"] as? String else { return }
         
         if event == "cancel" {

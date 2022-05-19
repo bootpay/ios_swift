@@ -1,3 +1,6 @@
+## 4.1.5
+* redirect callback event 처리 수정  
+
 ## 4.1.4
 * 주석 제거    
 

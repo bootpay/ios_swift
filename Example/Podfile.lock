@@ -1,5 +1,5 @@
 PODS:
-  - Bootpay (4.0.2):
+  - Bootpay (4.1.4):
     - CryptoSwift
     - ObjectMapper
   - CryptoSwift (1.5.1)
@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Bootpay: 4e42f89223dfead26eeb274205d489380943af6c
+  Bootpay: 192408f162d2fb16665bdc58776235d4ac203b83
   CryptoSwift: c4f2debceb38bf44c80659afe009f71e23e4a082
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
 
