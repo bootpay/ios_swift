@@ -12,10 +12,22 @@ extension String: LocalizedError {
     public var errorDescription: String? { return self }
 }
  
+ 
 extension String {
     subscript (i: Int) -> Character {
         
         return self[index(startIndex, offsetBy: i)]
+    }    
+    
+    public func convertToDictionary() -> [String: Any]? {
+        if let data = self.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
     }
     
     public func aesEncrypt(key: String, iv: String) throws -> String {

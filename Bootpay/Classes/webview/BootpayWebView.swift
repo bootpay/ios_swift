@@ -162,7 +162,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
         beforeUrl = url.absoluteString
         
-        print(url.absoluteString)
+//        print(url.absoluteString)
          
        
         updateBlindViewIfNaverLogin(webView, url.absoluteString)
@@ -215,11 +215,8 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     }
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-              
-        
         
         if(message.name == BootpayConstant.BRIDGE_NAME) {
-             
             
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {

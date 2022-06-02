@@ -1,3 +1,7 @@
+## 4.1.7
+* webview url 4.0.7 적용 
+* String extention에 convertToDictionary 추가 
+
 ## 4.1.6
 * 케이뱅크 앱스키마 추가, redirect callback event 개선  
 
