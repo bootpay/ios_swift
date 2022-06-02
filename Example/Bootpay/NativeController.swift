@@ -95,6 +95,10 @@ print("ios")
                 btn.setTitle("4. 본인인증 테스트", for: .normal)
                 btn.addTarget(self, action: #selector(requestAuthentication), for: .touchUpInside)
             }
+//            else if(i == 4) {
+//                btn.setTitle("5. 비밀번호 결제 테스트", for: .normal)
+//                btn.addTarget(self, action: #selector(requestPassword), for: .touchUpInside)
+//            }
             
             
             btn.frame = CGRect(
@@ -297,6 +301,7 @@ print("ios")
                 print("close")
             }
     }
+     
 }
 
 

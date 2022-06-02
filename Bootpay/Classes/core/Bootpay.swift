@@ -100,6 +100,20 @@ import WebKit
         return self
     }
     
+    @objc(requestPassword::::)
+    public static func requestPassword(viewController: UIViewController,
+                                      payload: Payload,
+                                      _ animated: Bool = true,
+                                      _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+        shared.request_type = BootpayConstant.REQUEST_TYPE_PASSWORD
+        presentBootpayController(viewController: viewController,
+                                 payload: payload,
+                                 animated,
+                                 modalPresentationStyle
+        )
+        return self
+    }
+    
     private static func presentBootpayController(viewController: UIViewController,
                                                  payload: Payload,
                                                  _ animated: Bool = true,
