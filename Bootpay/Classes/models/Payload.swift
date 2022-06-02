@@ -26,16 +26,13 @@ open class Payload: NSObject, Mappable, Codable {
         orderId <- map["order_id"]
         subscriptionId <- map["subscription_id"]
         authenticationId <- map["authentication_id"]
-        
-//        useOrderId <- map["use_order_id"]
+         
         metadata <- map["metadata"]
-        
-//        accountExpireAt <- map["account_expire_at"]
-        showAgreeWindow <- map["show_agree_window"]
+         
         userToken <- map["user_token"]
+//        token <- map["token"]
         
-        extra <- map["extra"]
-//        userInfo <- map["user_info"]
+        extra <- map["extra"] 
         user <- map["user"]
         items <- map["items"]
     }
@@ -52,14 +49,13 @@ open class Payload: NSObject, Mappable, Codable {
     @objc public var orderId = ""
     @objc public var subscriptionId = ""
     @objc public var authenticationId = ""
-    
-//    @objc public var useOrderId = false
-//    @objc public var metadata: String?
+     
     @objc public var metadata: [String:String]?
-    
-//    @objc public var accountExpireAt: String? // 가상계좌 입금 만료 기한
-    @objc public var showAgreeWindow = false
+     
     @objc public var userToken: String? //카드 간편결제, 생체결제시 필요한 파라미터
+//    @objc public var token: String = "token" //비밀번호 결제 - 개발사는 사용하지 않는다. 부트페이 내부적으로 사용됨
+//    @objc public var walletId: String = "res.wallets[0].wallet_id" //비밀번호 결제 - 개발사는 사용하지 않는다. 부트페이 내부적으로 사용됨
+//    @objc public var authenticateType: String? //비밀번호 결제 - 개발사는 사용하지 않는다. 부트페이 내부적으로 사용됨
     
     @objc public var extra: BootExtra?
 //    @objc public var userInfo: BootUser? = BootUser()

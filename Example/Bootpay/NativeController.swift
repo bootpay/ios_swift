@@ -18,10 +18,15 @@ extension String
     }
 }
 
-class NativeController: UIViewController {
+class NativeController: UIViewController {    
+    let _applicationId = "5b8f6a4d396fa665fdc2b5e9" //production
+    let _restApplicationId = "5b8f6a4d396fa665fdc2b5ea" //production
+    let _privateKey = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=" //production
     
-    var _applicationId = "5b8f6a4d396fa665fdc2b5e9" //production
-//    var _applicationId = "5b9f51264457636ab9a07cdd" //development
+//    let _applicationId = "5b9f51264457636ab9a07cdd" //development
+//    let _restApplicationId = "5b9f51264457636ab9a07cde" //development
+//    let _privateKey = "sfilSOSVakw+PZA+PRux4Iuwm7a//9CXXudCq9TMDHk=" //development
+     
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +83,7 @@ print("ios")
     }
     
     func setUI() {
-        for i in 0...3 {
+        for i in 0...4 {
             self.view.backgroundColor = .white
             let btn = UIButton()
             
@@ -94,16 +99,15 @@ print("ios")
             } else if(i == 3) {
                 btn.setTitle("4. 본인인증 테스트", for: .normal)
                 btn.addTarget(self, action: #selector(requestAuthentication), for: .touchUpInside)
+            } else if(i == 4) {
+                btn.setTitle("5. 비밀번호 결제 테스트", for: .normal)
+                btn.addTarget(self, action: #selector(requestPassword), for: .touchUpInside)
             }
-//            else if(i == 4) {
-//                btn.setTitle("5. 비밀번호 결제 테스트", for: .normal)
-//                btn.addTarget(self, action: #selector(requestPassword), for: .touchUpInside)
-//            }
             
             
             btn.frame = CGRect(
                 x: self.view.frame.width/2 - 150,
-                y: self.view.frame.height/2 - 80 + 60 * CGFloat(i) ,
+                y: self.view.frame.height/2 - 120 + 60 * CGFloat(i) ,
                 width: 300,
                 height: 40
             )
@@ -124,7 +128,7 @@ print("ios")
         payload.extra = BootExtra()
         
          
-        payload.extra?.cardQuota = "3" 
+        payload.extra?.cardQuota = "3"
 //        payload.extra?.appScheme = "bootpayFlutter"
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
@@ -161,11 +165,8 @@ print("ios")
         payload.metadata = customParams
 //        payload.metadata = dicToJson(customParams).replace(target: "'", withString: "\\'").replace(target: "'\n", withString: "")
         
-
-        let user = BootUser()
-        user.username = "테스트 유저"
-        user.phone = "01012345678"
-        payload.user = user
+ 
+        payload.user = generateUser()
         return payload
     }
     
@@ -301,7 +302,88 @@ print("ios")
                 print("close")
             }
     }
+    
+    @objc func requestPassword() {
+        getUserToken()
+    }
+    
+    func goPasswordPay(userToken: String) {
+        let payload = generatePayload()
+        payload.pg = "나이스페이"
+        payload.userToken = userToken
+//        payload.method = "본인인증"
+        
+                
+        Bootpay.requestPassword(viewController: self, payload: payload)
+            .onCancel { data in
+                print("-- cancel: \(data)")
+            }
+            .onIssued { data in
+                print("-- ready: \(data)")
+            }
+            .onConfirm { data in
+                print("-- confirm: \(data)")
+                return true //재고가 있어서 결제를 최종 승인하려 할 경우
+//                            return false //재고가 없어서 결제를 승인하지 않을때
+            }
+            .onDone { data in
+                print("-- done: \(data)")
+            }
+            .onError { data in
+                print("-- error: \(data)")
+            }
+            .onClose {
+                print("close")
+            }
+    }
      
+    
+    
+    func generateUser() -> BootUser {
+        
+        let user = BootUser()
+        user.id = "123456abcdffffe23456789012345613245167891223111"
+        user.userId = "123456abcdffffe23456789012345613245167891223111"
+        user.area = "서울"
+        user.gender = 1
+        user.email = "test1234@gmail.com"
+        user.phone = "01012344567"
+        user.birth = "1988-06-10"
+        user.username = "홍길동"
+        return user
+    }
+    
+    func getUserToken() {
+      
+        
+        BootpayRest.getRestToken(
+            sendable: self,
+            restApplicationId: _restApplicationId,
+            privateKey: _privateKey
+        )
+    }
+    
+    
+    
+    
+
 }
 
 
+extension NativeController: BootpayRestProtocol {
+   func callbackRestToken(resData: [String : Any]) {
+       if let token = resData["access_token"] {
+           BootpayRest.getEasyPayUserToken(
+               sendable: self,
+               restToken: token as! String,
+               user: generateUser()
+           )
+       }
+   }
+   
+   func callbackEasyCardUserToken(resData: [String : Any]) {
+       if let userToken = resData["user_token"] as? String {
+           self.goPasswordPay(userToken: userToken)
+       }
+   }
+}

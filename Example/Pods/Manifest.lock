@@ -1,15 +1,18 @@
 PODS:
-  - Bootpay (4.1.6):
+  - Alamofire (4.9.1)
+  - Bootpay (4.1.8):
     - CryptoSwift
     - ObjectMapper
   - CryptoSwift (1.5.1)
   - ObjectMapper (4.2.0)
 
 DEPENDENCIES:
+  - Alamofire
   - Bootpay (from `../`)
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - CryptoSwift
     - ObjectMapper
 
@@ -18,10 +21,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Bootpay: 52a34d51b9c0454757a3a0da314ba7a7cfb0775a
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Bootpay: b0fb252e7c25195d8cf8d62c837edaf3aea83a34
   CryptoSwift: c4f2debceb38bf44c80659afe009f71e23e4a082
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
 
-PODFILE CHECKSUM: cadddef0956b7e5978ab59d1efc3c401e6cc3db0
+PODFILE CHECKSUM: 28728dc522965b68ec34b6015b743ada081fe838
 
 COCOAPODS: 1.11.3

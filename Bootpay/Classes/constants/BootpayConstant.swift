@@ -101,19 +101,7 @@ public class BootpayConstant {
             requestMethod = "requestAuthentication"
             if(payload.authenticationId.count == 0) { payload.authenticationId = payload.orderId }
         } else if(requestType == BootpayConstant.REQUEST_TYPE_PASSWORD) {
-            return [
-                "BootpaySDK.requestWalletPayment(",
-                getPayloadJson(payload),
-                ")",
-                ".then( function (res) {",
-                confirm(),
-                issued(),
-                done(),
-                "}, function (res) {",
-                error(),
-                cancel(),
-                "})"
-            ].reduce("", +)
+           return getJSPasswordPayment(payload: payload)
         }
         
         
@@ -132,6 +120,24 @@ public class BootpayConstant {
         ].reduce("", +)
     }
     
+    
+    public static func getJSPasswordPayment(payload: Payload) -> String {
+        payload.method = "카드간편"
+        
+        return [
+            "Bootpay.requestPayment(",
+            getPayloadJson(payload),
+            ")",
+            ".then( function (res) {",
+            confirm(),
+            issued(),
+            done(),
+            "}, function (res) {",
+            error(),
+            cancel(),
+            "})"
+        ].reduce("", +)
+    }
     
     static func confirm() -> String {
 //        return ".confirm(function (data) {webkit.messageHandlers.\(BootpayConstants.BRIDGE_NAME).postMessage(data);})"
@@ -167,6 +173,4 @@ public class BootpayConstant {
         encoder.keyEncodingStrategy = .convertToSnakeCase
         return String(data: try! encoder.encode(payload), encoding: .utf8)!
     }
-    
-
 }
