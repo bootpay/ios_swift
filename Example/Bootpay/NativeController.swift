@@ -128,7 +128,7 @@ print("ios")
         payload.extra = BootExtra()
         
          
-        payload.extra?.cardQuota = "3"
+//        payload.extra?.cardQuota = "3"
 //        payload.extra?.appScheme = "bootpayFlutter"
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
