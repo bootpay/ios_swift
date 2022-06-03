@@ -79,8 +79,8 @@ import WebKit
         shared.request_type = BootpayConstant.REQUEST_TYPE_PAYMENT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
-                                 animated,
-                                 modalPresentationStyle
+                                 animated: animated,
+                                 modalPresentationStyle: modalPresentationStyle
         )
         return self
     }
@@ -88,13 +88,13 @@ import WebKit
     @objc(requestSubscription::::)
     public static func requestSubscription(viewController: UIViewController,
                                       payload: Payload,
-                                      _ animated: Bool = true,
-                                      _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+                                      animated: Bool = true,
+                                      modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
         shared.request_type = BootpayConstant.REQUEST_TYPE_SUBSCRIPT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
-                                 animated,
-                                 modalPresentationStyle
+                                 animated: animated,
+                                 modalPresentationStyle: modalPresentationStyle
         )
         return self
     }
@@ -102,13 +102,13 @@ import WebKit
     @objc(requestAuthentication::::)
     public static func requestAuthentication(viewController: UIViewController,
                                       payload: Payload,
-                                      _ animated: Bool = true,
-                                      _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+                                      animated: Bool = true,
+                                      modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
         shared.request_type = BootpayConstant.REQUEST_TYPE_AUTH
         presentBootpayController(viewController: viewController,
                                  payload: payload,
-                                 animated,
-                                 modalPresentationStyle
+                                 animated: animated,
+                                 modalPresentationStyle: modalPresentationStyle
         )
         return self
     }
@@ -116,29 +116,34 @@ import WebKit
     @objc(requestPassword::::)
     public static func requestPassword(viewController: UIViewController,
                                       payload: Payload,
-                                      _ animated: Bool = true,
-                                      _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+                                      animated: Bool = true,
+                                      modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
         shared.request_type = BootpayConstant.REQUEST_TYPE_PASSWORD
         presentBootpayController(viewController: viewController,
                                  payload: payload,
-                                 animated,
-                                 modalPresentationStyle
+                                 animated: animated,
+                                 modalPresentationStyle: modalPresentationStyle
         )
         return self
     }
     
     private static func presentBootpayController(viewController: UIViewController,
                                                  payload: Payload,
-                                                 _ animated: Bool = true,
-                                                 _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) {
+                                                 animated: Bool = true,
+                                                 modalPresentationStyle: UIModalPresentationStyle = .fullScreen) {
         shared.parentController = viewController
         shared.payload = payload
         
         loadSessionValues()
         
-        let vc = BootpayController()
-        vc.modalPresentationStyle = modalPresentationStyle //or .overFullScreen for transparency
-        viewController.present(vc, animated: animated, completion: nil)
+        if(modalPresentationStyle == .fullScreen) {
+            let vc = BootpayController()
+            viewController.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            let vc = BootpayController()
+            vc.modalPresentationStyle = modalPresentationStyle //or .overFullScreen for transparency
+            viewController.present(vc, animated: animated, completion: nil)
+        }
     }
     
     #endif
@@ -172,6 +177,7 @@ import WebKit
         #elseif os(iOS)
         shared.parentController?.dismiss(animated: true, completion: nil)
         #endif
+        shared.parentController?.navigationController?.popViewController(animated: true)
             
 //            shared.parentController?.dismiss(animated: true, completion: nil)
             shared.parentController = nil
@@ -182,26 +188,13 @@ import WebKit
         shared.webview = nil
         shared.payload = Payload()
         
-        shared.error = nil
-        shared.issued = nil
-//        shared.close = nil
-        shared.confirm = nil
-        shared.done = nil
-        shared.cancel = nil
+//        shared.error = nil
+//        shared.issued = nil
+////        shared.close = nil
+//        shared.confirm = nil
+//        shared.done = nil
+//        shared.cancel = nil
     }
-    
-    
-//    public static func goConfirm(_ data: [String : Any]) {
-//        if let sharedConfirm = shared.confirm {
-//            if(sharedConfirm(data)) {
-//                transactionConfirm()
-////                (data: data)
-//            }
-////            else {
-////                removePaymentWindow()
-////            }
-//        }
-//    }
 }
 
 extension Bootpay {

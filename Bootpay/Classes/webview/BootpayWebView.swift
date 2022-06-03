@@ -42,24 +42,8 @@ import WebKit
         
         #if os(macOS)
             webview = WKWebView(frame: self.bounds, configuration: configuration)
-        
-//            webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
          
         #elseif os(iOS)
-//            if #available(iOS 11.0, *) {
-//                let window = UIApplication.shared.keyWindow
-//                webview = WKWebView(frame: CGRect(x: 0,
-//                                                  y: 0,
-//                                                  width: UIScreen.main.bounds.width,
-//                                                  height: UIScreen.main.bounds.height - (window?.safeAreaInsets.bottom ?? UIScreen.main.bounds.height) - (window?.safeAreaInsets.top ?? 0)),
-//                                    configuration: configuration)
-//            } else {
-//                webview = WKWebView(frame: CGRect(x: 0,
-//                                                  y: 0,
-//                                                  width: UIScreen.main.bounds.width,
-//                                                  height: UIScreen.main.bounds.height),
-//                                    configuration: configuration)
-//            }
         
         webview = WKWebView(frame: CGRect(x: 0,
                                           y: 0,
@@ -68,10 +52,7 @@ import WebKit
                             configuration: configuration)
         
         #endif
-        
-//        if(DeviceHelper.nativeMac == DeviceHelper.currentDevice) {
-//            webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        }
+         
         
         webview.uiDelegate = self
         webview.navigationDelegate = self
