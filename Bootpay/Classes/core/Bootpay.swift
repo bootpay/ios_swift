@@ -43,9 +43,7 @@ import WebKit
     }
     
     public func debounceClose() {
-        DispatchQueue.main.asyncDeduped(target: self, after: 0.25) { [] in
-            print("debounceClose")
-//            self.clos
+        DispatchQueue.main.asyncDeduped(target: self, after: 0.25) { [] in 
             Bootpay.shared.close?()
             
             Bootpay.shared.error = nil

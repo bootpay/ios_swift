@@ -1,3 +1,6 @@
+## 4.2.3
+* anchor property to public
+
 ## 4.2.2
 * debounceClose 이벤트 추가
 * SafeArea WebView 적용    
