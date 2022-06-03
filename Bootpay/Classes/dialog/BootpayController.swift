@@ -11,6 +11,26 @@ class BootpayController: BTViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(bootpayWebView)
+        
+        bootpayWebView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constrains = [
+            bootpayWebView.topAnchor.constraint(equalTo: self.view.safeTopAnchor),
+            bootpayWebView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            bootpayWebView.bottomAnchor.constraint(equalTo: self.view.safeBottomAnchor),
+            bootpayWebView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+ 
+        ]
+        NSLayoutConstraint.activate(constrains)
+        self.view.backgroundColor = .white
+        
+        
         bootpayWebView.startBootpay()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        Bootpay.shared.debounceClose()
     }
 }

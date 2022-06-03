@@ -24,6 +24,7 @@ import WebKit
         #endif
         
         initComponent()
+        self.backgroundColor = .white
     }
     
     required public init(coder: NSCoder) {
@@ -75,6 +76,17 @@ import WebKit
         webview.uiDelegate = self
         webview.navigationDelegate = self
         self.addSubview(webview)
+        
+        webview.translatesAutoresizingMaskIntoConstraints = false
+        let constrains = [
+            webview.topAnchor.constraint(equalTo: self.safeTopAnchor),
+            webview.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            webview.bottomAnchor.constraint(equalTo: self.safeBottomAnchor),
+            webview.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+ 
+            ]
+        NSLayoutConstraint.activate(constrains)
+        
         Bootpay.shared.webview = webview
     }
     
@@ -222,7 +234,8 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             
             guard let body = message.body as? [String: Any] else {
                 if message.body as? String == "close" {
-                    Bootpay.shared.close?()
+//                    Bootpay.shared.close?()
+                    Bootpay.shared.debounceClose()
                     Bootpay.removePaymentWindow()
                 } else {
                     let dic = convertStringToDictionary(text: message.body as! String)
@@ -244,7 +257,8 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             Bootpay.shared.cancel?(data)
             if(isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
-                Bootpay.shared.close?()
+                Bootpay.shared.debounceClose()
+//                Bootpay.shared.close?()
                 Bootpay.removePaymentWindow()
             }
         } else if event == "error" {
@@ -253,14 +267,16 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             //결과를 보는 설정이면 남겨두어야 함
             //redirect는 닫기 이벤트를 안줘서 처리해야함
             if(Bootpay.shared.payload?.extra?.displayErrorResult != true && isRedirect) {
-                Bootpay.shared.close?()
+                Bootpay.shared.debounceClose()
+//                Bootpay.shared.close?()
                 Bootpay.removePaymentWindow()
             }
         } else if event == "issued" {
             Bootpay.shared.issued?(data)
             if(Bootpay.shared.payload?.extra?.displaySuccessResult != true && isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
-                Bootpay.shared.close?()
+                Bootpay.shared.debounceClose()
+//                Bootpay.shared.close?()
                 Bootpay.removePaymentWindow()
             }
         } else if event == "confirm" {
@@ -273,12 +289,14 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             Bootpay.shared.done?(data)
             if(Bootpay.shared.payload?.extra?.displaySuccessResult != true && isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
-                Bootpay.shared.close?()
+                Bootpay.shared.debounceClose()
+//                Bootpay.shared.close?()
                 Bootpay.removePaymentWindow()
             }
         } else if event == "close" {
-            //결과페이지에서 닫기 버튼 클릭시 
-            Bootpay.shared.close?()
+            //결과페이지에서 닫기 버튼 클릭시
+            Bootpay.shared.debounceClose()
+//            Bootpay.shared.close?()
             Bootpay.removePaymentWindow()
         }
     }

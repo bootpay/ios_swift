@@ -1,3 +1,7 @@
+## 4.2.2
+* debounceClose 이벤트 추가
+* SafeArea WebView 적용    
+
 ## 4.2.1
 * UI 모듈과 통일을 위해 버전을 4.2.1로 배포    
 

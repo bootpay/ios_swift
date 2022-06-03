@@ -122,8 +122,8 @@ print("ios")
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "다날"
-        payload.method = "계좌이체"
+        payload.pg = "나이스페이"
+        payload.method = "네이버페이"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         
@@ -189,7 +189,7 @@ print("ios")
     @objc func requestPayment() {
         let payload = generatePayload()
                 
-        Bootpay.requestPayment(viewController: self, payload: payload)
+        Bootpay.requestPayment(viewController: self, payload: payload, true, UIModalPresentationStyle.formSheet)
             .onCancel { data in
                 print("-- cancel: \(data)")
             }

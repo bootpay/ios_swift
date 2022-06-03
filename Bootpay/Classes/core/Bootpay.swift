@@ -42,6 +42,21 @@ import WebKit
         self.iv = getRandomKey(16)
     }
     
+    public func debounceClose() {
+        DispatchQueue.main.asyncDeduped(target: self, after: 0.25) { [] in
+            print("debounceClose")
+//            self.clos
+            Bootpay.shared.close?()
+            
+            Bootpay.shared.error = nil
+            Bootpay.shared.issued = nil
+            Bootpay.shared.close = nil
+            Bootpay.shared.confirm = nil
+            Bootpay.shared.done = nil
+            Bootpay.shared.cancel = nil
+        }
+    }
+    
     
     #if os(macOS)
     @objc(requestPayment::)

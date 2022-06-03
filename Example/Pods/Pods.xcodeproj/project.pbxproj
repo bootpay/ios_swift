@@ -107,6 +107,8 @@
 		7DADBAE85F9DCC615D88B5560C0CC079 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57CAB4CE2E47DBDF3BEA9D1E7BC4B9B /* Operators.swift */; };
 		8023EECE8437F0311A065A9C2F420E2E /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EC0492952BBF802AE2A814C452AF27 /* SessionManager.swift */; };
 		810AFEA971884296419B638B03F7C788 /* PKCS7Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81974D4F913EE091F9E448102E6D8553 /* PKCS7Padding.swift */; };
+		813703342849AE3E00D707EA /* UIView.Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813703332849AE3E00D707EA /* UIView.Extension.swift */; };
+		813703362849AE5600D707EA /* DispatchQueue.Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813703352849AE5600D707EA /* DispatchQueue.Extension.swift */; };
 		813B6BB9E89C591C781DA6DF52F4C825 /* BigUInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BCE4D83ECADC1DDD0F94A85D66E5DC /* BigUInt.swift */; };
 		8367D4AC6FEC5261A1E0FB6FDF5708FF /* TransformOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EF9F0BC066DD39F3E658FAE7E7CD20 /* TransformOperators.swift */; };
 		83E783B834A5F7A016371DC714106790 /* PKCS5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E511D4518801B5DECD18963BABC6ED /* PKCS5.swift */; };
@@ -342,6 +344,8 @@
 		7C4998CB8EF28BB7706A91D3C57ACBB2 /* Exponentiation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Exponentiation.swift; path = Sources/CryptoSwift/CS_BigInt/Exponentiation.swift; sourceTree = "<group>"; };
 		7CC6CF6377792D577BD806F18843D6FF /* Pods-Bootpay_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Bootpay_Example-umbrella.h"; sourceTree = "<group>"; };
 		8022B8B39838BFBA43D6A09F46B47949 /* Rabbit+Foundation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Rabbit+Foundation.swift"; path = "Sources/CryptoSwift/Foundation/Rabbit+Foundation.swift"; sourceTree = "<group>"; };
+		813703332849AE3E00D707EA /* UIView.Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.Extension.swift; sourceTree = "<group>"; };
+		813703352849AE5600D707EA /* DispatchQueue.Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.Extension.swift; sourceTree = "<group>"; };
 		81974D4F913EE091F9E448102E6D8553 /* PKCS7Padding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PKCS7Padding.swift; path = Sources/CryptoSwift/PKCS/PKCS7Padding.swift; sourceTree = "<group>"; };
 		819CD04D2848B3BE00DB7FD9 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		8208475292878D40FF6DF0A1A51401BF /* NoPadding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NoPadding.swift; path = Sources/CryptoSwift/NoPadding.swift; sourceTree = "<group>"; };
@@ -923,6 +927,8 @@
 			children = (
 				E7B6A3261A4E8ADF65F3C8710C29FEB0 /* String.Extention.swift */,
 				433617CD925322414A4FE9906C7BFC88 /* URL.Extention.swift */,
+				813703332849AE3E00D707EA /* UIView.Extension.swift */,
+				813703352849AE5600D707EA /* DispatchQueue.Extension.swift */,
 			);
 			name = extension;
 			path = Bootpay/Classes/extension;
@@ -1277,8 +1283,10 @@
 				8D8B9405D9B0B4C494C42D6F6720CB01 /* BootpayBuildConfig.swift in Sources */,
 				6E7DA93C6A3ADDFB16D91C9728FAE0AC /* BootpayConstant.swift in Sources */,
 				FBB1B8148B94B6F2A098054E4EF6D3C4 /* BootpayController.swift in Sources */,
+				813703342849AE3E00D707EA /* UIView.Extension.swift in Sources */,
 				9FECAAB8670EE1AD5F9E607756383E32 /* BootpayDefaultHelper.swift in Sources */,
 				6C2ECF9C384D9BB01B185E5F88F8132F /* BootpayWebView.swift in Sources */,
+				813703362849AE5600D707EA /* DispatchQueue.Extension.swift in Sources */,
 				EEE53E963094E6E57FB98C175026AB51 /* BootStatItem.swift in Sources */,
 				006B2959353DC5E6C7E19E9E59C91702 /* BootUser.swift in Sources */,
 				916FF0B363624A0E2ED4F1321763374E /* DeviceHelper.swift in Sources */,
