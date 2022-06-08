@@ -1,3 +1,6 @@
+## 4.2.6
+* debounceClose 이벤트 시점 변경 (willdisappear -> didappear) 
+
 ## 4.2.5
 * request interface 수정 
 
