@@ -90,6 +90,10 @@ import WebKit
                                       payload: Payload,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+        if(payload.subscriptionId.isEmpty) {
+            payload.subscriptionId = payload.orderId
+        }
+        
         shared.requestType = BootpayConstant.REQUEST_TYPE_SUBSCRIPT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
@@ -104,6 +108,10 @@ import WebKit
                                       payload: Payload,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+        if(payload.authenticationId.isEmpty) {
+            payload.authenticationId = payload.orderId
+        }
+        
         shared.requestType = BootpayConstant.REQUEST_TYPE_AUTH
         presentBootpayController(viewController: viewController,
                                  payload: payload,
