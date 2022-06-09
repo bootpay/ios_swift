@@ -1,3 +1,6 @@
+## 4.2.8
+* development 서버로 잘못 패치된거 production 으로 정정 
+
 ## 4.2.7
 * reqyestType public으로 선언 (BootpayUI 를 위한 작업) 
 * webview url 4.0.8 적용
