@@ -20,7 +20,7 @@ import WebKit
     var iv = ""
     var application_id: String? // 통계를 위한 파라미터
     public var ENV_TYPE = BootpayConstant.ENV_SWIFT
-    var request_type = BootpayConstant.REQUEST_TYPE_PAYMENT
+    public var requestType = BootpayConstant.REQUEST_TYPE_PAYMENT
         
     public var webview: WKWebView?
     @objc public var payload: Payload? = Payload()
@@ -76,7 +76,7 @@ import WebKit
                                       payload: Payload,
                                       _ animated: Bool = true,
                                       _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        shared.request_type = BootpayConstant.REQUEST_TYPE_PAYMENT
+        shared.requestType = BootpayConstant.REQUEST_TYPE_PAYMENT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
                                  animated: animated,
@@ -90,7 +90,7 @@ import WebKit
                                       payload: Payload,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        shared.request_type = BootpayConstant.REQUEST_TYPE_SUBSCRIPT
+        shared.requestType = BootpayConstant.REQUEST_TYPE_SUBSCRIPT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
                                  animated: animated,
@@ -104,7 +104,7 @@ import WebKit
                                       payload: Payload,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        shared.request_type = BootpayConstant.REQUEST_TYPE_AUTH
+        shared.requestType = BootpayConstant.REQUEST_TYPE_AUTH
         presentBootpayController(viewController: viewController,
                                  payload: payload,
                                  animated: animated,
@@ -118,7 +118,7 @@ import WebKit
                                       payload: Payload,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        shared.request_type = BootpayConstant.REQUEST_TYPE_PASSWORD
+        shared.requestType = BootpayConstant.REQUEST_TYPE_PASSWORD
         presentBootpayController(viewController: viewController,
                                  payload: payload,
                                  animated: animated,

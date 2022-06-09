@@ -1,3 +1,7 @@
+## 4.2.7
+* reqyestType public으로 선언 (BootpayUI 를 위한 작업) 
+* webview url 4.0.8 적용
+
 ## 4.2.6
 * debounceClose 이벤트 시점 변경 (willdisappear -> didappear) 
 
