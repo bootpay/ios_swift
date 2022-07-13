@@ -142,8 +142,10 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             let scriptList = BootpayConstant.getJSBeforePayStart()
             for script in scriptList {
                 webView.evaluateJavaScript(script, completionHandler: nil)
+//                print(script)
             }
-            let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.requestType) 
+            let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.requestType)
+//            print(scriptPay)
 
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
         }
@@ -429,6 +431,12 @@ extension BootpayWebView {
             itunesUrl = "https://apps.apple.com/kr/app/%EC%B0%A8%EC%9D%B4/id1459979272"
         } else if(sUrl.starts(with: "ukbanksmartbanknonloginpay")) {
             itunesUrl = "https://itunes.apple.com/kr/developer/%EC%BC%80%EC%9D%B4%EB%B1%85%ED%81%AC/id1178872626?mt=8"
+        } else if(sUrl.starts(with: "newliiv")) {
+            itunesUrl = "https://apps.apple.com/us/app/%EB%A6%AC%EB%B8%8C-next/id1573528126"
+        } else if(sUrl.starts(with: "newliiv")) {
+            itunesUrl = "https://apps.apple.com/us/app/%EB%A6%AC%EB%B8%8C-next/id1573528126"
+        } else if(sUrl.starts(with: "kbbank")) {
+            itunesUrl = "https://apps.apple.com/kr/app/kb%EC%8A%A4%ED%83%80%EB%B1%85%ED%82%B9/id373742138"
         }
         
         if(itunesUrl.count > 0) {
