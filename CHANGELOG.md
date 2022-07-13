@@ -1,3 +1,6 @@
+## 4.2.9
+* 앱 스킴 업데이트, debounceClose 시간을 늘림 (중복 close 되는 버그가 있어서 해결) 
+
 ## 4.2.8
 * development 서버로 잘못 패치된거 production 으로 정정 
 
