@@ -191,7 +191,12 @@ print("ios")
     @objc func requestPayment() {
         let payload = generatePayload()
                 
-        Bootpay.requestPayment(viewController: self, payload: payload, true, UIModalPresentationStyle.formSheet)
+        Bootpay.requestPayment(
+            viewController: self,
+            payload: payload,
+            isModal: true,
+            modalPresentationStyle: .automatic,
+            animated: true)
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
@@ -220,7 +225,9 @@ print("ios")
         payload.pg = ""
         payload.method = ""
                 
-        Bootpay.requestPayment(viewController: self, payload: payload)
+        Bootpay.requestPayment(
+            viewController: self,
+            payload: payload)
             .onCancel { data in
                 print("-- cancel: \(data)")
             }

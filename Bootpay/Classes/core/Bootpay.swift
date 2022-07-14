@@ -24,6 +24,7 @@ import WebKit
         
     public var webview: WKWebView?
     @objc public var payload: Payload? = Payload()
+    var isPresentModal = false
     var parentController: BTViewController?
     
     @objc public var error: (([String : Any]) -> Void)?
@@ -43,10 +44,10 @@ import WebKit
     }
     
     public func debounceClose() {
-        DispatchQueue.main.asyncDeduped(target: self, after: 0.5) { [] in 
-            
+        DispatchQueue.main.asyncDeduped(target: self, after: 0.5) { [] in
+
             Bootpay.shared.close?()
-            
+
             Bootpay.shared.error = nil
             Bootpay.shared.issued = nil
             Bootpay.shared.close = nil
@@ -72,23 +73,26 @@ import WebKit
     }
     #elseif os(iOS)
     
-    @objc(requestPayment::::)
+    @objc(requestPayment:::::)
     public static func requestPayment(viewController: UIViewController,
                                       payload: Payload,
-                                      _ animated: Bool = true,
-                                      _ modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+                                      isModal: Bool = false,
+                                      modalPresentationStyle: UIModalPresentationStyle = .fullScreen,
+                                      animated: Bool = true) -> Bootpay.Type {
         shared.requestType = BootpayConstant.REQUEST_TYPE_PAYMENT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
+                                 isModal: isModal,
                                  animated: animated,
                                  modalPresentationStyle: modalPresentationStyle
         )
         return self
     }
     
-    @objc(requestSubscription::::)
+    @objc(requestSubscription:::::)
     public static func requestSubscription(viewController: UIViewController,
                                       payload: Payload,
+                                      isModal: Bool = false,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
         if(payload.subscriptionId.isEmpty) {
@@ -98,15 +102,17 @@ import WebKit
         shared.requestType = BootpayConstant.REQUEST_TYPE_SUBSCRIPT
         presentBootpayController(viewController: viewController,
                                  payload: payload,
+                                 isModal: isModal,
                                  animated: animated,
                                  modalPresentationStyle: modalPresentationStyle
         )
         return self
     }
     
-    @objc(requestAuthentication::::)
+    @objc(requestAuthentication:::::)
     public static func requestAuthentication(viewController: UIViewController,
                                       payload: Payload,
+                                      isModal: Bool = false,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
         if(payload.authenticationId.isEmpty) {
@@ -116,20 +122,23 @@ import WebKit
         shared.requestType = BootpayConstant.REQUEST_TYPE_AUTH
         presentBootpayController(viewController: viewController,
                                  payload: payload,
+                                 isModal: isModal,
                                  animated: animated,
                                  modalPresentationStyle: modalPresentationStyle
         )
         return self
     }
     
-    @objc(requestPassword::::)
+    @objc(requestPassword:::::)
     public static func requestPassword(viewController: UIViewController,
                                       payload: Payload,
+                                      isModal: Bool = false,
                                       animated: Bool = true,
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
         shared.requestType = BootpayConstant.REQUEST_TYPE_PASSWORD
         presentBootpayController(viewController: viewController,
                                  payload: payload,
+                                 isModal: isModal,
                                  animated: animated,
                                  modalPresentationStyle: modalPresentationStyle
         )
@@ -138,14 +147,16 @@ import WebKit
     
     private static func presentBootpayController(viewController: UIViewController,
                                                  payload: Payload,
+                                                 isModal: Bool = false,
                                                  animated: Bool = true,
                                                  modalPresentationStyle: UIModalPresentationStyle = .fullScreen) {
         shared.parentController = viewController
         shared.payload = payload
+        shared.isPresentModal = isModal
         
         loadSessionValues()
         
-        if(modalPresentationStyle == .fullScreen) {
+        if(isModal == false) {
             let vc = BootpayController()
             viewController.navigationController?.pushViewController(vc, animated: true)
         } else {
@@ -182,13 +193,19 @@ import WebKit
     public static func removePaymentWindow() {
         if shared.parentController != nil {
         #if os(macOS)
-        shared.parentController?.dismiss(nil)
+        if(shared.isPresentModal == true) {
+            shared.parentController?.dismiss(nil)
+        } else {
+            shared.parentController?.navigationController?.popViewController(animated: true)
+        }
+        
         #elseif os(iOS)
-        shared.parentController?.dismiss(animated: true, completion: nil)
+        if(shared.isPresentModal == true) {
+            shared.parentController?.dismiss(animated: true, completion: nil)
+        } else {
+            shared.parentController?.navigationController?.popViewController(animated: true)
+        }
         #endif
-        shared.parentController?.navigationController?.popViewController(animated: true)
-            
-//            shared.parentController?.dismiss(animated: true, completion: nil)
             shared.parentController = nil
         } else if shared.ENV_TYPE == BootpayConstant.ENV_SWIFT_UI {
             
