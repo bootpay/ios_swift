@@ -6,10 +6,14 @@
 //
  
 import WebKit
+import NVActivityIndicatorView
 
 
 @objc open class BootpayWebView: BTView {
     @objc public var webview: WKWebView!
+    var circleView: NVActivityIndicatorView?
+    var circleBG: BTView?
+//    let circularSlider = CircularSlider()
     
     var beforeUrl = ""
     var topBlindView: BTView?
@@ -52,11 +56,41 @@ import WebKit
                             configuration: configuration)
         
         #endif
+        
+        
          
         
         webview.uiDelegate = self
         webview.navigationDelegate = self
+//        webview.
         self.addSubview(webview)
+        
+ 
+        circleBG = BTView()
+//            .withAlphaComponent(0.25)
+        if(circleBG != nil) {
+            circleBG?.frame = CGRect(x: 0,
+                                     y: 0,
+                                     width: UIScreen.main.bounds.width,
+                                     height: UIScreen.main.bounds.height)
+            circleBG?.backgroundColor = .black.withAlphaComponent(0.25)
+            self.addSubview(circleBG!)
+        }
+        
+        circleView = NVActivityIndicatorView(frame: CGRect(
+            x: (UIScreen.main.bounds.width - 40) / 2,
+            y: (UIScreen.main.bounds.height - 40) / 2 - 60,
+            width: 40,
+            height: 40
+        ))
+        
+        if(circleView != nil) {
+//            circleView?.type = .
+            circleBG?.addSubview(circleView!)
+            circleView?.startAnimating()
+        }
+        
+        
         
         webview.translatesAutoresizingMaskIntoConstraints = false
         let constrains = [
@@ -64,36 +98,27 @@ import WebKit
             webview.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             webview.bottomAnchor.constraint(equalTo: self.safeBottomAnchor),
             webview.trailingAnchor.constraint(equalTo: self.trailingAnchor),
- 
-            ]
+        ]
         NSLayoutConstraint.activate(constrains)
         
         Bootpay.shared.webview = webview
+        showProgressBar(false)
     }
+    
+    func showProgressBar(_ isShow: Bool) {
+        circleBG?.isHidden = !isShow
+        if(isShow == true) {
+            circleView?.startAnimating()
+        } else {
+            circleView?.stopAnimating()
+        }
+    }
+     
     
     func updateBlindViewIfNaverLogin(_ webView: WKWebView, _ url: String) {
         if(url.starts(with: "https://nid.naver.com")) { //show
             webView.evaluateJavaScript("document.getElementById('back').remove();")
         }
-//        if(url.starts(with: "https://nid.naver.com/")) { //show
-//            if topBlindView == nil { topBlindView = UIView() }
-//            else { topBlindView?.removeFromSuperview() }
-//            topBlindView?.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 100)
-//            topBlindView?.backgroundColor = .red
-//            webView.superview?.addSubview(topBlindView!)
-//
-////            topBlindButton?.frame = CGRect(x: self.frame.width - 50, y: 0, width: 50, height: 50)
-////            topBlindButton?.setTitle("X", for: .normal)
-////            topBlindButton?.setTitleColor(.black, for: .normal)
-////            topBlindButton?.addTarget(self, action: #selector(closeView), for: .touchUpInside)
-////            self.addSubview(topBlindButton!)
-//
-//        } else { //hide
-//            topBlindView?.removeFromSuperview()
-//            topBlindView = nil
-////            topBlindButton?.removeFromSuperview()
-////            topBlindButton = nil
-//        }
     }
     
     @objc public func closeView() {
@@ -235,6 +260,8 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         guard let event = data["event"] as? String else { return }
         
         if event == "cancel" {
+//            isShowsho
+            showProgressBar(false)
             Bootpay.shared.cancel?(data)
             if(isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
@@ -243,6 +270,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 Bootpay.removePaymentWindow()
             }
         } else if event == "error" {
+            showProgressBar(false)
             Bootpay.shared.error?(data)
             
             //결과를 보는 설정이면 남겨두어야 함
@@ -253,6 +281,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 Bootpay.removePaymentWindow()
             }
         } else if event == "issued" {
+            showProgressBar(false)
             Bootpay.shared.issued?(data)
             if(Bootpay.shared.payload?.extra?.displaySuccessResult != true && isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
@@ -261,12 +290,14 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 Bootpay.removePaymentWindow()
             }
         } else if event == "confirm" {
+            showProgressBar(true)
             if let confirm = Bootpay.shared.confirm {
                 if(confirm(data)) {
                     Bootpay.transactionConfirm()
                 }
             }
         } else if event == "done" {
+            showProgressBar(false)
             Bootpay.shared.done?(data)
             if(Bootpay.shared.payload?.extra?.displaySuccessResult != true && isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
@@ -275,6 +306,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 Bootpay.removePaymentWindow()
             }
         } else if event == "close" {
+            showProgressBar(false)
             //결과페이지에서 닫기 버튼 클릭시
             Bootpay.shared.debounceClose()
 //            Bootpay.shared.close?()
@@ -431,8 +463,6 @@ extension BootpayWebView {
             itunesUrl = "https://apps.apple.com/kr/app/%EC%B0%A8%EC%9D%B4/id1459979272"
         } else if(sUrl.starts(with: "ukbanksmartbanknonloginpay")) {
             itunesUrl = "https://itunes.apple.com/kr/developer/%EC%BC%80%EC%9D%B4%EB%B1%85%ED%81%AC/id1178872626?mt=8"
-        } else if(sUrl.starts(with: "newliiv")) {
-            itunesUrl = "https://apps.apple.com/us/app/%EB%A6%AC%EB%B8%8C-next/id1573528126"
         } else if(sUrl.starts(with: "newliiv")) {
             itunesUrl = "https://apps.apple.com/us/app/%EB%A6%AC%EB%B8%8C-next/id1573528126"
         } else if(sUrl.starts(with: "kbbank")) {

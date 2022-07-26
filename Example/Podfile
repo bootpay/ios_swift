@@ -4,7 +4,7 @@ platform :ios, '9.0'
 
 target 'Bootpay_Example' do
   pod 'Bootpay', :path => '../'
-  pod 'Alamofire' '
+  pod 'Alamofire'
 
   target 'Bootpay_Tests' do
     inherit! :search_paths
