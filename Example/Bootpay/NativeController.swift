@@ -30,6 +30,8 @@ class NativeController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = .white
         // Do any additional setup after loading the view, typically from a nib.
        
 #if os(macOS)
@@ -84,7 +86,6 @@ print("ios")
     
     func setUI() {
         for i in 0...4 {
-            self.view.backgroundColor = .white
             let btn = UIButton()
             
             if(i == 0) {
@@ -223,7 +224,9 @@ print("ios")
     @objc func requestTotalPayment() {
         let payload = generatePayload()
         payload.pg = ""
-        payload.method = ""
+//        payload.method = ""
+        
+        payload.methods = ["카드", "휴대폰"]
                 
         Bootpay.requestPayment(
             viewController: self,

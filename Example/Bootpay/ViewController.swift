@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     
     func setUI() {
         self.view.backgroundColor = .white
+        
         for i in 0...1 {
             let btn = UIButton()
             if(i == 0) {

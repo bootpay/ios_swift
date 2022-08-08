@@ -84,4 +84,19 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var displaySuccessResult = false //결제 완료되면 부트페이가 제공하는 완료창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
     @objc public var displayErrorResult = true //결제가 실패하면 부트페이가 제공하는 실패창으로 보여주기 ( open_type이 iframe, popup 일때만 가능 )
     @objc public var useWelcomepayment = false //웰컴 재판모듈 진행시 true
+    
+    
+    @objc public var disposableCupDeposit: Int = 0 //배달대행 플랫폼을 위한 컵 보증급 가격
+    @objc public var timeout: Int = 30 //결제만료 시간 (분단위)
+    @objc public var commonEventWebhook = false //창닫기, 결제만료 웹훅 추가
+    
+    @objc public var enableCardCompanies: [String]? //https://developers.nicepay.co.kr/manual-code-partner.php '01,02,03,04,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31,32,33,34,35,36,37,38,39,40,41,42'
+    @objc public var exceptCardCompanies: [String]? //제외할 카드사 리스트 ( enable_card_companies가 우선순위를 갖는다 )
+    @objc public var enableEasyPayments: [String]? //노출될 간편결제 리스트
+    
+    @objc public var firstSubscriptionComment: String? //자동결제 price > 0 조건일 때 첫 결제 관련 메세지
+    
+    @objc public var confirmGraceSeconds: Int = 10 //결제승인 유예시간 ( 승인 요청을 여러번하더라도 승인 이후 특정 시간동안 계속해서 결제 response_data 를 리턴한다 )
+    
+    
 }
