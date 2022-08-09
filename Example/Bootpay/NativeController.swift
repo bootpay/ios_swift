@@ -223,10 +223,10 @@ print("ios")
     
     @objc func requestTotalPayment() {
         let payload = generatePayload()
-        payload.pg = ""
+//        payload.pg = "나이스페이"
 //        payload.method = ""
         
-        payload.methods = ["카드", "휴대폰"]
+//        payload.methods = ["카드", "휴대폰"]
                 
         Bootpay.requestPayment(
             viewController: self,

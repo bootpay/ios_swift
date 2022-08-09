@@ -170,7 +170,8 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
 //                print(script)
             }
             let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.requestType)
-//            print(scriptPay)
+            print(scriptPay)
+            
 
             webView.evaluateJavaScript(scriptPay, completionHandler: nil)
         }

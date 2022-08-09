@@ -14,6 +14,52 @@ open class Payload: NSObject, Mappable, Codable {
         mapping(map: map)
     }
     
+//    public required init(from decoder: Decoder) throws {
+//        _ = CodingKeys.self
+//
+//        print("Payload dd")
+////        self.method
+//
+//    }
+    
+    public func encode(to encoder: Encoder) throws {
+//        <#code#>
+//        try super.en
+//        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(applicationId, forKey: .applicationId)
+        try container.encodeIfPresent(pg, forKey: .pg)
+        
+//        if let methods = methods && methods?.count > 0 {
+//            try container.encodeIfPresent("[\(String(describing: methods?.joined(separator: ",")))]", forKey: .method)
+//        } else {
+//            try container.encodeIfPresent(method, forKey: .method)
+//        }
+        if (methods?.count ?? 0) > 0 {
+            try container.encodeIfPresent(methods!, forKey: .method)
+        } else {
+            try container.encodeIfPresent(method, forKey: .method)
+        }
+        try container.encodeIfPresent(orderName, forKey: .orderName)
+        try container.encodeIfPresent(price, forKey: .price)
+        try container.encodeIfPresent(taxFree, forKey: .taxFree)
+        
+        try container.encodeIfPresent(orderId, forKey: .orderId)
+        try container.encodeIfPresent(subscriptionId, forKey: .subscriptionId)
+        try container.encodeIfPresent(authenticationId, forKey: .authenticationId)
+        
+        try container.encodeIfPresent(metadata, forKey: .metadata)
+        
+        try container.encodeIfPresent(userToken, forKey: .userToken)
+        
+        try container.encodeIfPresent(extra, forKey: .extra)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encodeIfPresent(items, forKey: .items)
+//      try container.encode(phone, forKey: .phone)
+//      try container.encode(number, forKey: .number)
+    }
+    
     public func mapping(map: Map) {
         applicationId <- map["application_id"]
         pg <- map["pg"]
