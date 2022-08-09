@@ -56,6 +56,15 @@ public class BootExtra: NSObject, Mappable, Codable {
         displaySuccessResult <- map["display_success_result"]
         displayErrorResult <- map["display_error_result"]
         useWelcomepayment <- map["use_welcomepayment"]
+        disposableCupDeposit <- map["disposable_cup_deposit"]
+        timeout <- map["timeout"]
+        commonEventWebhook <- map["common_event_webhook"]
+        
+        enableCardCompanies <- map["enable_card_companies"]
+        exceptCardCompanies <- map["except_card_companies"]
+        enableEasyPayments <- map["enable_easy_payments"]
+        firstSubscriptionComment <- map["first_subscription_comment"]
+        confirmGraceSeconds <- map["confirm_grace_seconds"]
     }
     
     @objc public var cardQuota: String? //할부허용 범위 (5만원 이상 구매시)
