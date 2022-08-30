@@ -100,10 +100,11 @@ print("ios")
             } else if(i == 3) {
                 btn.setTitle("4. 본인인증 테스트", for: .normal)
                 btn.addTarget(self, action: #selector(requestAuthentication), for: .touchUpInside)
-            } else if(i == 4) {
-                btn.setTitle("5. 비밀번호 결제 테스트", for: .normal)
-                btn.addTarget(self, action: #selector(requestPassword), for: .touchUpInside)
             }
+//            else if(i == 4) {
+//                btn.setTitle("5. 비밀번호 결제 테스트", for: .normal)
+//                btn.addTarget(self, action: #selector(requestPassword), for: .touchUpInside)
+//            }
             
             
             btn.frame = CGRect(
@@ -314,40 +315,7 @@ print("ios")
                 print("close")
             }
     }
-    
-    @objc func requestPassword() {
-        getUserToken()
-    }
-    
-    func goPasswordPay(userToken: String) {
-        let payload = generatePayload()
-        payload.pg = "나이스페이"
-        payload.userToken = userToken
-//        payload.method = "본인인증"
-        
-                
-        Bootpay.requestPassword(viewController: self, payload: payload)
-            .onCancel { data in
-                print("-- cancel: \(data)")
-            }
-            .onIssued { data in
-                print("-- ready: \(data)")
-            }
-            .onConfirm { data in
-                print("-- confirm: \(data)")
-                return true //재고가 있어서 결제를 최종 승인하려 할 경우
-//                            return false //재고가 없어서 결제를 승인하지 않을때
-            }
-            .onDone { data in
-                print("-- done: \(data)")
-            }
-            .onError { data in
-                print("-- error: \(data)")
-            }
-            .onClose {
-                print("close")
-            }
-    }
+     
      
     
     
@@ -364,38 +332,6 @@ print("ios")
         user.username = "홍길동"
         return user
     }
-    
-    func getUserToken() {
       
-        
-        BootpayRest.getRestToken(
-            sendable: self,
-            restApplicationId: _restApplicationId,
-            privateKey: _privateKey
-        )
-    }
-    
-    
-    
-    
-
 }
-
-
-extension NativeController: BootpayRestProtocol {
-   func callbackRestToken(resData: [String : Any]) {
-       if let token = resData["access_token"] {
-           BootpayRest.getEasyPayUserToken(
-               sendable: self,
-               restToken: token as! String,
-               user: generateUser()
-           )
-       }
-   }
-   
-   func callbackEasyCardUserToken(resData: [String : Any]) {
-       if let userToken = resData["user_token"] as? String {
-           self.goPasswordPay(userToken: userToken)
-       }
-   }
-}
+ 
