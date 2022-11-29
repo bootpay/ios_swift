@@ -235,7 +235,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
       webView.removeFromSuperview()
     }
     
-    open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) { 
         
         if(message.name == BootpayConstant.BRIDGE_NAME) {
             
@@ -300,11 +300,18 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         } else if event == "done" {
             showProgressBar(false)
             Bootpay.shared.done?(data)
+            
             if(Bootpay.shared.payload?.extra?.displaySuccessResult != true && isRedirect) {
                 //redirect는 닫기 이벤트를 안줘서 처리해야함
                 Bootpay.shared.debounceClose()
-//                Bootpay.shared.close?()
                 Bootpay.removePaymentWindow()
+            } else {
+                guard let content = data["data"] as? [String : Any], let method_origin_symbol = content["method_origin_symbol"] as? String else { return }
+                if(method_origin_symbol == "card_rebill_rest") {
+                    Bootpay.shared.debounceClose()
+    //                Bootpay.shared.close?()
+                    Bootpay.removePaymentWindow()
+                }
             }
         } else if event == "close" {
             showProgressBar(false)

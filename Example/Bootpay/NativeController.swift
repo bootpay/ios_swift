@@ -125,7 +125,7 @@ print("ios")
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.pg = "나이스페이"
-        payload.method = "네이버페이"
+//        payload.method = "네이버페이"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.displaySuccessResult = true
@@ -192,6 +192,7 @@ print("ios")
     
     @objc func requestPayment() {
         let payload = generatePayload()
+        payload.method = "카드"
                 
         Bootpay.requestPayment(
             viewController: self,

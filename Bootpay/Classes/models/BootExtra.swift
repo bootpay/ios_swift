@@ -65,6 +65,9 @@ public class BootExtra: NSObject, Mappable, Codable {
         enableEasyPayments <- map["enable_easy_payments"]
         firstSubscriptionComment <- map["first_subscription_comment"]
         confirmGraceSeconds <- map["confirm_grace_seconds"]
+        
+        subscribeTestPayment <- map["subscribe_test_payment"]
+        ageLimit <- map["age_limit"]
     }
     
     @objc public var cardQuota: String? //할부허용 범위 (5만원 이상 구매시)
@@ -98,6 +101,9 @@ public class BootExtra: NSObject, Mappable, Codable {
     @objc public var disposableCupDeposit: Int = 0 //배달대행 플랫폼을 위한 컵 보증급 가격
     @objc public var timeout: Int = 30 //결제만료 시간 (분단위)
     @objc public var commonEventWebhook = false //창닫기, 결제만료 웹훅 추가
+    
+    @objc public var ageLimit: Int = 0 //본인인증 나이제한
+    @objc public var subscribeTestPayment = true //100원 결제 후 취소
     
     @objc public var enableCardCompanies: [String]? //https://developers.nicepay.co.kr/manual-code-partner.php '01,02,03,04,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31,32,33,34,35,36,37,38,39,40,41,42'
     @objc public var exceptCardCompanies: [String]? //제외할 카드사 리스트 ( enable_card_companies가 우선순위를 갖는다 )
