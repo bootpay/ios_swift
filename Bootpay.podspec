@@ -34,8 +34,13 @@ Pod::Spec.new do |s|
   s.source_files = 'Bootpay/Classes/**/*'
   
   
-  s.swift_versions = ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6']
-  
+  s.swiftversion = '5.0'
+#  s.swift_versions = ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6']
+  s.pod_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+  }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+    
   # s.resource_bundles = {
   #   'Bootpay' => ['Bootpay/Assets/*.png']
   # }
