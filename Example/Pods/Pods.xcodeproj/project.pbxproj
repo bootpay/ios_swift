@@ -1956,6 +1956,39 @@
 			};
 			name = Debug;
 		};
+		1781A19CEE250C0D4468CA62B610168A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BAFDD94A9209D3F2C21FC3CE51BBF2E8 /* Bootpay.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Bootpay/Bootpay-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Bootpay/Bootpay-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Bootpay/Bootpay.modulemap";
+				PRODUCT_MODULE_NAME = Bootpay;
+				PRODUCT_NAME = Bootpay;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.6;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		2510783563D2E21D572575E659B3BA56 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AF617EB72DB95C31765A780AAC4B44A3 /* ObjectMapper.release.xcconfig */;
@@ -2348,38 +2381,6 @@
 			};
 			name = Debug;
 		};
-		A7DB6464773C32181C6DC07C1D2B395C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 513AAD3288B0833B9393C389A85DFE88 /* Bootpay.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/Bootpay/Bootpay-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Bootpay/Bootpay-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Bootpay/Bootpay.modulemap";
-				PRODUCT_MODULE_NAME = Bootpay;
-				PRODUCT_NAME = Bootpay;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.6;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		BB84C67DF4AFCD04C42BBFD74E307257 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AE9C1388C93677EBDD15C4D83829B5FA /* Pods-Bootpay_Example.release.xcconfig */;
@@ -2415,9 +2416,9 @@
 			};
 			name = Release;
 		};
-		FDB88513B02E327EBAB5F3B601DA2124 /* Release */ = {
+		C9D83F15DFC0921298E62B5555EA352F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BAFDD94A9209D3F2C21FC3CE51BBF2E8 /* Bootpay.release.xcconfig */;
+			baseConfigurationReference = 513AAD3288B0833B9393C389A85DFE88 /* Bootpay.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -2432,7 +2433,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Bootpay/Bootpay-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Bootpay/Bootpay-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Bootpay/Bootpay.modulemap";
 				PRODUCT_MODULE_NAME = Bootpay;
@@ -2442,11 +2443,10 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_VERSION = 5.6;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
@@ -2490,8 +2490,8 @@
 		62B320908853CFB885E96058D6CF22B4 /* Build configuration list for PBXNativeTarget "Bootpay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A7DB6464773C32181C6DC07C1D2B395C /* Debug */,
-				FDB88513B02E327EBAB5F3B601DA2124 /* Release */,
+				C9D83F15DFC0921298E62B5555EA352F /* Debug */,
+				1781A19CEE250C0D4468CA62B610168A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
