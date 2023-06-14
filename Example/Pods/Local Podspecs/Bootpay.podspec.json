@@ -1,8 +1,8 @@
 {
   "name": "Bootpay",
   "version": "4.4.2",
-  "summary": "Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9 이상부터 사용가능합니다.",
-  "description": "Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 9 이상부터 사용가능합니다.",
+  "summary": "Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 13 이상부터 사용가능합니다.",
+  "description": "Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 13 이상부터 사용가능합니다.",
   "homepage": "https://github.com/bootpay/ios_swift",
   "license": {
     "type": "MIT",
@@ -16,11 +16,17 @@
     "tag": "4.4.2"
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": "13.0"
   },
   "source_files": "Bootpay/Classes/**/*",
   "swift_versions": [
-    "5.0"
+    "5.0",
+    "5.1",
+    "5.2",
+    "5.3",
+    "5.4",
+    "5.5",
+    "5.6"
   ],
   "dependencies": {
     "CryptoSwift": [
@@ -33,5 +39,5 @@
 
     ]
   },
-  "swift_version": "5.0"
+  "swift_version": "5.6"
 }
