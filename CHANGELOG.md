@@ -1,5 +1,6 @@
 ## 4.4.2
 * escrow option added
+* 의존성 모듈로 인해 최소버전이 올라감 ios 9.0 -> 13.0 
 
 ## 4.4.1
 * js 4.2.6 update 
