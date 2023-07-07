@@ -59,7 +59,11 @@ import NVActivityIndicatorView
         
         
          
-        
+        if #available(iOS 16.4, *) {
+            webview.isInspectable = true
+        } else {
+            // Fallback on earlier versions
+        }
         webview.uiDelegate = self
         webview.navigationDelegate = self
 //        webview.
@@ -314,6 +318,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
                 }
             }
         } else if event == "close" {
+            doJavascript("Bootpay.destroy();") //resultScreen에서 닫기 이벤트를 수행해야함
             showProgressBar(false)
             //결과페이지에서 닫기 버튼 클릭시
             Bootpay.shared.debounceClose()

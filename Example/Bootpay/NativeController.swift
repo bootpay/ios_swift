@@ -197,12 +197,13 @@ print("ios")
         let payload = generatePayload()
 //        payload.method = "네이버페이"
                 
-        Bootpay.requestPayment(
-            viewController: self,
-            payload: payload,
-            isModal: true,
-            modalPresentationStyle: .automatic,
-            animated: true)
+        if #available(iOS 13.0, *) {
+            Bootpay.requestPayment(
+                viewController: self,
+                payload: payload,
+                isModal: true,
+                modalPresentationStyle: .automatic,
+                animated: true)
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
@@ -212,8 +213,8 @@ print("ios")
             .onConfirm { data in
                 print("-- confirm: \(data)")
                 return true //재고가 있어서 결제를 최종 승인하려 할 경우
-//                Bootpay.transactionConfirm()
-//                return false //재고가 없어서 결제를 승인하지 않을때
+                //                Bootpay.transactionConfirm()
+                //                return false //재고가 없어서 결제를 승인하지 않을때
             }
             .onDone { data in
                 print("-- done: \(data)")
@@ -224,6 +225,9 @@ print("ios")
             .onClose {
                 print("-- close")
             }
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @objc func requestTotalPayment() {

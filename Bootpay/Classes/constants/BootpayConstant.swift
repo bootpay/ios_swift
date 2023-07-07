@@ -132,9 +132,11 @@ public class BootpayConstant {
             confirm(),
             issued(),
             done(),
+            resultScreenClose(),
             "}, function (res) {",
             error(),
             cancel(),
+            resultScreenClose(),
             "})"
         ].reduce("", +)
     }
@@ -150,6 +152,10 @@ public class BootpayConstant {
     
     static func issued() -> String {
         return "else if(res.event === 'issued') { webkit.messageHandlers.\(BootpayConstant.BRIDGE_NAME).postMessage(res); }"
+    }
+    
+    static func resultScreenClose() -> String {
+        return "else if(res.event === 'close') { webkit.messageHandlers.\(BootpayConstant.BRIDGE_NAME).postMessage(res); }"
     }
     
     

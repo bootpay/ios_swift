@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Bootpay'
-  s.version          = '4.4.2'
+  s.version          = '4.4.3'
   s.summary          = 'Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 11 이상부터 사용가능합니다.'
 
 # This description is used to generate tags and improve search results.
@@ -34,8 +34,8 @@ Pod::Spec.new do |s|
   s.source_files = 'Bootpay/Classes/**/*'
   
   
-  s.swift_version = '5.0'
-#  s.swift_versions = ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6']
+  s.swift_versions = ['5']
+  
   s.pod_target_xcconfig = {
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
   }

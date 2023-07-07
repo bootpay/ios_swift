@@ -26,6 +26,7 @@ class WebAppController: UIViewController {
     }
     
     func setUIWebView() {
+        self.view.backgroundColor = .white
         let webview = BootpayWebView()
         
         var topPadding = CGFloat(0)
@@ -45,7 +46,7 @@ class WebAppController: UIViewController {
                                width: UIScreen.main.bounds.width,
                                height: UIScreen.main.bounds.height - topPadding - bottomPadding)
         
-        if let url = URL(string: "https://dev-js.bootapi.com/test/payment/") {
+        if let url = URL(string: "https://main.beautybook.kr/") {
             webview.webview.load(URLRequest(url: url))
         }
         
