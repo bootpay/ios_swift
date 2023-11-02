@@ -11,7 +11,7 @@ import Foundation
 
 public class BootpayConstant {
     
-    public static let CDN_URL = "https://webview.bootpay.co.kr/4.3.1";
+    public static let CDN_URL = "https://webview.bootpay.co.kr/4.3.3";
     public static let BRIDGE_NAME = "Bootpay";
     
     public static let ENV_SWIFT = 0

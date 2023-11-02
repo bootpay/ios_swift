@@ -124,13 +124,14 @@ print("ios")
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "kcp"
-        payload.method = "card"
+        payload.pg = "nicepay"
+        payload.method = "네이버페이"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.displaySuccessResult = true
+        
 //        payload.extra?.escrow = true
-//        payload.extra?.openType = "popup"
+//        payload.extra?.openType = "iframe"
         
          
 //        payload.extra?.cardQuota = "3"

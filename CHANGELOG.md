@@ -1,5 +1,8 @@
+## 4.4.4
+* redirect webapp 시나리오시 정기결제창 안닫히는 현상 개선  
+
 ## 4.4.3
-* * open_type popup 결제요청시 웹앱에서 웹뷰 닫히는 현상 개선 
+* open_type popup 결제요청시 웹앱에서 웹뷰 닫히는 현상 개선 
 
 ## 4.4.2
 * escrow option added

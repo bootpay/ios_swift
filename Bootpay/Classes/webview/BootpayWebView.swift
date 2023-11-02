@@ -35,12 +35,18 @@ import NVActivityIndicatorView
         super.init(coder: coder)!
     }
     
+    func addBootpayEventListener() {
+        webview.configuration.userContentController.add(self, name: BootpayConstant.BRIDGE_NAME)
+    }
+    
     func initComponent() {
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always  // 현대카드 등 쿠키설정 이슈 해결을 위해 필요
         
         let configuration = WKWebViewConfiguration()
-        configuration.userContentController.add(self, name: BootpayConstant.BRIDGE_NAME)
-//        configuration.userContentController.add(self, name: "postMessageListener")
+//        configuration.userContentController.add(self, name: BootpayConstant.BRIDGE_NAME)
+        
+        
+//        configuration.
         
         
         
@@ -60,7 +66,8 @@ import NVActivityIndicatorView
         
          
         if #available(iOS 16.4, *) {
-            webview.isInspectable = true
+//            webview.isinspe
+//            webview.isInspectable = true
         } else {
             // Fallback on earlier versions
         }
@@ -174,10 +181,13 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
 //                print(script)
             }
             let scriptPay = BootpayConstant.getJSPay(payload: payload, requestType: Bootpay.shared.requestType)
+            if(scriptPay.count > 0) {
+                self.addBootpayEventListener()
+                webView.evaluateJavaScript(scriptPay, completionHandler: nil)
+            }
 //            print(scriptPay)
             
 
-            webView.evaluateJavaScript(scriptPay, completionHandler: nil)
         }
     }
     

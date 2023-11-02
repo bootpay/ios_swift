@@ -47,8 +47,8 @@ class ViewController: UIViewController {
     @objc func goNative() {
         let vc = NativeController()
 //        vc.modalPresentationStyle = .fullScreen
-//        self.navigationController?.present(vc, animated: true)
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.present(vc, animated: true)
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func goWebApp() {
