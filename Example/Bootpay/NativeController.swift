@@ -302,28 +302,37 @@ print("ios")
         payload.method = "본인인증"
 //        payload.extra?.openType = "iframe"
         
+        if #available(iOS 13.0, *) {
+            Bootpay.requestAuthentication(
+                viewController: self,
+                payload: payload,
+                isModal: true,
+                animated: true,
+                modalPresentationStyle: .automatic
                 
-        Bootpay.requestAuthentication(viewController: self, payload: payload)
-            .onCancel { data in
-                print("-- cancel: \(data)")
-            }
-            .onIssued { data in
-                print("-- ready: \(data)")
-            }
-            .onConfirm { data in
-                print("-- confirm: \(data)")
-                return true //재고가 있어서 결제를 최종 승인하려 할 경우
-//                            return false //재고가 없어서 결제를 승인하지 않을때
-            }
-            .onDone { data in
-                print("-- done: \(data)")
-            }
-            .onError { data in
-                print("-- error: \(data)")
-            }
-            .onClose {
-                print("close")
-            }
+            )
+                .onCancel { data in
+                    print("-- cancel: \(data)")
+                }
+                .onIssued { data in
+                    print("-- ready: \(data)")
+                }
+                .onConfirm { data in
+                    print("-- confirm: \(data)")
+                    return true //재고가 있어서 결제를 최종 승인하려 할 경우
+    //                            return false //재고가 없어서 결제를 승인하지 않을때
+                }
+                .onDone { data in
+                    print("-- done: \(data)")
+                }
+                .onError { data in
+                    print("-- error: \(data)")
+                }
+                .onClose {
+                    print("close")
+                }
+        }
+
     }
      
      
