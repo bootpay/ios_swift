@@ -24,13 +24,11 @@ class BootpayController: BTViewController {
         NSLayoutConstraint.activate(constrains)
         self.view.backgroundColor = .white
         
-        
         bootpayWebView.startBootpay()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         Bootpay.shared.debounceClose()
     }
 }

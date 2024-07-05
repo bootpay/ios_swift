@@ -21,14 +21,17 @@ class ViewController: UIViewController {
     func setUI() {
         self.view.backgroundColor = .white
         
-        for i in 0...1 {
+        for i in 0...2 {
             let btn = UIButton()
             if(i == 0) {
                 btn.setTitle("Native 연동 예제", for: .normal)
                 btn.addTarget(self, action: #selector(goNative), for: .touchUpInside)
-            } else {
+            } else if(i == 1) {
                 btn.setTitle("WebApp 연동 예제", for: .normal)
                 btn.addTarget(self, action: #selector(goWebApp), for: .touchUpInside)
+            } else {
+                btn.setTitle("위젯 연동 예제", for: .normal)
+                btn.addTarget(self, action: #selector(goWidget), for: .touchUpInside)
             }
             
             
@@ -53,6 +56,11 @@ class ViewController: UIViewController {
     
     @objc func goWebApp() {
         let vc = WebAppController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func goWidget() {
+        let vc = WidgetController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

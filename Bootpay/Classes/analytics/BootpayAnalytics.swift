@@ -62,10 +62,10 @@ import Foundation
         pageTrace(url, applicationId: applicationId, items: items ?? [], page_type)
     }
     
-    @objc public static  func pageTrace(_ url: String, applicationId: String? = nil, items: [BootpayStatItem], _ page_type: String? = nil) {
+    @objc public static func pageTrace(_ url: String, applicationId: String? = nil, items: [BootpayStatItem], _ pageType: String? = nil) {
         let uri = "https://analytics.bootpay.co.kr/call"
         
-        let params = [
+        let params: [String: Any] = [
             "ver": Bootpay.shared.ver,
             "application_id": applicationId ?? Bootpay.shared.payload?.applicationId ?? "",
             "uuid": Bootpay.getUUID(),
@@ -73,9 +73,9 @@ import Foundation
             "sk": Bootpay.shared.sk,
             "user_id": Bootpay.shared.payload?.user?.id ?? "",
             "url": url,
-            "page_type": page_type ?? "ios",
+            "page_type": pageType ?? "ios",
             "items": items.map { $0.toJSON() }
-        ] as [String : Any]
+        ]
         
         let json = Bootpay.stringify(params)
                  
@@ -93,36 +93,32 @@ import Foundation
     
     @objc public static func post(url: String, params: [String: Any], isLogin: Bool) {
         let session = URLSession.shared
-        let request = NSMutableURLRequest(url: NSURL(string: url)! as URL)
+        guard let requestUrl = URL(string: url) else { return }
+        
+        var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        do{
-            let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions())
-            
-            
-            
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: params, options: [])
             request.httpBody = jsonData
-            let task = session.dataTask(with: request as URLRequest as URLRequest, completionHandler: {(data, response, error) in
-                guard error == nil else { return }
-                if isLogin == false { return }
-                
-                guard let data = data else { return }
-                
+            
+            let task = session.dataTask(with: request) { data, response, error in
+                guard error == nil, let data = data, isLogin else { return }
                 
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
-                        
-                        if let data = json["data"] as? [String : Any], let user_id = data["user_id"] as? String {
-                            Bootpay.shared.payload?.user?.id = user_id
-                        }
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any],
+                       let data = json["data"] as? [String: Any],
+                       let userId = data["user_id"] as? String {
+                        Bootpay.shared.payload?.user?.id = userId
                     }
-                } catch let error {
+                } catch {
                     print(error.localizedDescription)
                 }
-            })
+            }
             task.resume()
-        }catch _ {
-            print ("something error")
+        } catch {
+            print("Something went wrong")
         }
     }
 }

@@ -44,25 +44,15 @@ import WebKit
     }
     
     public func debounceClose() {
-        DispatchQueue.main.asyncDeduped(target: self, after: 0.5) { [] in
-
+        DispatchQueue.main.asyncDeduped(target: self, after: 0.5) {
             Bootpay.shared.close?()
-
-            Bootpay.shared.error = nil
-            Bootpay.shared.issued = nil
-            Bootpay.shared.close = nil
-            Bootpay.shared.confirm = nil
-            Bootpay.shared.done = nil
-            Bootpay.shared.cancel = nil
+            Bootpay.shared.resetHandlers()
         }
     }
     
-    
     #if os(macOS)
     @objc(requestPayment::)
-    public static func requestPayment(viewController: BTViewController,
-                                      payload: Payload) {
-        
+    public static func requestPayment(viewController: BTViewController, payload: Payload) {
         shared.parentController = viewController
         shared.payload = payload
         
@@ -80,68 +70,48 @@ import WebKit
                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen,
                                       animated: Bool = true) -> Bootpay.Type {
         shared.requestType = BootpayConstant.REQUEST_TYPE_PAYMENT
-        presentBootpayController(viewController: viewController,
-                                 payload: payload,
-                                 isModal: isModal,
-                                 animated: animated,
-                                 modalPresentationStyle: modalPresentationStyle
-        )
+        presentBootpayController(viewController: viewController, payload: payload, isModal: isModal, animated: animated, modalPresentationStyle: modalPresentationStyle)
         return self
     }
     
     @objc(requestSubscription:::::)
     public static func requestSubscription(viewController: UIViewController,
-                                      payload: Payload,
-                                      isModal: Bool = false,
-                                      animated: Bool = true,
-                                      modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        if(payload.subscriptionId.isEmpty) {
+                                           payload: Payload,
+                                           isModal: Bool = false,
+                                           animated: Bool = true,
+                                           modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+        if payload.subscriptionId.isEmpty {
             payload.subscriptionId = payload.orderId
         }
         
         shared.requestType = BootpayConstant.REQUEST_TYPE_SUBSCRIPT
-        presentBootpayController(viewController: viewController,
-                                 payload: payload,
-                                 isModal: isModal,
-                                 animated: animated,
-                                 modalPresentationStyle: modalPresentationStyle
-        )
+        presentBootpayController(viewController: viewController, payload: payload, isModal: isModal, animated: animated, modalPresentationStyle: modalPresentationStyle)
         return self
     }
     
     @objc(requestAuthentication:::::)
     public static func requestAuthentication(viewController: UIViewController,
-                                      payload: Payload,
-                                      isModal: Bool = false,
-                                      animated: Bool = true,
-                                      modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
-        if(payload.authenticationId.isEmpty) {
+                                             payload: Payload,
+                                             isModal: Bool = false,
+                                             animated: Bool = true,
+                                             modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+        if payload.authenticationId.isEmpty {
             payload.authenticationId = payload.orderId
         }
         
         shared.requestType = BootpayConstant.REQUEST_TYPE_AUTH
-        presentBootpayController(viewController: viewController,
-                                 payload: payload,
-                                 isModal: isModal,
-                                 animated: animated,
-                                 modalPresentationStyle: modalPresentationStyle
-        )
+        presentBootpayController(viewController: viewController, payload: payload, isModal: isModal, animated: animated, modalPresentationStyle: modalPresentationStyle)
         return self
     }
     
     @objc(requestPassword:::::)
     public static func requestPassword(viewController: UIViewController,
-                                      payload: Payload,
-                                      isModal: Bool = false,
-                                      animated: Bool = true,
-                                      modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
+                                       payload: Payload,
+                                       isModal: Bool = false,
+                                       animated: Bool = true,
+                                       modalPresentationStyle: UIModalPresentationStyle = .fullScreen) -> Bootpay.Type {
         shared.requestType = BootpayConstant.REQUEST_TYPE_PASSWORD
-        presentBootpayController(viewController: viewController,
-                                 payload: payload,
-                                 isModal: isModal,
-                                 animated: animated,
-                                 modalPresentationStyle: modalPresentationStyle
-        )
+        presentBootpayController(viewController: viewController, payload: payload, isModal: isModal, animated: animated, modalPresentationStyle: modalPresentationStyle)
         return self
     }
     
@@ -156,13 +126,12 @@ import WebKit
         
         loadSessionValues()
         
-        if(isModal == false) {
-            let vc = BootpayController()
-            viewController.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = BootpayController()
-            vc.modalPresentationStyle = modalPresentationStyle //or .overFullScreen for transparency
+        let vc = BootpayController()
+        if isModal {
+            vc.modalPresentationStyle = modalPresentationStyle
             viewController.present(vc, animated: animated, completion: nil)
+        } else {
+            viewController.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -171,55 +140,44 @@ import WebKit
     @objc(transactionConfirm)
     public static func transactionConfirm() {
         if let webView = shared.webview {
-//            let json = BootpayConstant.dicToJsonString(data).replace(target: "'", withString: "\\'")
-            
-            let script = [
-                "window.Bootpay.confirm()",
-                ".then( function (res) {",
-                BootpayConstant.confirm(),
-                BootpayConstant.issued(),
-                BootpayConstant.done(),
-                "}, function (res) {",
-                BootpayConstant.error(),
-                BootpayConstant.cancel(),
-                "})"
-            ].reduce("", +)
-            
+            let script = """
+            window.Bootpay.confirm()
+            .then(function (res) {
+                \(BootpayConstant.confirm())
+                \(BootpayConstant.issued())
+                \(BootpayConstant.done())
+            }, function (res) {
+                \(BootpayConstant.error())
+                \(BootpayConstant.cancel())
+            })
+            """
             webView.evaluateJavaScript(script)
         }
     }
     
     @objc(removePaymentWindow)
     public static func removePaymentWindow() {
-        if shared.parentController != nil {
-        #if os(macOS)
-        if(shared.isPresentModal == true) {
-            shared.parentController?.dismiss(nil)
-        } else {
-            shared.parentController?.navigationController?.popViewController(animated: true)
+        guard let parentController = shared.parentController else {
+            shared.resetWebViewAndPayload()
+            return
         }
         
-        #elseif os(iOS)
-        if(shared.isPresentModal == true) {
-            shared.parentController?.dismiss(animated: true, completion: nil)
+        #if os(macOS)
+        if shared.isPresentModal {
+            parentController.dismiss(nil)
         } else {
-            shared.parentController?.navigationController?.popViewController(animated: true)
+            parentController.navigationController?.popViewController(animated: true)
+        }
+        #elseif os(iOS)
+        if shared.isPresentModal {
+            parentController.dismiss(animated: true, completion: nil)
+        } else {
+            parentController.navigationController?.popViewController(animated: true)
         }
         #endif
-            shared.parentController = nil
-        } else if shared.ENV_TYPE == BootpayConstant.ENV_SWIFT_UI {
-            
-//            shared.close?()
-        }
-        shared.webview = nil
-        shared.payload = Payload()
         
-//        shared.error = nil
-//        shared.issued = nil
-////        shared.close = nil
-//        shared.confirm = nil
-//        shared.done = nil
-//        shared.cancel = nil
+        shared.parentController = nil
+        shared.resetWebViewAndPayload()
     }
 }
 
@@ -238,9 +196,8 @@ extension Bootpay {
         shared.issued = action
         return self
     }
-     
     
-    @objc public static func onConfirm(_ action: @escaping([String : Any]) -> Bool) -> Bootpay.Type {
+    @objc public static func onConfirm(_ action: @escaping ([String : Any]) -> Bool) -> Bootpay.Type {
         shared.confirm = action
         return self
     }
@@ -276,12 +233,12 @@ extension Bootpay {
 
 extension Bootpay {
     public static func getUUId() -> String {
-        if shared.uuid == "" { shared.uuid = BootpayDefaultHelper.getString(key: "uuid") }
+        if shared.uuid.isEmpty { shared.uuid = BootpayDefaultHelper.getString(key: "uuid") }
         return shared.uuid
     }
     
     public static func getSk() -> String {
-        if shared.sk == "" { return BootpayDefaultHelper.getString(key: "sk") }
+        if shared.sk.isEmpty { return BootpayDefaultHelper.getString(key: "sk") }
         return shared.sk
     }
     
@@ -297,22 +254,20 @@ extension Bootpay {
     
     @objc public static func getUUID() -> String {
         var uuid = BootpayDefaultHelper.getString(key: "uuid")
-        if uuid == "" {
+        if uuid.isEmpty {
             uuid = UUID().uuidString
             BootpayDefaultHelper.setValue("uuid", value: uuid)
         }
         return uuid
     }
-     
     
     fileprivate static func loadUuid() {
         shared.uuid = BootpayDefaultHelper.getString(key: "uuid")
-        if shared.uuid == "" {
+        if shared.uuid.isEmpty {
             shared.uuid = UUID().uuidString
             BootpayDefaultHelper.setValue("uuid", value: shared.uuid)
         }
     }
-    
     
     fileprivate static func loadLastTime() {
         shared.last_time = BootpayDefaultHelper.getInt(key: "last_time")
@@ -327,8 +282,8 @@ extension Bootpay {
         }
         
         loadLastTime()
-        let currentTime = currentTimeInMiliseconds()
-        if shared.last_time != 0 && Swift.abs(shared.last_time - currentTime) >= 30 * 60 * 1000 {
+        let currentTime = currentTimeInMilliseconds()
+        if shared.last_time != 0 && abs(shared.last_time - currentTime) >= 30 * 60 * 1000 {
             shared.time = currentTime - shared.last_time
             shared.last_time = currentTime
             BootpayDefaultHelper.setValue("time", value: shared.time)
@@ -339,42 +294,43 @@ extension Bootpay {
         }
     }
     
-    fileprivate static func currentTimeInMiliseconds() -> Int {
-        let currentDate = Date()
-        let since1970 = currentDate.timeIntervalSince1970
-        return Int(since1970 * 1000)
+    fileprivate static func currentTimeInMilliseconds() -> Int {
+        return Int(Date().timeIntervalSince1970 * 1000)
     }
     
     fileprivate func getRandomKey(_ size: Int) -> String {
-        let keys = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        var result = ""
-        for _ in 0..<size {
-            let ran = Int(arc4random_uniform(UInt32(keys.count)))
-            let index = keys.index(keys.startIndex, offsetBy: ran)
-            result += String(keys[index])
-        }
-        return result
+        let keys = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        return String((0..<size).compactMap { _ in keys.randomElement() })
     }
-        
+    
     static func getSessionKey() -> String {
         return "\(shared.key.toBase64())##\(shared.iv.toBase64())"
     }
     
     static func stringify(_ json: Any, prettyPrinted: Bool = false) -> String {
-        var options: JSONSerialization.WritingOptions = []
-        if prettyPrinted {
-            options = JSONSerialization.WritingOptions.prettyPrinted
-        }
+        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : []
         
-        do {
-            let data = try JSONSerialization.data(withJSONObject: json, options: options)
-            if let string = String(data: data, encoding: String.Encoding.utf8) {
-                return string
-            }
-        } catch {
-            print(error)
+        if let data = try? JSONSerialization.data(withJSONObject: json, options: options),
+           let string = String(data: data, encoding: .utf8) {
+            return string
         }
         
         return ""
+    }
+}
+
+private extension Bootpay {
+    func resetHandlers() {
+        error = nil
+        issued = nil
+        confirm = nil
+        done = nil
+        cancel = nil
+        close = nil
+    }
+    
+    func resetWebViewAndPayload() {
+        webview = nil
+        payload = Payload()
     }
 }

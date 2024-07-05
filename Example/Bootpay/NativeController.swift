@@ -19,6 +19,8 @@ extension String
 }
 
 class NativeController: UIViewController {    
+    
+
     let _applicationId = "5b8f6a4d396fa665fdc2b5e9" //production
     let _restApplicationId = "5b8f6a4d396fa665fdc2b5ea" //production
     let _privateKey = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=" //production
@@ -124,7 +126,7 @@ print("ios")
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "nicepay"
+        payload.pg = "페이앱"
         payload.method = "네이버페이"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
