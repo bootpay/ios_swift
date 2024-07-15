@@ -220,7 +220,6 @@
 		B7F2C07C5CC23E21C6BD4648FCA7C580 /* NoPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E12969E4A81CECB158F98770729901 /* NoPadding.swift */; };
 		BA1B06F3029E1CA3C1C5E4248464883C /* Updatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6940DD075CDCD69CC53999012EC879 /* Updatable.swift */; };
 		BA861EDAC108797A266CB91383F322D1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC44050FED03529CB1965ADFE16E777 /* URLTransform.swift */; };
-		BAFF0C706C4D8A537C79C27674FAD13D /* BootpayWidgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F139CF86715FB059B76FCC59BFCDE178 /* BootpayWidgetController.swift */; };
 		BB5D4CDDA186F4A5AC1B3472C6CA63F2 /* NVActivityIndicatorAnimationBallRotateChase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DE716E30F39072A7CF186F4C9E99FA /* NVActivityIndicatorAnimationBallRotateChase.swift */; };
 		BC0A0C473B63B817926F4D58611281BB /* URLEncodedFormEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DCEBA84C5D97F2D40AB1B859B1A30A /* URLEncodedFormEncoder.swift */; };
 		BCFC381D512F1AFFC05E97D62F9D6D64 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CBE00646A514365F86456896C595115 /* Foundation.framework */; };
@@ -670,7 +669,6 @@
 		EE6320FCEFCBFC9DA5021FED2DC0EC03 /* RSA+Cipher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "RSA+Cipher.swift"; path = "Sources/CryptoSwift/RSA/RSA+Cipher.swift"; sourceTree = "<group>"; };
 		EEFA887822114A8AA00D64F084C3BD9C /* Pods-Bootpay_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Bootpay_Example.modulemap"; sourceTree = "<group>"; };
 		F0D291CBB879AEF6EBE10BD4CE307BD9 /* NVActivityIndicatorAnimationBallPulse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NVActivityIndicatorAnimationBallPulse.swift; path = Sources/Base/Animations/NVActivityIndicatorAnimationBallPulse.swift; sourceTree = "<group>"; };
-		F139CF86715FB059B76FCC59BFCDE178 /* BootpayWidgetController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BootpayWidgetController.swift; sourceTree = "<group>"; };
 		F25450FA2499E3F92BF26DC81C734F8D /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Source/Core/SessionDelegate.swift; sourceTree = "<group>"; };
 		F2C541910EE43F48354AC43CD9DD9B08 /* HexColorTransform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HexColorTransform.swift; path = Sources/HexColorTransform.swift; sourceTree = "<group>"; };
 		F39AE4B6F01B71BAA7A00EBE07B39505 /* Bootpay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Bootpay.release.xcconfig; sourceTree = "<group>"; };
@@ -1338,7 +1336,6 @@
 			isa = PBXGroup;
 			children = (
 				76283D8718A87AF1482AC7B35A77B20D /* BootpayController.swift */,
-				F139CF86715FB059B76FCC59BFCDE178 /* BootpayWidgetController.swift */,
 			);
 			name = dialog;
 			path = Bootpay/Classes/dialog;
@@ -1979,7 +1976,6 @@
 				4609A6488B827F39DF8962332D0A8FB6 /* BootpayDefaultHelper.swift in Sources */,
 				0BEC7477B20F6D32C3664987B98F4C9C /* BootpayWebView22.swift in Sources */,
 				DB5435B3414590AB79BADBCAE1DA005C /* BootpayWidget.swift in Sources */,
-				BAFF0C706C4D8A537C79C27674FAD13D /* BootpayWidgetController.swift in Sources */,
 				8C4A77172C3F9CDE0023A05D /* BootpayWebViewHandler.swift in Sources */,
 				D7E08AA39B175010936E2F97AFC2AB0A /* BootStatItem.swift in Sources */,
 				2EF2349714F88FD28F542D90A0ED3D18 /* BootUser.swift in Sources */,
