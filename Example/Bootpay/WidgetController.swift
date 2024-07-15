@@ -32,13 +32,14 @@ class WidgetController: BTViewController {
        updatePaymentButtonState()
      
         
-       payload.applicationId = "5b9f51264457636ab9a07cdd"
+//       payload.applicationId = "5b9f51264457636ab9a07cdd"
+       payload.applicationId = "5b8f6a4d396fa665fdc2b5e9"
        payload.orderName = "부트페이 결제테스트"
        payload.orderId = String(NSTimeIntervalSince1970)
        payload.widgetSandbox = true
        payload.widgetUseTerms = true
        payload.price = 1000
-       payload.userToken = "6667b08b04ab6d03f274d32e"
+//       payload.userToken = "6667b08b04ab6d03f274d32e"
        payload.widgetKey = "default-widget"
        
        payload.extra = BootExtra()

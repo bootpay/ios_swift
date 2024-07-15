@@ -10,5 +10,7 @@ public enum RequestType: String {
     case subscription = "requestSubscription"
     case auth = "requestAuthentication"
     case password = "requestPassword"
+    case widgetPayment = "requestWidgetPayment"
+    case none = "none"
 }
 

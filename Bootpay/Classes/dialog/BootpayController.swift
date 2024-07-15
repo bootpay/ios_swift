@@ -23,16 +23,21 @@ class BootpayController: BTViewController {
                view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
                view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-           ])
-//            view.load
+           ]) 
         }
-        BootpayWebViewHandler.loadBootpayUrl()
+//        if(BootpayWidget.)
+        if(BootpayWebViewHandler.shared.requestType != .widgetPayment) {
+            BootpayWebViewHandler.loadBootpayUrl()
+        }
     }
+    
+    
     
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         BootpayWebViewHandler.debounceClose()
+        BootpayWebViewHandler.shared.requestType = .none 
     }
 }
 

@@ -11,7 +11,7 @@ class BootpayWebViewHandler {
     public static let shared = BootpayWebViewHandler()
     
     private var isWidget = false
-    private var requestType: RequestType = .payment
+    public var requestType: RequestType = .payment
     private var paymentStatus: PaymentStatus = .none
 
     public var bootpayView: BootpayView?
@@ -56,6 +56,8 @@ class BootpayWebViewHandler {
 
     static public func renderWidget() -> UIView? {
         initWebView()
+        shared.isWidget = true
+        loadBootpayUrl()
         return shared.bootpayView
     }
 
@@ -64,6 +66,9 @@ class BootpayWebViewHandler {
     }
 
     static public func requestWidgetPayment(_ payload: Payload, rootViewController: UIViewController? = nil) {
+        guard let webView = shared.bootpayView?.webView else { return }
+        shared.requestType = .widgetPayment
+        addPaymentEventListener(webView)
         requestWidgetPaymentScript(payload)
         showWidgetController(rootViewController)
     }
@@ -322,7 +327,7 @@ private extension BootpayWebViewHandler {
     }
 
     static func reloadWidgetScript(_ webView: BootpayWebView) {
-        guard let payload = Bootpay.shared.payload else { return }
+        guard let payload = BootpayWidget.shared.payload else { return }
         let scriptPay = BootpayScript.getWidgetRenderScript(payload: payload)
         executeJavaScript(webView, [scriptPay])
     }
@@ -336,13 +341,7 @@ private extension BootpayWebViewHandler {
         executeJavaScript(webView, BootpayScript.getJSBeforePayStart())
         let scriptPay = BootpayScript.getPaymentScript(payload: payload, requestType: shared.requestType)
         executeJavaScript(webView, [scriptPay])
-        
-//        executeJavaScript(webView, BootpayScript.getJSBeforePayStart(), completion: {
-//            print("getJSBeforePayStart finish")
-//            let scriptPay = BootpayScript.getPaymentScript(payload: payload, requestType: shared.requestType)
-////            print(scriptPay)
-//            executeJavaScript(webView, [scriptPay])
-//        })
+         
     }
 
     static func debounceWidgetClose() {
@@ -376,7 +375,9 @@ private extension BootpayWebViewHandler {
 //    static func executeJavaScript(_ webView: BootpayWebView, _ scripts: [String], completion: (() -> Void)? = nil) {
     static func executeJavaScript(_ webView: BootpayWebView, _ scripts: [String]) {
         for script in scripts {
-                print("executeJavaScript : \(script)")
+            
+            print("executeJavaScript : \(script)")
+            
             webView.evaluateJavaScript("(function() { \(script) })();") { result, error in
                 if let error = error {
                     print("JavaScript evaluation error: \(error.localizedDescription)\nscript: \(script)")
