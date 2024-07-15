@@ -27,32 +27,40 @@ class WebAppController: UIViewController {
     
     func setUIWebView() {
         self.view.backgroundColor = .white
-        let webview = BootpayWebView()
+        let bootpayWebView = BootpayWebView()
         
-        var topPadding = CGFloat(0)
-        var bottomPadding = CGFloat(0)
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.keyWindow
-            topPadding = window?.safeAreaInsets.top ?? CGFloat(0)
-            bottomPadding = window?.safeAreaInsets.bottom ?? CGFloat(0)
-        }
+//        var topPadding = CGFloat(0)
+//        var bottomPadding = CGFloat(0)
+//        if #available(iOS 11.0, *) {
+//            let window = UIApplication.shared.keyWindow
+//            topPadding = window?.safeAreaInsets.top ?? CGFloat(0)
+//            bottomPadding = window?.safeAreaInsets.bottom ?? CGFloat(0)
+//        }
         
-        webview.frame = CGRect(x: 0,
-                               y: topPadding,
-                               width: UIScreen.main.bounds.width,
-                               height: UIScreen.main.bounds.height - topPadding - bottomPadding)
-        webview.webview.frame = CGRect(x: 0,
-                               y: 0,
-                               width: UIScreen.main.bounds.width,
-                               height: UIScreen.main.bounds.height - topPadding - bottomPadding)
+        NSLayoutConstraint.activate([
+            bootpayWebView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            bootpayWebView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            bootpayWebView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            bootpayWebView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
         
-        let urlString = "https://www.yourdomain.com/"
+//        bootpayView.frame = CGRect(x: 0,
+//                               y: topPadding,
+//                               width: UIScreen.main.bounds.width,
+//                               height: UIScreen.main.bounds.height - topPadding - bottomPadding)
+//        bootpayView.webView?.frame = CGRect(x: 0,
+//                               y: 0,
+//                               width: UIScreen.main.bounds.width,
+//                               height: UIScreen.main.bounds.height - topPadding - bottomPadding)
+        
+        let urlString = "https://webview.bootpay.co.kr/5.0.0-rc.13/widget.html"
+//        bootpayView.
 
         if let url = URL(string: urlString) {
-            webview.webview.load(URLRequest(url: url))
+            bootpayWebView.load(URLRequest(url: url))
         }
         
-        self.view.addSubview(webview)
+        self.view.addSubview(bootpayWebView)
     }
 }
 

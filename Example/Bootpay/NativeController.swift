@@ -37,11 +37,9 @@ class NativeController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
        
 #if os(macOS)
-    
-print("macos")
+     
 #elseif os(iOS)
-    
-print("ios")
+     
 #endif
         
         setUI()
@@ -126,11 +124,11 @@ print("ios")
          
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "페이앱"
+        payload.pg = "나이스페이"
         payload.method = "네이버페이"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
-        payload.extra?.displaySuccessResult = true
+        payload.extra?.displaySuccessResult = true 
         
 //        payload.extra?.escrow = true
 //        payload.extra?.openType = "iframe"
@@ -171,10 +169,6 @@ print("ios")
         ]
          
         payload.metadata = customParams
-//        payload.extra?.commonEventWebhook = true 
-//        payload.metadata = dicToJson(customParams).replace(target: "'", withString: "\\'").replace(target: "'\n", withString: "")
-        
- 
         payload.user = generateUser()
          
         return payload
@@ -191,7 +185,7 @@ print("ios")
             }
             return ""
         } catch {
-            print(error.localizedDescription)
+            print("dicToJson : \(error.localizedDescription)")
             return ""
         }
     }
@@ -202,11 +196,9 @@ print("ios")
                 
         if #available(iOS 13.0, *) {
             Bootpay.requestPayment(
-                viewController: self,
                 payload: payload,
-                isModal: true,
-                modalPresentationStyle: .automatic,
-                animated: true)
+                rootController: self
+            )
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
@@ -241,8 +233,9 @@ print("ios")
 //        payload.methods = ["카드", "휴대폰"]
                 
         Bootpay.requestPayment(
-            viewController: self,
-            payload: payload)
+                payload: payload,
+                rootController: self
+            )
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
@@ -273,7 +266,7 @@ print("ios")
         payload.pg = "나이스페이"
         payload.method = "카드자동"
                 
-        Bootpay.requestSubscription(viewController: self, payload: payload)
+        Bootpay.requestSubscription(payload: payload, rootController: self)
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
@@ -306,12 +299,8 @@ print("ios")
         
         if #available(iOS 13.0, *) {
             Bootpay.requestAuthentication(
-                viewController: self,
                 payload: payload,
-                isModal: true,
-                animated: true,
-                modalPresentationStyle: .automatic
-                
+                rootController: self
             )
                 .onCancel { data in
                     print("-- cancel: \(data)")

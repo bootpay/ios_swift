@@ -10,63 +10,107 @@ import UIKit
 import Bootpay
 
 class WidgetController: BTViewController {
+ 
+   private lazy var button = UIButton()
+   var payload = Payload()
 
-//       private lazy var widget: PaymentWidget = PaymentWidget(
-//           clientKey: "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq",
-//           customerKey: "EPUx4U0_zvKaGMZkA7uF_"
-//       )
-
-       private lazy var button = UIButton()
+   var widgetView: UIView?
+   
+   override func viewDidLoad() {
+       super.viewDidLoad()
        
-       override func viewDidLoad() {
-           super.viewDidLoad()
+       let label = UILabel()
+       label.text = "위젯 테스트"
+       
+       
 
-           view.addSubview(button)
-           button.backgroundColor = .systemBlue
-           button.setTitle("결제하기", for: .normal)
-           button.addTarget(self, action: #selector(requestPayment), for: .touchUpInside)
+       self.view.backgroundColor = .brown
+       view.addSubview(button)
+       button.backgroundColor = .systemBlue
+       button.setTitle("결제하기", for: .normal)
+       button.addTarget(self, action: #selector(requestPayment), for: .touchUpInside)
+       updatePaymentButtonState()
+     
+        
+       payload.applicationId = "5b9f51264457636ab9a07cdd"
+       payload.orderName = "부트페이 결제테스트"
+       payload.orderId = String(NSTimeIntervalSince1970)
+       payload.widgetSandbox = true
+       payload.widgetUseTerms = true
+       payload.price = 1000
+       payload.userToken = "6667b08b04ab6d03f274d32e"
+       payload.widgetKey = "default-widget"
+       
+       payload.extra = BootExtra()
+       payload.extra?.displaySuccessResult = true
 
-//           let paymentMethods = widget.renderPaymentMethods(amount: PaymentMethodWidget.Amount(value: 10000))
-//           let agreement = widget.renderAgreement()
-           
-//           stackView.addArrangedSubview(paymentMethods)
-//           stackView.addArrangedSubview(agreement)
-           stackView.addArrangedSubview(button)
-           
-//           widget.delegate = self
-//           widget.paymentMethodWidget?.widgetStatusDelegate = self;
-       }
+       
+       widgetView = BootpayWidget.render(
+        payload: payload,
+        onWidgetResize: { height in
+            print("onWidgetResize: \(height)")
+        },
+        onWidgetReady: {
+            print("onWidgetReady")
+        },
+        onWidgetChangePayment: { widgetData in
+            print("onWidgetChangePayment: \(widgetData.toJSON())")
+            self.payload.mergeWidgetData(data: widgetData)
+            self.updatePaymentButtonState()
+        },
+        onWidgetChangeAgreeTerm: { widgetData in
+            print("onWidgetChangeAgreeTerm: \(widgetData.toJSON())")
+            self.payload.mergeWidgetData(data: widgetData)
+            self.updatePaymentButtonState()
+        },
+        needReloadWidget: {
+            if self.widgetView != nil { self.stackView.addArrangedSubview(self.widgetView!) }
+        }
+       )
+       
+//       guard let widgetView = widgetView else { return }
 
-       @objc func requestPayment() {
-//           widget.requestPayment(
-//               info: DefaultWidgetPaymentInfo(
-//                   orderId: "2VAhXURbYbiKwX5ybfrLr",
-//                   orderName: "토스 티셔츠 외 2건"),
-//               on: self
-//           )
-       }
+       stackView.addArrangedSubview(label)
+       stackView.addArrangedSubview(button)
+       if self.widgetView != nil { self.stackView.addArrangedSubview(self.widgetView!) }
        
    }
+    
+    func updatePaymentButtonState() {
+//        button.isEnabled = payload.getWidgetIsCompleted()
+        
+        button.backgroundColor = payload.getWidgetIsCompleted() == true ? .systemBlue : .darkGray
+    }
 
-//   extension PaymentWidgetViewController: TossPaymentsDelegate {
-//       public func handleSuccessResult(_ success: TossPaymentsResult.Success) {
-//           print("결제 성공")
-//           print("paymentKey: \(success.paymentKey)")
-//           print("orderId: \(success.orderId)")
-//           print("amount: \(success.amount)")
-//       }
-//       
-//       public func handleFailResult(_ fail: TossPaymentsResult.Fail) {
-//           print("결제 실패")
-//           print("errorCode: \(fail.errorCode)")
-//           print("errorMessage: \(fail.errorMessage)")
-//           print("orderId: \(fail.orderId)")
-//
-//       }
-//   }
-//   extension PaymentWidgetViewController: TossPaymentsWidgetStatusDelegate {
-//       public func didReceivedLoad(_ name: String) {
-//           print("결제위젯 렌더링 완료 ")
-//       }
-//   }
-
+   @objc func requestPayment() {
+       print("requestPayment click")
+       
+       BootpayWidget.requestPayment(
+          payload: self.payload
+          
+       ).onCancel { data in
+           print("-- cancel: \(data)")
+       }
+       .onIssued { data in
+           print("-- issued: \(data)")
+       }
+       .onConfirm { data in
+           print("-- confirm: \(data)")
+           return true //재고가 있어서 결제를 최종 승인하려 할 경우
+//                Bootpay.transactionConfirm()
+//                return false //재고가 없어서 결제를 승인하지 않을때
+       }
+       .onDone { data in
+           print("-- done: \(data)")
+       }
+       .onError { data in
+           print("-- error: \(data)")
+       }
+       .onClose {
+           print("-- close")
+       }
+        
+   }
+   
+}
+ 

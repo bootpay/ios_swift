@@ -22,7 +22,7 @@ open class BTViewController: UIViewController {
         scrollView.alwaysBounceVertical = true
         scrollView.keyboardDismissMode = .onDrag
         
-        stackView.spacing = 24
+        stackView.spacing = 12
         stackView.axis = .vertical
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,9 +36,9 @@ open class BTViewController: UIViewController {
             scrollView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 12),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -12),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }

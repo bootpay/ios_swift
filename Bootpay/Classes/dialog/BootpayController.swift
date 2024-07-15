@@ -6,29 +6,33 @@
 //
 
 class BootpayController: BTViewController {
-    let bootpayWebView = BootpayWebView()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(bootpayWebView)
         
-        bootpayWebView.translatesAutoresizingMaskIntoConstraints = false
+        BootpayWebViewHandler.initWebView()
         
-        let constrains = [
-            bootpayWebView.topAnchor.constraint(equalTo: self.view.safeTopAnchor),
-            bootpayWebView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            bootpayWebView.bottomAnchor.constraint(equalTo: self.view.safeBottomAnchor),
-            bootpayWebView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
- 
-        ]
-        NSLayoutConstraint.activate(constrains)
         self.view.backgroundColor = .white
-        
-        bootpayWebView.startBootpay()
+        if let view = BootpayWebViewHandler.shared.bootpayView {
+           view.translatesAutoresizingMaskIntoConstraints = false
+           self.view.addSubview(view)
+           
+           NSLayoutConstraint.activate([
+               view.topAnchor.constraint(equalTo: self.view.topAnchor),
+               view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+               view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+               view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+           ])
+//            view.load
+        }
+        BootpayWebViewHandler.loadBootpayUrl()
     }
+    
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        Bootpay.shared.debounceClose()
+        BootpayWebViewHandler.debounceClose()
     }
 }
+
