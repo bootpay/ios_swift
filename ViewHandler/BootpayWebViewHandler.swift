@@ -174,10 +174,17 @@ private extension BootpayWebViewHandler {
     static func handleCancelEvent(_ message: WKScriptMessage) {
         updatePaymentState(.cancel)
         guard let data = messageBodyToDictionary(message) else { return }
-        Bootpay.shared.cancel?(data)
-        if Bootpay.shared.payload?.extra?.openType == "redirect" {
-            debouncePaymentClose()
-            Bootpay.removePaymentWindow()
+        
+        if shared.isWidget {
+            BootpayWidget.shared.cancel?(data)
+            dismissController()
+            debounceWidgetClose()
+        } else {
+            Bootpay.shared.cancel?(data)
+            if Bootpay.shared.payload?.extra?.openType == "redirect" {
+                debouncePaymentClose()
+                Bootpay.removePaymentWindow()
+            }
         }
     }
 
