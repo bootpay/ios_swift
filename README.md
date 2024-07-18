@@ -159,6 +159,7 @@ func setupWidgetContainerConstraints() {
 ```swift
 @objc func requestPayment() {
     let payload = generatePayload() 
+    //pyaload.extra?.displaySuccessResult = true 결제 성공시 결과화면을 보여줍니다 
             
     if #available(iOS 13.0, *) {
         Bootpay.requestPayment(
@@ -248,6 +249,7 @@ func requestSubscription() {
     let payload = generatePayload()
     payload.pg = "나이스페이"
     payload.method = "카드자동"
+    //payload.price = 1000 //금액이 0 이상일 경우 빌링키 발급 후 결제까지 진행합니다.
             
     Bootpay.requestSubscription(payload: payload, rootController: self)
         .onCancel { data in
