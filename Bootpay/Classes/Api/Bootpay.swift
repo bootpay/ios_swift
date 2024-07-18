@@ -138,10 +138,19 @@ import WebKit
         BootpayWebViewHandler.transactionConfirm()
     }
     
+    @objc(confirm)
+    public static func confirm() {
+        transactionConfirm()
+    } 
+    
     @objc(removePaymentWindow)
     public static func removePaymentWindow() { 
         BootpayWebViewHandler.dismissController()
-        
+    }
+    
+    @objc(dismiss)
+    public static func dismiss() {
+        removePaymentWindow()
     }
 }
 

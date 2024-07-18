@@ -7,24 +7,24 @@
 
 # Bootpay iOS
 
-자세한 내용은 [부트페이 개발연동 문서](https://app.gitbook.com/@bootpay/s/docs/client/pg/android)를 참고해주세요.
+부트페이에서 지원하는 공식 iOS 라이브러리 입니다
+* iOS OS 13 부터 사용 가능합니다.
 
-Native 방식으로 iOS 앱을 만들때 이 페이지를 참조하시면 됩니다. 
-
-PG 결제창은 기본적으로 Javascript로 연동됩니다. 부트페이 iOS SDK는 내부적으로 Webview 방식으로 구현하였으며, 사용방법은 아래와 같습니다. 
-
-
-iOS 10 버전부터는 보안정책으로 **LSApplicationQueriesSchemes** 을 통하여 사용하고자 하는 URL scheme들을 등록하길 권장합니다.  하지만 부트페이에서는 각 은행사들의 scheme를 변경/추가/삭제에 대응하기 어렵다고 판단하여,  custom URL scheme 요청시 WKWebView에서 앱투앱 처리를 합니다. 코드가 궁금하신 분들인[ 이 곳](https://github.com/bootpay/SwiftyBootpay/blob/master/SwiftyBootpay/Classes/BootpayWebView.swift)을 참고하세요
-
+## 기능
+1. 국내 주요 PG사 지원 
+2. 주요 결제수단 지원 
+3. 카드/계좌 자동결제 지원 
+4. 위젯 지원  
+5. 본인인증 지원 
+ 
 
 ### Cocoapod을 통한 설치 
-
 ```java
 pod 'Bootpay'
 ```
 
 ### info.plist
-
+``CFBundleURLName``과 ``CFBundleURLSchemes``의 값은 개발사에서 고유값으로 지정해주셔야 합니다. 외부앱(카드사앱)에서 다시 기존 앱으로 돌아올 때 필요한 스키마 값입니다. 
 ```markup
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -49,75 +49,247 @@ pod 'Bootpay'
                 <string>bootpaySample</string> // 사용하고자 하시는 앱의 bundle url scheme
             </array>
         </dict>
-    </array>
-
-    ...
-    <key>NSFaceIDUsageDescription</key>
-    <string>생체인증 결제 진행시 권한이 필요합니다</string>
+    </array> 
 </dict>
 </plist>
 ```
 
 **카드사 앱 실행 후 개발중인 원래 앱으로 돌아오지 않는 경우**
-
 상단의 프로젝트 설정의 info.plist에서 CFBundleURLSchemes를 설정해주시면 부트페이 SDK가 해당 값을 읽어 extra.appScheme 에 값을 채워 결제데이터를 전송합니다.       
 
 
-## 결제창 띄우는 iOS 코드
+## 위젯 설정 
+[부트페이 관리자](https://developers.bootpay.co.kr/pg/guides/widget)에서 위젯을 생성하셔야만 사용이 가능합니다. 
 
 
+## 위젯 렌더링 
 ```swift
+private let widgetContainerView = UIView() //위젯을 담을 상위 뷰 
+var widgetView: UIView? //부트페이가 생성하는 위젯 뷰 
 
-import UIKit
-import Bootpay
+override func viewDidLoad() {
+    // WidgetView 설정
+    widgetView = BootpayWidget.render(
+        payload: payload,
+        onWidgetResize: { height in
+            //위젯 사이즈 변경 이벤트 
+            print("onWidgetResize: \(height)")
+        },
+        onWidgetReady: {
+            //위젯이 렌더링되면 호출되는 이벤트
+            print("onWidgetReady")
+        },
+        onWidgetChangePayment: { widgetData in
+            //선택된 결제수단 변경 이벤트 
+            print("onWidgetChangePayment: \(widgetData.toJSON())")
+            self.payload.mergeWidgetData(data: widgetData) //widgetData 정보를 payload에 반영합니다. 반영된 payload는 추후 결제요청시 사용됩니다.
+            self.updatePaymentButtonState()
+        },
+        onWidgetChangeAgreeTerm: { widgetData in
+            //선택된 약관 변경 이벤트
+            print("onWidgetChangeAgreeTerm: \(widgetData.toJSON())")
+            self.payload.mergeWidgetData(data: widgetData) //widgetData 정보를 payload에 반영합니다. 반영된 payload는 추후 결제요청시 사용됩니다.
+            self.updatePaymentButtonState()
+        },
+        needReloadWidget: {
+            //위젯 뷰 새로고침이 필요할 때 호출되는 이벤트 
+            if self.widgetView != nil {
+                self.widgetContainerView.subviews.forEach { $0.removeFromSuperview() }
+                self.widgetContainerView.addSubview(self.widgetView!)
+                self.setupWidgetContainerConstraints()
+            }
+        }
+    )
 
-class NativeController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        setUI()
+    //위젯을 상위 뷰에 추가한다 
+    if let widgetView = widgetView {
+        widgetView.translatesAutoresizingMaskIntoConstraints = false
+        widgetContainerView.addSubview(widgetView) 
     }
-    
-    func setUI() {
-        self.view.backgroundColor = .white
-        let btn = UIButton()
-        btn.setTitle("결제하기", for: .normal)
-        btn.addTarget(self, action: #selector(showBootpay), for: .touchUpInside)
-        btn.frame = CGRect(
-            x: self.view.frame.width/2 - 40,
-            y: self.view.frame.height/2 - 40,
-            width: 80,
-            height: 80
+}
+
+func updatePaymentButtonState() {
+    button.backgroundColor = payload.getWidgetIsCompleted() == true ? .systemBlue : .darkGray
+}
+
+func setupWidgetContainerConstraints() {
+    guard let widgetView = widgetView else { return }
+    NSLayoutConstraint.activate([
+        widgetView.topAnchor.constraint(equalTo: widgetContainerView.topAnchor),
+        widgetView.leadingAnchor.constraint(equalTo: widgetContainerView.leadingAnchor),
+        widgetView.trailingAnchor.constraint(equalTo: widgetContainerView.trailingAnchor),
+        widgetView.bottomAnchor.constraint(equalTo: widgetContainerView.bottomAnchor)
+    ])
+}
+```
+
+## 위젯으로 결제 요청하기
+이 방법은 위젯을 사용하여 결제하는 방법입니다. 위젯을 사용하지 않고 결제를 요청하는 방법은 별도로 제공합니다. 
+```swift
+@objc func requestPayment() {
+    BootpayWidget.requestPayment(
+        payload: self.payload
+    ).onCancel { data in
+        print("-- cancel: \(data)")
+    }
+    .onIssued { data in
+        print("-- issued: \(data)")
+    }
+    .onConfirm { data in
+        print("-- confirm: \(data)")
+        return true // 결제 승인요청 
+    }
+    .onDone { data in
+        print("-- done: \(data)")
+    }
+    .onError { data in
+        print("-- error: \(data)")
+    }
+    .onClose {
+        print("-- close")
+    }
+}
+```
+
+
+
+
+## 결제 요청하기 
+이 방법은 위젯을 사용하지 않고 결제를 요청하는 방법입니다.
+```swift
+@objc func requestPayment() {
+    let payload = generatePayload() 
+            
+    if #available(iOS 13.0, *) {
+        Bootpay.requestPayment(
+            payload: payload,
+            rootController: self
         )
-        btn.setTitleColor(.darkGray, for: .normal)
-        self.view.addSubview(btn)
-    }
-    
-    @objc func showBootpay() {
-        let payload = Payload()
-        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
-                
-        payload.price = 1000
-        payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "payletter"
-        payload.method = "card"
-        payload.name = "테스트 아이템"
-        payload.extra = BootExtra()
-        payload.extra?.popup = 0
-        payload.extra?.quickPopup = 0
-        
+        .onCancel { data in
+            print("-- cancel: \(data)")
+        }
+        .onIssued { data in
+            print("-- issued: \(data)")
+        }
+        .onConfirm { data in
+            print("-- confirm: \(data)")
+            
+            if(self.checkClientValidation(data: data)) {
+//                    Bootpay.confirm() // 승인 요청(방법 1), 이때는 return false 를 해야함
+                return true //승인 요청(방법 2), return true시 내부적으로 승인을 요청함
+            } else {
+                Bootpay.dismiss()
+                return false
+            }
+        }
+        .onDone { data in
+            print("-- done: \(data)")
+        }
+        .onError { data in
+            print("-- error: \(data)")
+        }
+        .onClose {
+            print("-- close")
+        }
+    }  
+}
 
-        let user = BootUser()
-        user.username = "테스트 유저"
-        user.phone = "01012345678"
-        payload.userInfo = user
-                
-        Bootpay.requestPayment(viewController: self, payload: payload)
+func generatePayload() -> Payload {
+    let payload = Payload()
+    payload.applicationId = _applicationId //ios application id
+        
+    payload.price = 1000
+    payload.orderId = String(NSTimeIntervalSince1970)
+    payload.pg = "나이스페이"
+    payload.method = "네이버페이"
+    payload.orderName = "테스트 아이템"
+    payload.extra = BootExtra()
+    payload.extra?.displaySuccessResult = true 
+        
+    //통계를 위한 상품데이터
+    let item1 = BootItem()
+    item1.name = "나는 아이템1"
+    item1.qty = 1
+    item1.id = "item_01"
+    item1.price = 500
+    item1.cat1 = "TOP"
+    item1.cat2 = "티셔츠"
+    item1.cat3 = "반팔티"
+    
+    let item2 = BootItem()
+    item2.name = "나는 아이템1"
+    item2.qty = 2
+    item2.id = "item_02"
+    item2.price = 250
+    item2.cat1 = "TOP"
+    item2.cat2 = "데님"
+    item2.cat3 = "청자켓"
+    payload.items = [item1, item2]
+    
+    
+    let customParams: [String: String] = [
+        "callbackParam1": "value12",
+        "callbackParam2": "value34",
+        "callbackParam3": "value56",
+        "callbackParam4": "value78",
+    ]
+        
+    payload.metadata = customParams
+    payload.user = generateUser()
+        
+    return payload
+}
+``` 
+ 
+
+## 자동결제 - 빌링키 발급 요청하기 
+```swift
+func requestSubscription() {
+    let payload = generatePayload()
+    payload.pg = "나이스페이"
+    payload.method = "카드자동"
+            
+    Bootpay.requestSubscription(payload: payload, rootController: self)
+        .onCancel { data in
+            print("-- cancel: \(data)")
+        }
+        .onIssued { data in
+            print("-- ready: \(data)")
+        }
+        .onConfirm { data in
+            print("-- confirm: \(data)")
+            return true //재고가 있어서 결제를 최종 승인하려 할 경우
+//                            return false //재고가 없어서 결제를 승인하지 않을때
+        }
+        .onDone { data in
+            print("-- done: \(data)")
+            //이후 서버사이드에서 빌링키 결제데이터 가져오기를 수행해야 한다. (subscribe_billing_key)
+        }
+        .onError { data in
+            print("-- error: \(data)")
+        }
+        .onClose {
+            print("-- close")
+        }
+}
+```
+
+## 본인인증 
+```swift
+func requestAuthentication() {
+    let payload = generatePayload()
+    payload.pg = "다날"
+    payload.method = "본인인증" 
+    
+    if #available(iOS 13.0, *) {
+        Bootpay.requestAuthentication(
+            payload: payload,
+            rootController: self
+        )
             .onCancel { data in
                 print("-- cancel: \(data)")
             }
-            .onReady { data in
+            .onIssued { data in
                 print("-- ready: \(data)")
             }
             .onConfirm { data in
@@ -132,59 +304,16 @@ class NativeController: UIViewController {
                 print("-- error: \(data)")
             }
             .onClose {
-                print("-- close")
+                print("close")
             }
     }
-}
-``` 
- 
- 결제 진행 상태에 따라 LifeCycle 함수가 실행됩니다. 각 함수에 대한 상세 설명은 아래를 참고하세요.
 
-
-```swift
-//MARK: Bootpay Callback Protocol
-extension ViewController: BootpayRequestProtocol {
-    // 에러가 났을때 호출되는 부분
-    func onError(data: [String: Any]) {
-        print(data)
-    }
-
-    // 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
-    func onReady(data: [String: Any]) {
-        print("ready")
-        print(data)
-    }
-
-    // 결제가 진행되기 바로 직전 호출되는 함수로, 주로 재고처리 등의 로직이 수행
-    func onConfirm(data: [String: Any]) {
-        print(data)
-
-        var iWantPay = true
-        if iWantPay == true {  // 재고가 있을 경우.
-            Bootpay.transactionConfirm(data: data) // 결제 승인
-        } else { // 재고가 없어 중간에 결제창을 닫고 싶을 경우
-            Bootpay.dismiss() // 결제창 종료
-        }
-    }
-
-    // 결제 취소시 호출
-    func onCancel(data: [String: Any]) {
-        print(data)
-    }
-
-    // 결제완료시 호출
-    // 아이템 지급 등 데이터 동기화 로직을 수행합니다
-    func onDone(data: [String: Any]) {
-        print(data)
-    }
-
-    //결제창이 닫힐때 실행되는 부분
-    func onClose() {
-        print("close")
-        Bootpay.dismiss() // 결제창 종료
-    }
 }
 ```
+
+
+## Bootpay Event Listener
+결제 진행 상태에 따라 이벤트 함수가 실행됩니다. 각 이벤트에 대한 상세 설명은 아래를 참고하세요.
 
 ### onError 함수
 
@@ -309,8 +438,15 @@ PG에서 거래 승인 이후에 호출 되는 함수입니다. 결제 완료 �
 ```  
 
 
+## Documentation
 
-# 기타 문의사항이 있으시다면
+[부트페이 개발매뉴얼](https://developer.bootpay.co.kr/)을 참조해주세요
 
-1. [부트페이 개발연동 문서](https://app.gitbook.com/@bootpay/s/docs/client/pg/android) 참고
-2. [부트페이 홈페이지](https://www.bootpay.co.kr) 참고 - 사이트 우측 하단에 채팅으로 기술문의 주시면 됩니다.
+## 기술문의
+
+[채팅](https://bootpay.channel.io/)으로 문의
+
+## License
+
+[MIT License](https://opensource.org/licenses/MIT).
+

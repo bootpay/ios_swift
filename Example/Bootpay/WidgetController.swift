@@ -91,8 +91,6 @@ class WidgetController: BaseController {
     }
 
     @objc func requestPayment() {
-        print("requestPayment click")
-        
         BootpayWidget.requestPayment(
             payload: self.payload
         ).onCancel { data in

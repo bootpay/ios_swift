@@ -70,6 +70,11 @@ import WebKit
         return self
     }
     
+    
+    public static func dismiss() {
+        BootpayWebViewHandler.dismissController()
+    }
+    
 //    public static func widgetStatusReset() {
 //        shared.bootpayWebView?.startWidget()
 //        if shared.paymentResult == .none {

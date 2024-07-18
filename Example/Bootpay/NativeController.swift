@@ -207,9 +207,14 @@ class NativeController: UIViewController {
             }
             .onConfirm { data in
                 print("-- confirm: \(data)")
-                return true //재고가 있어서 결제를 최종 승인하려 할 경우
-                //                Bootpay.transactionConfirm()
-                //                return false //재고가 없어서 결제를 승인하지 않을때
+                
+                if(self.checkClientValidation(data: data)) {
+//                    Bootpay.confirm() // 승인 요청(방법 1), 이때는 return false 를 해야함
+                    return true //승인 요청(방법 2), return true시 내부적으로 승인을 요청함
+                } else {
+                    Bootpay.dismiss()
+                    return false
+                }
             }
             .onDone { data in
                 print("-- done: \(data)")
@@ -223,6 +228,15 @@ class NativeController: UIViewController {
         } else {
             // Fallback on earlier versions
         }
+    }
+    
+    func checkClientValidation(data: [String: Any]) -> Bool {
+        // 유효성 검사 로직을 작성하세요
+        return true
+    }
+    
+    func goNextPage(result: Bool) {
+        
     }
     
     @objc func requestTotalPayment() {
