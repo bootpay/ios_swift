@@ -1,10 +1,10 @@
 PODS:
   - Alamofire (5.9.1)
-  - Bootpay (4.4.4):
+  - Bootpay (4.4.41):
     - CryptoSwift
     - NVActivityIndicatorView
     - ObjectMapper
-  - CryptoSwift (1.8.2)
+  - CryptoSwift (1.8.3)
   - NVActivityIndicatorView (5.2.0):
     - NVActivityIndicatorView/Base (= 5.2.0)
   - NVActivityIndicatorView/Base (5.2.0)
@@ -27,8 +27,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  Bootpay: ed9b04d0061931d4bb0c6a2e14dc44222168fde6
-  CryptoSwift: c63a805d8bb5e5538e88af4e44bb537776af11ea
+  Bootpay: e8f46223b11eb50bf8c8c38ca1737d5c6eb04654
+  CryptoSwift: 967f37cea5a3294d9cce358f78861652155be483
   NVActivityIndicatorView: fe52a6a68664c2df8991d7d9e3d86d8d19453c53
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
 
