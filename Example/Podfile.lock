@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.9.1)
+  - Alamofire (5.10.2)
   - Bootpay (4.4.41):
     - CryptoSwift
     - NVActivityIndicatorView
@@ -26,7 +26,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   Bootpay: e8f46223b11eb50bf8c8c38ca1737d5c6eb04654
   CryptoSwift: 967f37cea5a3294d9cce358f78861652155be483
   NVActivityIndicatorView: fe52a6a68664c2df8991d7d9e3d86d8d19453c53

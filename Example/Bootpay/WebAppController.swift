@@ -53,12 +53,16 @@ class WebAppController: UIViewController {
 //                               width: UIScreen.main.bounds.width,
 //                               height: UIScreen.main.bounds.height - topPadding - bottomPadding)
         
-        let urlString = "https://webview.bootpay.co.kr/5.0.0-rc.13/widget.html"
+        let urlString = "https://www.yourdoamin.com"
 //        bootpayView.
 
         if let url = URL(string: urlString) {
             bootpayWebView.load(URLRequest(url: url))
+//            bootpayWebView.webview.loa
         }
+//        /*bootpayWebView.webview*/.load
+        
+//        bootpayWebView
         
         self.view.addSubview(bootpayWebView)
     }

@@ -11,6 +11,7 @@ import NVActivityIndicatorView
 
 @objc open class BootpayView: BTView {
     @objc public var webView: BootpayWebView?
+    
     var circleView: NVActivityIndicatorView?
     var circleBG: BTView?
     
