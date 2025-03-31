@@ -1,0 +1,6 @@
+framework module Pods_Bootpay_Tests {
+  umbrella header "Pods-Bootpay_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
