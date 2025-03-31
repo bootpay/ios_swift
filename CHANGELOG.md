@@ -1,5 +1,5 @@
-## 4.4.5
-* extra field added
+## 4.4.41
+* ios 12 -> 14 update
 
 ## 4.4.4
 * redirect webapp 시나리오시 정기결제창 안닫히는 현상 개선  
