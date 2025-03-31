@@ -9,7 +9,7 @@ import Foundation
 
 public class BootpayConstant {
     
-    public static let CDN_URL = "https://webview.bootpay.co.kr/5.0.0-rc.15"
+    public static let CDN_URL = "https://webview.bootpay.co.kr/5.1.0"
     public static let WIDGET_URL = "\(CDN_URL)/widget.html"
     
 }
