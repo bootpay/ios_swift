@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Bootpay'
   s.version          = '4.4.5'
-  s.summary          = 'Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 12 이상부터 사용가능합니다.'
+  s.summary          = 'Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 14 이상부터 사용가능합니다.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
