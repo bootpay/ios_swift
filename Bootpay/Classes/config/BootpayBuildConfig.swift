@@ -7,10 +7,12 @@
  
 
 #if os(macOS)
+import AppKit
 public typealias BTNavigationController = NSPageController
 public typealias BTView = NSView
 public typealias BTViewController = NSViewController
 #elseif os(iOS)
+import UIKit
 public typealias BTNavigationController = UINavigationController
 public typealias BTView = UIView
 public typealias BTViewController = UIViewController
