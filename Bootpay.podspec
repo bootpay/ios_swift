@@ -37,13 +37,16 @@ Pod::Spec.new do |s|
     'Bootpay_Privacy' => ['Bootpay/PrivacyInfo.xcprivacy']
   }
 
-  s.swift_versions = ['5']
+  s.swift_versions = ['5.9', '5.10']
+
+  s.pod_target_xcconfig = {
+    'SWIFT_STRICT_CONCURRENCY' => 'minimal',
+    'SWIFT_VERSION' => '5'
+  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   
-  s.dependency 'CryptoSwift'
-  s.dependency 'ObjectMapper'
   s.dependency 'NVActivityIndicatorView'
 end

@@ -53,9 +53,9 @@ extension DispatchQueue {
 // MARK: - Static Properties for De-Duping
 private extension DispatchQueue {
 
-    static var workItems = [AnyHashable : DispatchWorkItem]()
+    nonisolated(unsafe) static var workItems = [AnyHashable : DispatchWorkItem]()
 
-    static var weakTargets = NSPointerArray.weakObjects()
+    nonisolated(unsafe) static var weakTargets = NSPointerArray.weakObjects()
 
     static func dedupeIdentifierFor(_ object: AnyObject) -> String {
         return "\(Unmanaged.passUnretained(object).toOpaque())." + String(describing: object)

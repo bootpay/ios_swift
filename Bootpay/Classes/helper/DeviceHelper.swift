@@ -5,12 +5,15 @@
 //  Created by Taesup Yoon on 2021/12/09.
 //
 
+import UIKit
+
 enum DeviceHelper {
     case nativeMac
     case iPad
     case iPhone
     case iWatch
-    
+
+    @MainActor
     public static var currentDevice: Self {
         var currentDeviceModel = UIDevice.current.model
         #if targetEnvironment(macCatalyst)
@@ -18,7 +21,7 @@ enum DeviceHelper {
         #elseif os(watchOS)
         currentDeviceModel = "watchOS"
         #endif
-        
+
         if currentDeviceModel.starts(with: "iPhone") {
             return .iPhone
         }

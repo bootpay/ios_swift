@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 import PackageDescription
 
 let package = Package(
@@ -13,16 +13,12 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.8.0"),
-        .package(url: "https://github.com/tristanhimmelman/ObjectMapper.git", from: "4.2.0"),
         .package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.1.1")
     ],
     targets: [
         .target(
             name: "Bootpay",
             dependencies: [
-                "CryptoSwift",
-                "ObjectMapper",
                 "NVActivityIndicatorView"
             ],
             path: "Bootpay",

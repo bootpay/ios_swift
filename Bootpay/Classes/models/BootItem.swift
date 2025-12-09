@@ -5,27 +5,22 @@
 //  Created by Taesup Yoon on 2021/05/10.
 //
 
-import ObjectMapper
+import Foundation
 
-public class BootItem: NSObject, Mappable, Codable {
-    
+public class BootItem: NSObject, Codable {
+
     public override init() {}
-    public required init?(map: Map) {
-        super.init()
-        mapping(map: map)
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case qty
+        case id
+        case price
+        case cat1
+        case cat2
+        case cat3
     }
-    
-    public func mapping(map: Map) {
-        name <- map["name"]
-        qty <- map["qty"]
-        id <- map["id"]
-        
-        price <- map["price"]
-        cat1 <- map["cat1"]
-        cat2 <- map["cat2"]
-        cat3 <- map["cat3"]
-    }
-    
+
     @objc public var name = "" //아이템 이름
     @objc public var qty: Int = 0  //상품 판매된 수량
     @objc public var id: String? //상품의 고유 PK

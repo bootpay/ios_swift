@@ -5,109 +5,125 @@
 //  Created by Taesup Yoon on 2021/05/10.
 //
 
-import ObjectMapper
+import Foundation
 
-open class Payload: NSObject, Mappable, Codable {
+open class Payload: NSObject, Codable {
+
     public override init() {}
-    public required init?(map: Map) {
-        super.init()
-        mapping(map: map)
+
+    /// Dictionary에서 Payload 생성 (ObjectMapper 대체)
+    public convenience init?(JSON: [String: Any]) {
+        self.init()
+
+        if let applicationId = JSON["application_id"] as? String {
+            self.applicationId = applicationId
+        }
+        self.pg = JSON["pg"] as? String
+        self.method = JSON["method"] as? String
+        self.methods = JSON["methods"] as? [String]
+        self.orderName = JSON["order_name"] as? String
+        if let price = JSON["price"] as? Double {
+            self.price = price
+        }
+        if let taxFree = JSON["tax_free"] as? Double {
+            self.taxFree = taxFree
+        }
+        if let orderId = JSON["order_id"] as? String {
+            self.orderId = orderId
+        }
+        if let subscriptionId = JSON["subscription_id"] as? String {
+            self.subscriptionId = subscriptionId
+        }
+        if let authenticationId = JSON["authentication_id"] as? String {
+            self.authenticationId = authenticationId
+        }
+        self.metadata = JSON["metadata"] as? [String: String]
+        self.userToken = JSON["user_token"] as? String
+
+        if JSON["extra"] is [String: Any] {
+            self.extra = BootExtra()
+        }
+        if let userData = JSON["user"] as? [String: Any] {
+            self.user = BootUser()
+            self.user?.id = userData["id"] as? String
+            self.user?.userId = userData["user_id"] as? String
+            self.user?.username = userData["username"] as? String
+            self.user?.email = userData["email"] as? String
+            self.user?.gender = userData["gender"] as? Int ?? 0
+            self.user?.birth = userData["birth"] as? String
+            self.user?.phone = userData["phone"] as? String
+            self.user?.area = userData["area"] as? String
+            self.user?.addr = userData["addr"] as? String
+        }
     }
-    
-//    public required init(from decoder: Decoder) throws {
-//        _ = CodingKeys.self
-//
-//        print("Payload dd")
-////        self.method
-//
-//    }
-    
+
+    enum CodingKeys: String, CodingKey {
+        case applicationId = "application_id"
+        case pg
+        case method
+        case methods
+        case orderName = "order_name"
+        case price
+        case taxFree = "tax_free"
+        case orderId = "order_id"
+        case subscriptionId = "subscription_id"
+        case authenticationId = "authentication_id"
+        case metadata
+        case userToken = "user_token"
+        case extra
+        case user
+        case items
+    }
+
     public func encode(to encoder: Encoder) throws {
-//        <#code#>
-//        try super.en
-//        try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         try container.encodeIfPresent(applicationId, forKey: .applicationId)
         try container.encodeIfPresent(pg, forKey: .pg)
-        
-//        if let methods = methods && methods?.count > 0 {
-//            try container.encodeIfPresent("[\(String(describing: methods?.joined(separator: ",")))]", forKey: .method)
-//        } else {
-//            try container.encodeIfPresent(method, forKey: .method)
-//        }
+
         if (methods?.count ?? 0) > 0 {
-            try container.encodeIfPresent(methods!, forKey: .method)
+            try container.encodeIfPresent(methods!, forKey: .methods)
         } else {
             try container.encodeIfPresent(method, forKey: .method)
         }
         try container.encodeIfPresent(orderName, forKey: .orderName)
         try container.encodeIfPresent(price, forKey: .price)
         try container.encodeIfPresent(taxFree, forKey: .taxFree)
-        
+
         try container.encodeIfPresent(orderId, forKey: .orderId)
         try container.encodeIfPresent(subscriptionId, forKey: .subscriptionId)
         try container.encodeIfPresent(authenticationId, forKey: .authenticationId)
-        
+
         try container.encodeIfPresent(metadata, forKey: .metadata)
-        
+
         try container.encodeIfPresent(userToken, forKey: .userToken)
-        
+
         try container.encodeIfPresent(extra, forKey: .extra)
         try container.encodeIfPresent(user, forKey: .user)
         try container.encodeIfPresent(items, forKey: .items)
-//      try container.encode(phone, forKey: .phone)
-//      try container.encode(number, forKey: .number)
     }
-    
-    public func mapping(map: Map) {
-        applicationId <- map["application_id"]
-        pg <- map["pg"]
-        method <- map["method"]
-        methods <- map["methods"]
-        orderName <- map["order_name"]
-        price <- map["price"]
-        taxFree <- map["tax_free"]
-        
-        orderId <- map["order_id"]
-        subscriptionId <- map["subscription_id"]
-        authenticationId <- map["authentication_id"]
-         
-        metadata <- map["metadata"]
-         
-        userToken <- map["user_token"]
-//        token <- map["token"]
-        
-        extra <- map["extra"] 
-        user <- map["user"]
-        items <- map["items"]
-    }
-    
+
     @objc public var applicationId = ""
     @objc public var pg: String?
     @objc public var method: String?
     @objc public var methods: [String]?
-    
+
     @objc public var orderName: String?
     @objc public var price = Double(0)
     @objc public var taxFree = Double(0)
-    
+
     @objc public var orderId = ""
     @objc public var subscriptionId = ""
     @objc public var authenticationId = ""
-     
+
     @objc public var metadata: [String:String]?
-     
+
     @objc public var userToken: String? //카드 간편결제, 생체결제시 필요한 파라미터
-//    @objc public var token: String = "token" //비밀번호 결제 - 개발사는 사용하지 않는다. 부트페이 내부적으로 사용됨
-//    @objc public var walletId: String = "res.wallets[0].wallet_id" //비밀번호 결제 - 개발사는 사용하지 않는다. 부트페이 내부적으로 사용됨
-//    @objc public var authenticateType: String? //비밀번호 결제 - 개발사는 사용하지 않는다. 부트페이 내부적으로 사용됨
-    
+
     @objc public var extra: BootExtra?
-//    @objc public var userInfo: BootUser? = BootUser()
     @objc public var user: BootUser? = BootUser()
     @objc public var items: [BootItem]?
-    
+
     fileprivate func methodsToJson() -> String {
         guard let methods = self.methods else {return "" }
         var result = ""
