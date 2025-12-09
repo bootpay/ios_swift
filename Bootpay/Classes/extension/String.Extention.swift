@@ -8,7 +8,7 @@
 import Foundation
 import CryptoSwift
 
-extension String: LocalizedError {
+extension String: @retroactive LocalizedError {
     public var errorDescription: String? { return self }
 }
  

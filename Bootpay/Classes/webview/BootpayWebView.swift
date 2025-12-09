@@ -360,7 +360,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
         DispatchQueue.main.async {
-            if var topController = UIApplication.shared.keyWindow?.rootViewController {
+            if var topController = self.getKeyWindow()?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
@@ -368,12 +368,12 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             }
         }
     }
-     
-    
+
+
     public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo,
                  completionHandler: @escaping (Bool) -> Void) {
-        
-        
+
+
         let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             completionHandler(true)
@@ -381,9 +381,9 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
         alertController.addAction(UIAlertAction(title: "닫기", style: .default, handler: { (action) in
             completionHandler(false)
         }))
-        
+
         DispatchQueue.main.async {
-            if var topController = UIApplication.shared.keyWindow?.rootViewController {
+            if var topController = self.getKeyWindow()?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
@@ -391,10 +391,21 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
             }
         }
     }
+
+    private func getKeyWindow() -> UIWindow? {
+        if #available(iOS 13.0, *) {
+            return UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .flatMap { $0.windows }
+                .first { $0.isKeyWindow }
+        } else {
+            return UIApplication.shared.keyWindow
+        }
+    }
 }
 
 extension BootpayWebView {
-    open func doJavascript(_ script: String) {
+    public func doJavascript(_ script: String) {
         webview.evaluateJavaScript(script, completionHandler: nil)
     }
     

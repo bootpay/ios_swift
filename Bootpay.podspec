@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-  Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 11 이상부터 사용가능합니다.
+  Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. iOS 14 이상부터 사용가능합니다.
                        DESC
 
   s.homepage         = 'https://github.com/bootpay/ios_swift'
@@ -32,18 +32,12 @@ Pod::Spec.new do |s|
 #  s.osx.deployment_target = '10.12'
 
   s.source_files = 'Bootpay/Classes/**/*'
-  
-  
-  s.swift_versions = ['5']
-  
-  s.pod_target_xcconfig = {
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+
+  s.resource_bundles = {
+    'Bootpay_Privacy' => ['Bootpay/PrivacyInfo.xcprivacy']
   }
-  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-    
-  # s.resource_bundles = {
-  #   'Bootpay' => ['Bootpay/Assets/*.png']
-  # }
+
+  s.swift_versions = ['5']
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
