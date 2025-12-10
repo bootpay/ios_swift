@@ -17,6 +17,7 @@
 		87866F5E2667098D00D3E4B8 /* Pods_Bootpay_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87866F5D2667098D00D3E4B8 /* Pods_Bootpay_Example.framework */; };
 		87E4F0D126A161890021C3F1 /* NativeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E4F0D026A161890021C3F1 /* NativeController.swift */; };
 		87E4F0D326A161950021C3F1 /* WebAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E4F0D226A161950021C3F1 /* WebAppController.swift */; };
+		A1B2C3D4E5F6789012345678 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		87E4F0D026A161890021C3F1 /* NativeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeController.swift; sourceTree = "<group>"; };
 		87E4F0D226A161950021C3F1 /* WebAppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAppController.swift; sourceTree = "<group>"; };
 		88B17C87C4A678DE9140C2BB /* Pods-Bootpay_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bootpay_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Bootpay_Tests/Pods-Bootpay_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CBEFB1576505BF731E9E3D09 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				87E4F0D026A161890021C3F1 /* NativeController.swift */,
 				87E4F0D226A161950021C3F1 /* WebAppController.swift */,
@@ -329,17 +332,11 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Bootpay_Example/Pods-Bootpay_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bootpay/Bootpay.framework",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bootpay.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -357,6 +354,7 @@
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				87E4F0D126A161890021C3F1 /* NativeController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				A1B2C3D4E5F6789012345678 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
