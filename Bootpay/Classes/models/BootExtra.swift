@@ -35,6 +35,7 @@ public class BootExtra: NSObject, Codable {
         case separatelyConfirmed = "separately_confirmed"
         case confirmOnlyRestApi = "confirm_only_rest_api"
         case openType = "open_type"
+        case useBootpayInappSdk = "use_bootpay_inapp_sdk"
         case redirectUrl = "redirect_url"
         case displaySuccessResult = "display_success_result"
         case displayErrorResult = "display_error_result"
@@ -50,6 +51,7 @@ public class BootExtra: NSObject, Codable {
         case subscribeTestPayment = "subscribe_test_payment"
         case ageLimit = "age_limit"
         case escrow
+        case showCloseButton = "show_close_button"
     }
 
     func externalURLScheme() -> String? {

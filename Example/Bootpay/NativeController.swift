@@ -125,7 +125,7 @@ print("ios")
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.pg = "nicepay"
-        payload.method = "네이버페이"
+        payload.method = "카드"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.displaySuccessResult = true
@@ -135,7 +135,7 @@ print("ios")
         
          
 //        payload.extra?.cardQuota = "3"
-//        payload.extra?.appScheme = "bootpayFlutter"
+        payload.extra?.appScheme = "bootpaySwift"
 //        payload.extra?.carrier = "SKT" //본인인증 시 고정할 통신사명, SKT,KT,LGT 중 1개만 가능
 //        payload.extra?.ageLimit = 40 // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
         

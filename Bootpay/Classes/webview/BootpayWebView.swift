@@ -168,7 +168,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard let payload = Bootpay.shared.payload else { return }
-        
+
         guard let url = webView.url?.absoluteString else { return; }
         if(url.contains("webview.bootpay.co.kr")) {
             let scriptList = BootpayConstant.getJSBeforePayStart()
@@ -195,15 +195,7 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
 
 //        print(url.absoluteString)
 
-
         updateBlindViewIfNaverLogin(webView, url.absoluteString)
-
-        // 자신의 앱 스킴으로 돌아온 경우 무시 (카드사 앱에서 복귀 시)
-        if let appScheme = Bootpay.shared.payload?.extra?.appScheme,
-           url.absoluteString.starts(with: "\(appScheme)://") {
-            decisionHandler(.cancel)
-            return
-        }
 
         if(isItunesURL(url.absoluteString)) {
             startAppToApp(url)
