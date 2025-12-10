@@ -42,11 +42,10 @@ public class BootpayConstant {
         #if os(iOS)
         array.append("Bootpay.setDevice('IOS');")
         array.append("Bootpay.setVersion('\(BootpayBuildConfig.VERSION)', 'ios')")
-        
+
         array.append("BootpaySDK.setDevice('IOS');")
         array.append("BootpaySDK.setUUID('\(Bootpay.getUUID())');")
         #endif
-//        array.append("Bootpay.setLogLevel(4);")
         array.append(getAnalyticsData())
         if(BootpayBuildConfig.DEBUG) {
             array.append("Bootpay.setEnvironmentMode('development');")
@@ -91,9 +90,7 @@ public class BootpayConstant {
         payload.user?.setEncodedValueAll()
         
         var requestMethod = "requestPayment"
-        if(requestType == BootpayConstant.REQUEST_TYPE_PAYMENT) {
-            
-        } else if(requestType == BootpayConstant.REQUEST_TYPE_SUBSCRIPT) {
+        if(requestType == BootpayConstant.REQUEST_TYPE_SUBSCRIPT) {
             requestMethod = "requestSubscription"
             if(payload.subscriptionId.count == 0) { payload.subscriptionId = payload.orderId }
             
@@ -142,7 +139,6 @@ public class BootpayConstant {
     }
     
     static func confirm() -> String {
-//        return ".confirm(function (data) {webkit.messageHandlers.\(BootpayConstants.BRIDGE_NAME).postMessage(data);})"
         return "if (res.event === 'confirm') { webkit.messageHandlers.\(BootpayConstant.BRIDGE_NAME).postMessage(res); }"
     }
     
@@ -160,7 +156,6 @@ public class BootpayConstant {
     
     
     static func error() -> String {
-//        return ".error(function (data) {webkit.messageHandlers.\(BootpayConstants.BRIDGE_NAME).postMessage(data);})"
         return "if(res.event === 'error') { webkit.messageHandlers.\(BootpayConstant.BRIDGE_NAME).postMessage(res); }"
     }
     
@@ -177,6 +172,10 @@ public class BootpayConstant {
     static private func getPayloadJson(_ payload: Payload) -> String {
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
-        return String(data: try! encoder.encode(payload), encoding: .utf8)!
+        guard let data = try? encoder.encode(payload),
+              let string = String(data: data, encoding: .utf8) else {
+            return "{}"
+        }
+        return string
     }
 }

@@ -16,7 +16,7 @@ public typealias BTView = UIView
 public typealias BTViewController = UIViewController
 #endif
 
-struct BootpayBuildConfig { 
+struct BootpayBuildConfig {
     static let DEBUG = false
-    static let VERSION = "4.4.0"
+    static let VERSION = "4.5.0"
 }

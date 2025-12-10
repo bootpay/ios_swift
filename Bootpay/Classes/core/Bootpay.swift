@@ -171,8 +171,6 @@ import WebKit
     @objc(transactionConfirm)
     public static func transactionConfirm() {
         if let webView = shared.webview {
-//            let json = BootpayConstant.dicToJsonString(data).replace(target: "'", withString: "\\'")
-            
             let script = [
                 "window.Bootpay.confirm()",
                 ".then( function (res) {",
@@ -208,18 +206,10 @@ import WebKit
         #endif
             shared.parentController = nil
         } else if shared.ENV_TYPE == BootpayConstant.ENV_SWIFT_UI {
-            
-//            shared.close?()
+            // SwiftUI에서는 close 이벤트로 처리
         }
         shared.webview = nil
         shared.payload = Payload()
-        
-//        shared.error = nil
-//        shared.issued = nil
-////        shared.close = nil
-//        shared.confirm = nil
-//        shared.done = nil
-//        shared.cancel = nil
     }
 }
 
@@ -346,10 +336,10 @@ extension Bootpay {
     }
     
     fileprivate func getRandomKey(_ size: Int) -> String {
-        let keys = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let keys = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         var result = ""
         for _ in 0..<size {
-            let ran = Int(arc4random_uniform(UInt32(keys.count)))
+            let ran = Int.random(in: 0..<keys.count)
             let index = keys.index(keys.startIndex, offsetBy: ran)
             result += String(keys[index])
         }
