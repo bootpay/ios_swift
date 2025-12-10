@@ -124,6 +124,35 @@ open class Payload: NSObject, Codable {
     @objc public var user: BootUser? = BootUser()
     @objc public var items: [BootItem]?
 
+    // MARK: - Widget Request 관련
+    @objc public var widgetKey: String? // "default-widget"
+    @objc public var widgetUseTerms: Bool = false
+    @objc public var widgetSandbox: Bool = false
+
+    // MARK: - Widget Response 관련 (내부 사용)
+    internal var widgetWalletId: String?
+    internal var widgetData: WidgetData?
+    internal var widgetSelectTerms: [WidgetTerm]?
+    internal var widgetTermPassed: Bool = false
+    internal var widgetCompleted: Bool = false
+
+    /// 위젯이 결제 가능한 상태인지 확인
+    @objc public var widgetIsCompleted: Bool {
+        return widgetTermPassed && widgetCompleted
+    }
+
+    /// WidgetData를 Payload에 병합합니다.
+    @objc public func mergeWidgetData(_ data: WidgetData?) {
+        guard let data = data else { return }
+        self.pg = data.pg
+        self.method = data.method
+        self.widgetWalletId = data.walletId
+        self.widgetSelectTerms = data.selectTerms
+        self.widgetTermPassed = data.termPassed
+        self.widgetCompleted = data.completed
+        self.widgetData = data
+    }
+
     fileprivate func methodsToJson() -> String {
         guard let methods = self.methods else {return "" }
         var result = ""

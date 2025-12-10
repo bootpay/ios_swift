@@ -20,18 +20,21 @@ class ViewController: UIViewController {
     
     func setUI() {
         self.view.backgroundColor = .white
-        
-        for i in 0...1 {
+
+        for i in 0...2 {
             let btn = UIButton()
             if(i == 0) {
                 btn.setTitle("Native 연동 예제", for: .normal)
                 btn.addTarget(self, action: #selector(goNative), for: .touchUpInside)
-            } else {
+            } else if(i == 1) {
                 btn.setTitle("WebApp 연동 예제", for: .normal)
                 btn.addTarget(self, action: #selector(goWebApp), for: .touchUpInside)
+            } else {
+                btn.setTitle("Widget 연동 예제", for: .normal)
+                btn.addTarget(self, action: #selector(goWidget), for: .touchUpInside)
             }
-            
-            
+
+
             btn.frame = CGRect(
                 x: self.view.frame.width/2 - 100,
                 y: self.view.frame.height/2 - 120 + CGFloat(90 * i),
@@ -42,17 +45,22 @@ class ViewController: UIViewController {
             self.view.addSubview(btn)
         }
     }
-    
-    
+
+
     @objc func goNative() {
         let vc = NativeController()
 //        vc.modalPresentationStyle = .fullScreen
         self.navigationController?.present(vc, animated: true)
 //        self.navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @objc func goWebApp() {
         let vc = WebAppController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func goWidget() {
+        let vc = WidgetController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
