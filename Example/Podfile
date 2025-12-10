@@ -20,7 +20,11 @@ post_install do |installer|
     project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+        # Debug 빌드에서 dSYM 경고 방지
+        if config.name == 'Debug'
+          config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
+        end
       end
-    end  
+    end
   end
 end
