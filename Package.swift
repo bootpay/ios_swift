@@ -12,15 +12,11 @@ let package = Package(
             targets: ["Bootpay"]
         )
     ],
-    dependencies: [
-        .package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.1.1")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "Bootpay",
-            dependencies: [
-                "NVActivityIndicatorView"
-            ],
+            dependencies: [],
             path: "Bootpay",
             exclude: ["Assets"],
             sources: ["Classes"],

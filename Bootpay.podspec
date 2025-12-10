@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Bootpay'
-  s.version          = '4.4.6'
+  s.version          = '4.5.0'
   s.summary          = 'Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 14 이상부터 사용가능합니다.'
 
 # This description is used to generate tags and improve search results.
@@ -46,7 +46,4 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
-  
-  s.dependency 'NVActivityIndicatorView'
 end

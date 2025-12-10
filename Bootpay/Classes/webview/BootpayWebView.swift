@@ -4,16 +4,14 @@
 //
 //  Created by Taesup Yoon on 2021/05/12.
 //
- 
+
 import WebKit
-import NVActivityIndicatorView
 
 
 @objc open class BootpayWebView: BTView {
     @objc public var webview: WKWebView!
-    var circleView: NVActivityIndicatorView?
+    var circleView: UIActivityIndicatorView?
     var circleBG: BTView?
-//    let circularSlider = CircularSlider()
     
     var beforeUrl = ""
     var topBlindView: BTView?
@@ -78,7 +76,6 @@ import NVActivityIndicatorView
         
  
         circleBG = BTView()
-//            .withAlphaComponent(0.25)
         if(circleBG != nil) {
             circleBG?.frame = CGRect(x: 0,
                                      y: 0,
@@ -87,16 +84,15 @@ import NVActivityIndicatorView
             circleBG?.backgroundColor = .black.withAlphaComponent(0.25)
             self.addSubview(circleBG!)
         }
-        
-        circleView = NVActivityIndicatorView(frame: CGRect(
-            x: (UIScreen.main.bounds.width - 40) / 2,
-            y: (UIScreen.main.bounds.height - 40) / 2 - 60,
-            width: 40,
-            height: 40
-        ))
-        
+
+        circleView = UIActivityIndicatorView(style: .large)
+        circleView?.color = .white
+        circleView?.center = CGPoint(
+            x: UIScreen.main.bounds.width / 2,
+            y: UIScreen.main.bounds.height / 2 - 60
+        )
+
         if(circleView != nil) {
-//            circleView?.type = .
             circleBG?.addSubview(circleView!)
             circleView?.startAnimating()
         }

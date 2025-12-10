@@ -1,3 +1,15 @@
+## 4.5.0
+* 모든 외부 의존성 제거 (ObjectMapper, CryptoSwift, NVActivityIndicatorView)
+* Swift Codable 적용 (ObjectMapper 대체)
+* CommonCrypto 적용 (CryptoSwift 대체)
+* UIActivityIndicatorView 적용 (NVActivityIndicatorView 대체)
+* Privacy Manifest (PrivacyInfo.xcprivacy) 추가
+* Swift Package Manager (SPM) 지원 추가
+* Swift 5.9/5.10 지원
+* deprecated API 수정 (keyWindow, @retroactive 등)
+* Apple Silicon 시뮬레이터 지원 (EXCLUDED_ARCHS 제거)
+* .travis.yml 삭제
+
 ## 4.4.6
 * xcode 16 support
 
