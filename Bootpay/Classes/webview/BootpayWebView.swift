@@ -189,15 +189,22 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 //        Bootpay.shared.webview = webView
-        
+
         guard let url =  navigationAction.request.url else { return decisionHandler(.allow) }
         beforeUrl = url.absoluteString
-        
+
 //        print(url.absoluteString)
-         
-       
+
+
         updateBlindViewIfNaverLogin(webView, url.absoluteString)
-        
+
+        // 자신의 앱 스킴으로 돌아온 경우 무시 (카드사 앱에서 복귀 시)
+        if let appScheme = Bootpay.shared.payload?.extra?.appScheme,
+           url.absoluteString.starts(with: "\(appScheme)://") {
+            decisionHandler(.cancel)
+            return
+        }
+
         if(isItunesURL(url.absoluteString)) {
             startAppToApp(url)
             decisionHandler(.cancel)
