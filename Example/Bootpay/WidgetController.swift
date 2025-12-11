@@ -60,7 +60,8 @@ class WidgetController: UIViewController {
 
         // Extra 설정
         payload.extra = BootExtra()
-        payload.extra?.displaySuccessResult = true
+//        payload.extra?.displaySuccessResult = true
+        payload.extra?.displayErrorResult = false
         payload.extra?.appScheme = "bootpaySwift"
     }
 
@@ -196,8 +197,12 @@ class WidgetController: UIViewController {
         }
 
         // 에러 콜백
-        widgetController.onError = { data in
+        widgetController.onError = { [weak self] data in
             print("[Widget] Error: \(data)")
+            // 에러 후 위젯 다시 로드
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self?.startWidget()
+            }
         }
 
         // 취소 콜백
