@@ -98,8 +98,11 @@ func setupUI() {
 func setupWidgetController() {
     widgetController = BootpayWidgetController()
 
-    // 닫기 동작 설정
-    widgetController.closeAction = .none  // 직접 처리
+    // 닫기 동작 설정 (3가지 옵션 중 선택)
+    // .popViewController    - NavigationController에서 현재 화면 pop (기본값)
+    // .dismissViewController - Modal로 표시된 경우 dismiss
+    // .none                 - 아무 동작 안함 (onDone/onError/onCancel/onClose에서 직접 처리)
+    widgetController.closeAction = .popViewController
 
     // 위젯 준비 완료
     widgetController.onReady = {
