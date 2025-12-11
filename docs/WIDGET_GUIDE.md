@@ -207,16 +207,38 @@ func updatePayButtonState() {
 
 ### 권장 사용 패턴
 
-#### 패턴 1: 앱 네이티브 결과 화면 사용 (권장)
+#### 패턴 1: 웹뷰 결과 화면 사용 (권장)
 
 ```swift
 // Payload 설정
 payload.extra = BootExtra()
-payload.extra?.displaySuccessResult = false  // 기본값
-payload.extra?.displayErrorResult = false    // 기본값
+payload.extra?.displaySuccessResult = true
+payload.extra?.displayErrorResult = true
 
 // Controller 설정
-widgetController.closeAction = .none
+widgetController.closeAction = .popViewController  // 자동 pop (기본값)
+
+widgetController.onDone = { data in
+    print("결제 완료 - 웹뷰에서 결과 화면 표시 중")
+    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
+}
+
+widgetController.onError = { data in
+    print("결제 에러 - 웹뷰에서 에러 화면 표시 중")
+    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
+}
+```
+
+#### 패턴 2: 앱 네이티브 결과 화면 사용
+
+```swift
+// Payload 설정
+payload.extra = BootExtra()
+payload.extra?.displaySuccessResult = false
+payload.extra?.displayErrorResult = false
+
+// Controller 설정
+widgetController.closeAction = .none  // 직접 처리
 
 widgetController.onDone = { [weak self] data in
     // 네이티브 결과 화면으로 이동
@@ -246,28 +268,6 @@ widgetController.onCancel = { [weak self] data in
 widgetController.onClose = { [weak self] in
     // 닫기 시 이전 화면으로
     self?.navigationController?.popViewController(animated: true)
-}
-```
-
-#### 패턴 2: 웹뷰 결과 화면 사용
-
-```swift
-// Payload 설정
-payload.extra = BootExtra()
-payload.extra?.displaySuccessResult = true
-payload.extra?.displayErrorResult = true
-
-// Controller 설정
-widgetController.closeAction = .popViewController  // 자동 pop
-
-widgetController.onDone = { data in
-    print("결제 완료 - 웹뷰에서 결과 화면 표시 중")
-    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
-}
-
-widgetController.onError = { data in
-    print("결제 에러 - 웹뷰에서 에러 화면 표시 중")
-    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
 }
 ```
 
@@ -373,6 +373,8 @@ class WidgetController: UIViewController {
 
         payload.extra = BootExtra()
         payload.extra?.appScheme = "myAppScheme"
+        payload.extra?.displaySuccessResult = true  // 웹뷰 결과 화면 사용 (권장)
+        payload.extra?.displayErrorResult = true    // 웹뷰 에러 화면 사용 (권장)
     }
 
     func setupUI() {
@@ -432,7 +434,7 @@ class WidgetController: UIViewController {
 
     func setupWidgetController() {
         widgetController = BootpayWidgetController()
-        widgetController.closeAction = .none
+        widgetController.closeAction = .popViewController  // 자동 pop (기본값, 권장)
 
         widgetController.onReady = {
             print("[Widget] Ready")
@@ -458,30 +460,21 @@ class WidgetController: UIViewController {
             self?.updatePayButtonState()
         }
 
-        widgetController.onDone = { [weak self] data in
+        widgetController.onDone = { data in
             print("[Widget] Done: \(data)")
-            // 결과 페이지로 이동
-            let resultVC = PaymentResultController()
-            resultVC.paymentData = data
-            if let nav = self?.navigationController {
-                var viewControllers = nav.viewControllers
-                viewControllers.removeLast()
-                viewControllers.append(resultVC)
-                nav.setViewControllers(viewControllers, animated: true)
-            }
+            // displaySuccessResult = true 이므로 웹뷰에서 결과 화면 표시
+            // 사용자가 닫기 버튼 클릭 시 자동 pop
         }
 
-        widgetController.onError = { [weak self] data in
+        widgetController.onError = { data in
             print("[Widget] Error: \(data)")
-            // 위젯 재로드
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self?.widgetView.reloadWidget()
-            }
+            // displayErrorResult = true 이므로 웹뷰에서 에러 화면 표시
+            // 사용자가 닫기 버튼 클릭 시 자동 pop
         }
 
-        widgetController.onCancel = { [weak self] data in
+        widgetController.onCancel = { data in
             print("[Widget] Cancel: \(data)")
-            self?.navigationController?.popViewController(animated: true)
+            // 취소 시 자동 pop
         }
 
         widgetController.onConfirm = { data in
@@ -492,9 +485,9 @@ class WidgetController: UIViewController {
             print("[Widget] Issued: \(data)")
         }
 
-        widgetController.onClose = { [weak self] in
+        widgetController.onClose = {
             print("[Widget] Close")
-            self?.navigationController?.popViewController(animated: true)
+            // closeAction = .popViewController 이므로 자동 pop
         }
 
         widgetView.controller = widgetController
