@@ -199,9 +199,9 @@ class WidgetController: UIViewController {
         // 에러 콜백
         widgetController.onError = { [weak self] data in
             print("[Widget] Error: \(data)")
-            // 에러 후 위젯 다시 로드
+            // 축소 애니메이션(0.35초) 완료 후 위젯 다시 로드
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self?.startWidget()
+                self?.widgetView.reloadWidget()
             }
         }
 

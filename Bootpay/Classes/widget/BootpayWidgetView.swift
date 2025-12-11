@@ -542,20 +542,12 @@ extension BootpayWidgetView: WKNavigationDelegate, WKUIDelegate, WKScriptMessage
         case "error":
             controller?.handleError(data: data)
 
-            // displayErrorResult = false 일 때: 바로 축소 + closeAction 수행
+            // displayErrorResult = false 일 때: 원래 위치로 복원 (위젯 재로드는 onError에서 처리)
             let displayErrorResult = payload?.extra?.displayErrorResult == true
             if !displayErrorResult && isExpanded {
-                // 웹뷰를 window에서 제거하고 closeAction 수행
-                backgroundView?.removeFromSuperview()
-                backgroundView = nil
-                self.removeFromSuperview()
-                isExpanded = false
+                // 원래 위치로 축소 (제거하지 않고 복원)
+                collapseToOriginal(animated: true)
                 isCloseHandled = true // close 이벤트 중복 방지
-
-                // 메인 스레드에서 약간의 딜레이 후 pop (UI 업데이트 완료 후)
-                DispatchQueue.main.async { [weak self] in
-                    self?.performCloseAction()
-                }
             }
 
         case "cancel":
