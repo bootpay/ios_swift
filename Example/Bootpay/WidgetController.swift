@@ -11,8 +11,7 @@ import Bootpay
 
 class WidgetController: UIViewController {
 
-    // MARK: - Properties
-
+    // MARK: -
     let _applicationId = "5b8f6a4d396fa665fdc2b5e9"
 
     var widgetView: BootpayWidgetView!
@@ -61,7 +60,7 @@ class WidgetController: UIViewController {
 
         // Extra 설정
         payload.extra = BootExtra()
-        payload.extra?.displaySuccessResult = true
+//        payload.extra?.displaySuccessResult = true
         payload.extra?.appScheme = "bootpaySwift"
     }
 
@@ -93,9 +92,9 @@ class WidgetController: UIViewController {
         // Widget View
         widgetView = BootpayWidgetView()
         widgetView.translatesAutoresizingMaskIntoConstraints = false
-        widgetView.backgroundColor = .systemYellow.withAlphaComponent(0.3) // 웹뷰 영역 확인용
-        widgetView.layer.borderWidth = 1
-        widgetView.layer.borderColor = UIColor.systemOrange.cgColor
+        // widgetView.backgroundColor = .systemYellow.withAlphaComponent(0.3) // 웹뷰 영역 확인용
+        // widgetView.layer.borderWidth = 1
+        // widgetView.layer.borderColor = UIColor.systemOrange.cgColor
         contentView.addSubview(widgetView)
 
         // Pay Button
@@ -155,6 +154,12 @@ class WidgetController: UIViewController {
 
     func setupWidgetController() {
         widgetController = BootpayWidgetController()
+
+        // 닫기 시 동작 설정 (기본값: popViewController)
+        // .popViewController - NavigationController에서 pop
+        // .dismissViewController - Modal dismiss
+        // .none - 직접 처리 (onClose에서)
+        widgetController.closeAction = .popViewController
 
         // Ready 콜백
         widgetController.onReady = { [weak self] in

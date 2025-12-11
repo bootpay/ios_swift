@@ -59,6 +59,12 @@ import WebKit
     /// 원래 height constraint (외부에서 설정된 것)
     private weak var originalHeightConstraint: NSLayoutConstraint?
 
+    /// 원래 ViewController (전체화면 확장 전 저장)
+    private weak var originalViewController: UIViewController?
+
+    /// close 처리 완료 여부 (중복 호출 방지)
+    private var isCloseHandled = false
+
     // MARK: - Initialization
 
     @objc public override init(frame: CGRect) {
@@ -133,6 +139,24 @@ import WebKit
         }
     }
 
+    /// 위젯을 재렌더링합니다. (취소 후 초기 상태로 복원)
+    @objc public func reloadWidget() {
+        guard payload != nil else {
+            print("[BootpayWidget] reloadWidget - payload is nil")
+            return
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            print("[BootpayWidget] Reloading widget URL...")
+
+            // 위젯 URL 다시 로드 (didFinish에서 자동으로 렌더링됨)
+            if let url = URL(string: BootpayConstant.WIDGET_URL) {
+                self.webview.load(URLRequest(url: url))
+            }
+        }
+    }
+
     /// 위젯을 업데이트합니다.
     @objc public func widgetUpdate(payload: Payload, refresh: Bool) {
         self.payload = payload
@@ -149,6 +173,9 @@ import WebKit
             print("[BootpayWidget] widgetRequestPayment - payload is nil")
             return
         }
+
+        // 플래그 리셋
+        isCloseHandled = false
 
         // 결제 요청 시 전체화면으로 확장
         expandToFullscreen(animated: true)
@@ -205,6 +232,8 @@ import WebKit
         originalSuperview = superview
         originalFrame = frame
         originalTranslatesAutoresizing = translatesAutoresizingMaskIntoConstraints
+        originalViewController = findViewController() // ViewController 저장
+        print("[BootpayWidget] expandToFullscreen - saved originalViewController: \(String(describing: originalViewController))")
 
         // 원래 constraint 저장 (이 뷰와 관련된 것들) 및 비활성화
         if let superview = superview {
@@ -326,6 +355,62 @@ import WebKit
     /// 현재 전체화면 상태인지 확인
     @objc public var isFullscreen: Bool {
         return isExpanded
+    }
+
+    // MARK: - Close Action
+
+    /// closeAction에 따른 화면 전환 수행
+    private func performCloseAction() {
+        guard let closeAction = controller?.closeAction else {
+            print("[BootpayWidget] performCloseAction - controller or closeAction is nil")
+            return
+        }
+
+        print("[BootpayWidget] performCloseAction: \(closeAction)")
+
+        // 저장된 ViewController 또는 현재 찾은 ViewController 사용
+        print("[BootpayWidget] performCloseAction - originalViewController: \(String(describing: originalViewController))")
+        let viewController = originalViewController ?? findViewController()
+
+        switch closeAction {
+        case .popViewController:
+            // NavigationController에서 pop
+            if let vc = viewController {
+                print("[BootpayWidget] Found ViewController: \(vc)")
+                if let nav = vc.navigationController {
+                    print("[BootpayWidget] Popping from NavigationController")
+                    nav.popViewController(animated: true)
+                } else {
+                    print("[BootpayWidget] No NavigationController found")
+                }
+            } else {
+                print("[BootpayWidget] ViewController not found")
+            }
+
+        case .dismissViewController:
+            // Modal dismiss
+            if let vc = viewController {
+                print("[BootpayWidget] Dismissing ViewController")
+                vc.dismiss(animated: true)
+            }
+
+        case .none:
+            // 가맹점이 onClose에서 직접 처리
+            print("[BootpayWidget] closeAction is none, skipping")
+            break
+        }
+    }
+
+    /// 현재 뷰가 속한 ViewController 찾기
+    private func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            if let viewController = nextResponder as? UIViewController {
+                return viewController
+            }
+            responder = nextResponder
+        }
+        return nil
     }
 }
 
@@ -451,11 +536,42 @@ extension BootpayWidgetView: WKNavigationDelegate, WKUIDelegate, WKScriptMessage
         case "error":
             controller?.handleError(data: data)
 
+            // displayErrorResult = false 일 때: 바로 축소 + closeAction 수행
+            let displayErrorResult = payload?.extra?.displayErrorResult == true
+            if !displayErrorResult && isExpanded {
+                // 웹뷰를 window에서 제거하고 바로 closeAction 수행
+                backgroundView?.removeFromSuperview()
+                backgroundView = nil
+                self.removeFromSuperview()
+                isExpanded = false
+                isCloseHandled = true // close 이벤트 중복 방지
+                performCloseAction()
+            }
+
         case "cancel":
+            // 취소 시 원래 크기로 복원 후 위젯 재렌더링
+            collapseToOriginal(animated: true)
             controller?.handleCancel(data: data)
+
+            // 축소 애니메이션 완료 후 위젯 재렌더링
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                self?.reloadWidget()
+            }
 
         case "done":
             controller?.handleDone(data: data)
+
+            // displaySuccessResult = false 일 때: 바로 축소 + closeAction 수행
+            let displaySuccessResult = payload?.extra?.displaySuccessResult == true
+            if !displaySuccessResult && isExpanded {
+                // 웹뷰를 window에서 제거하고 바로 closeAction 수행
+                backgroundView?.removeFromSuperview()
+                backgroundView = nil
+                self.removeFromSuperview()
+                isExpanded = false
+                isCloseHandled = true // close 이벤트 중복 방지
+                performCloseAction()
+            }
 
         case "confirm":
             if let shouldConfirm = controller?.handleConfirm(data: data), shouldConfirm {
@@ -466,9 +582,33 @@ extension BootpayWidgetView: WKNavigationDelegate, WKUIDelegate, WKScriptMessage
             controller?.handleIssued(data: data)
 
         case "close":
-            // 닫기 시 원래 크기로 복원
-            collapseToOriginal(animated: true)
+            // 중복 호출 방지
+            guard !isCloseHandled else {
+                print("[BootpayWidget] close already handled, skipping")
+                return
+            }
+            isCloseHandled = true
+
             controller?.handleClose()
+
+            // display_success_result 또는 display_error_result 옵션 사용 시
+            // 이미 결과를 봤으므로 축소 애니메이션 생략하고 바로 closeAction 수행
+            let displayResult = payload?.extra?.displaySuccessResult == true || payload?.extra?.displayErrorResult == true
+
+            if displayResult && isExpanded {
+                // 웹뷰를 window에서 제거하고 바로 closeAction 수행
+                backgroundView?.removeFromSuperview()
+                backgroundView = nil
+                self.removeFromSuperview()
+                isExpanded = false
+                performCloseAction()
+            } else {
+                // 일반적인 경우: 축소 애니메이션 후 closeAction 처리
+                collapseToOriginal(animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                    self?.performCloseAction()
+                }
+            }
 
         default:
             break

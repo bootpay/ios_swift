@@ -6,7 +6,18 @@
 //
 
 import Foundation
+import UIKit
 import WebKit
+
+/// 위젯 닫기 시 동작 옵션
+@objc public enum WidgetCloseAction: Int {
+    /// 현재 ViewController를 pop (NavigationController 사용 시)
+    case popViewController
+    /// 현재 ViewController를 dismiss (Modal 사용 시)
+    case dismissViewController
+    /// 아무 동작 안함 (가맹점이 onClose에서 직접 처리)
+    case none
+}
 
 /// 부트페이 위젯을 제어하는 컨트롤러
 /// 위젯의 상태를 관리하고, 결제 요청을 처리합니다.
@@ -25,6 +36,9 @@ import WebKit
 
     /// 위젯 데이터 (결제수단, 약관동의 등)
     @objc public private(set) var widgetData: WidgetData?
+
+    /// 닫기 시 동작 (기본값: popViewController)
+    @objc public var closeAction: WidgetCloseAction = .popViewController
 
     // MARK: - Closure-based Callbacks (Swift 전용)
 
