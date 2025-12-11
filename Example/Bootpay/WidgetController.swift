@@ -60,7 +60,7 @@ class WidgetController: UIViewController {
 
         // Extra 설정
         payload.extra = BootExtra()
-//        payload.extra?.displaySuccessResult = true
+        payload.extra?.displaySuccessResult = true
         payload.extra?.appScheme = "bootpaySwift"
     }
 
