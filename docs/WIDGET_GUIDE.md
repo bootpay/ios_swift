@@ -207,41 +207,22 @@ func updatePayButtonState() {
 
 ### 권장 사용 패턴
 
-#### 패턴 1: 웹뷰 결과 화면 사용 (권장)
+#### 패턴 1: 앱 네이티브 결과 화면 사용 (권장)
+
+가맹점에서 직접 결제 결과 페이지를 구현하여 브랜드 일관성과 사용자 경험을 최적화할 수 있습니다.
 
 ```swift
 // Payload 설정
 payload.extra = BootExtra()
-payload.extra?.displaySuccessResult = true
-payload.extra?.displayErrorResult = true
-
-// Controller 설정
-widgetController.closeAction = .popViewController  // 자동 pop (기본값)
-
-widgetController.onDone = { data in
-    print("결제 완료 - 웹뷰에서 결과 화면 표시 중")
-    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
-}
-
-widgetController.onError = { data in
-    print("결제 에러 - 웹뷰에서 에러 화면 표시 중")
-    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
-}
-```
-
-#### 패턴 2: 앱 네이티브 결과 화면 사용
-
-```swift
-// Payload 설정
-payload.extra = BootExtra()
-payload.extra?.displaySuccessResult = false
-payload.extra?.displayErrorResult = false
+payload.extra?.displaySuccessResult = false  // 기본값, 권장
+payload.extra?.displayErrorResult = false    // 기본값, 권장
 
 // Controller 설정
 widgetController.closeAction = .none  // 직접 처리
 
 widgetController.onDone = { [weak self] data in
-    // 네이티브 결과 화면으로 이동
+    // 가맹점 결제 결과 페이지로 이동
+    // data에서 receipt_id, order_id 등을 추출하여 서버에서 결제 정보 조회 후 표시
     let resultVC = PaymentResultController()
     resultVC.paymentData = data
 
@@ -268,6 +249,48 @@ widgetController.onCancel = { [weak self] data in
 widgetController.onClose = { [weak self] in
     // 닫기 시 이전 화면으로
     self?.navigationController?.popViewController(animated: true)
+}
+```
+
+**결제 결과 페이지 구현 가이드:**
+
+`onDone` 콜백에서 받은 데이터를 활용하여 결제 결과 페이지를 구현합니다.
+
+```swift
+// onDone 콜백에서 받는 주요 데이터
+let receiptId = data["receipt_id"] as? String    // 영수증 ID (서버 검증용)
+let orderId = data["order_id"] as? String        // 주문 ID
+let price = data["price"] as? Int                // 결제 금액
+let orderName = data["order_name"] as? String    // 주문명
+let method = data["method"] as? String           // 결제수단
+let pg = data["pg"] as? String                   // PG사
+let purchasedAt = data["purchased_at"] as? String // 결제일시
+let status = data["status"] as? Int              // 결제 상태 (1: 성공)
+
+// 서버에서 receipt_id로 결제 정보 검증 후 결과 페이지 표시 권장
+```
+
+#### 패턴 2: 웹뷰 결과 화면 사용
+
+빠른 연동이 필요한 경우 부트페이에서 제공하는 웹뷰 결과 화면을 사용할 수 있습니다.
+
+```swift
+// Payload 설정
+payload.extra = BootExtra()
+payload.extra?.displaySuccessResult = true
+payload.extra?.displayErrorResult = true
+
+// Controller 설정
+widgetController.closeAction = .popViewController  // 자동 pop
+
+widgetController.onDone = { data in
+    print("결제 완료 - 웹뷰에서 결과 화면 표시 중")
+    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
+}
+
+widgetController.onError = { data in
+    print("결제 에러 - 웹뷰에서 에러 화면 표시 중")
+    // 별도 처리 불필요, 사용자가 닫기 버튼 클릭 시 자동 pop
 }
 ```
 
@@ -373,8 +396,8 @@ class WidgetController: UIViewController {
 
         payload.extra = BootExtra()
         payload.extra?.appScheme = "myAppScheme"
-        payload.extra?.displaySuccessResult = true  // 웹뷰 결과 화면 사용 (권장)
-        payload.extra?.displayErrorResult = true    // 웹뷰 에러 화면 사용 (권장)
+        // displaySuccessResult, displayErrorResult 기본값 false (권장)
+        // 가맹점에서 직접 결제 결과 페이지 구현
     }
 
     func setupUI() {
@@ -434,7 +457,7 @@ class WidgetController: UIViewController {
 
     func setupWidgetController() {
         widgetController = BootpayWidgetController()
-        widgetController.closeAction = .popViewController  // 자동 pop (기본값, 권장)
+        widgetController.closeAction = .none  // 직접 처리 (권장)
 
         widgetController.onReady = {
             print("[Widget] Ready")
@@ -460,21 +483,30 @@ class WidgetController: UIViewController {
             self?.updatePayButtonState()
         }
 
-        widgetController.onDone = { data in
+        widgetController.onDone = { [weak self] data in
             print("[Widget] Done: \(data)")
-            // displaySuccessResult = true 이므로 웹뷰에서 결과 화면 표시
-            // 사용자가 닫기 버튼 클릭 시 자동 pop
+            // 가맹점 결제 결과 페이지로 이동
+            let resultVC = PaymentResultController()
+            resultVC.paymentData = data
+            if let nav = self?.navigationController {
+                var viewControllers = nav.viewControllers
+                viewControllers.removeLast()
+                viewControllers.append(resultVC)
+                nav.setViewControllers(viewControllers, animated: true)
+            }
         }
 
-        widgetController.onError = { data in
+        widgetController.onError = { [weak self] data in
             print("[Widget] Error: \(data)")
-            // displayErrorResult = true 이므로 웹뷰에서 에러 화면 표시
-            // 사용자가 닫기 버튼 클릭 시 자동 pop
+            // 에러 후 위젯 재로드 (재시도 가능)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self?.widgetView.reloadWidget()
+            }
         }
 
-        widgetController.onCancel = { data in
+        widgetController.onCancel = { [weak self] data in
             print("[Widget] Cancel: \(data)")
-            // 취소 시 자동 pop
+            self?.navigationController?.popViewController(animated: true)
         }
 
         widgetController.onConfirm = { data in
@@ -485,9 +517,9 @@ class WidgetController: UIViewController {
             print("[Widget] Issued: \(data)")
         }
 
-        widgetController.onClose = {
+        widgetController.onClose = { [weak self] in
             print("[Widget] Close")
-            // closeAction = .popViewController 이므로 자동 pop
+            self?.navigationController?.popViewController(animated: true)
         }
 
         widgetView.controller = widgetController
