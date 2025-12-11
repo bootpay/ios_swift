@@ -61,7 +61,7 @@ class WidgetController: UIViewController {
         // Extra 설정
         payload.extra = BootExtra()
 //        payload.extra?.displaySuccessResult = true
-        payload.extra?.displayErrorResult = false
+//        payload.extra?.displayErrorResult = false
         payload.extra?.appScheme = "bootpaySwift"
     }
 
@@ -199,9 +199,14 @@ class WidgetController: UIViewController {
         // 에러 콜백
         widgetController.onError = { [weak self] data in
             print("[Widget] Error: \(data)")
-            // 축소 애니메이션(0.35초) 완료 후 위젯 다시 로드
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self?.widgetView.reloadWidget()
+            // displayErrorResult = false 일 때만 위젯 다시 로드
+            // displayErrorResult = true 면 에러 결과 화면 유지
+            let displayErrorResult = self?.payload.extra?.displayErrorResult == true
+            if !displayErrorResult {
+                // 축소 애니메이션(0.35초) 완료 후 위젯 다시 로드
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self?.widgetView.reloadWidget()
+                }
             }
         }
 
