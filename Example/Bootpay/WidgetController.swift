@@ -158,8 +158,8 @@ class WidgetController: UIViewController {
         // 닫기 시 동작 설정 (기본값: popViewController)
         // .popViewController - NavigationController에서 pop
         // .dismissViewController - Modal dismiss
-        // .none - 직접 처리 (onClose에서)
-        widgetController.closeAction = .popViewController
+        // .none - 직접 처리 (onDone/onClose에서)
+        widgetController.closeAction = .none
 
         // Ready 콜백
         widgetController.onReady = { [weak self] in
@@ -201,14 +201,27 @@ class WidgetController: UIViewController {
         }
 
         // 취소 콜백
-        widgetController.onCancel = { data in
+        widgetController.onCancel = { [weak self] data in
             print("[Widget] Cancel: \(data)")
+            // 취소 시 이전 화면으로 돌아가기
+            self?.navigationController?.popViewController(animated: true)
         }
 
         // 완료 콜백
         widgetController.onDone = { [weak self] data in
             print("[Widget] Done: \(data)")
-            self?.showAlert(title: "결제 완료", message: "결제가 성공적으로 완료되었습니다.")
+
+            // 결제 결과 페이지로 이동
+            let resultVC = PaymentResultController()
+            resultVC.paymentData = data
+
+            if let nav = self?.navigationController {
+                // WidgetController를 결과 페이지로 교체
+                var viewControllers = nav.viewControllers
+                viewControllers.removeLast() // WidgetController 제거
+                viewControllers.append(resultVC)
+                nav.setViewControllers(viewControllers, animated: true)
+            }
         }
 
         // 확인 콜백
@@ -223,8 +236,10 @@ class WidgetController: UIViewController {
         }
 
         // 닫기 콜백
-        widgetController.onClose = {
+        widgetController.onClose = { [weak self] in
             print("[Widget] Close")
+            // 닫기 시 이전 화면으로 돌아가기
+            self?.navigationController?.popViewController(animated: true)
         }
 
         // 위젯 뷰에 컨트롤러 연결

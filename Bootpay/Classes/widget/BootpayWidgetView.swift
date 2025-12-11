@@ -378,10 +378,16 @@ import WebKit
             if let vc = viewController {
                 print("[BootpayWidget] Found ViewController: \(vc)")
                 if let nav = vc.navigationController {
+                    print("[BootpayWidget] NavigationController viewControllers: \(nav.viewControllers)")
                     print("[BootpayWidget] Popping from NavigationController")
-                    nav.popViewController(animated: true)
+                    DispatchQueue.main.async {
+                        nav.popViewController(animated: true)
+                    }
                 } else {
-                    print("[BootpayWidget] No NavigationController found")
+                    print("[BootpayWidget] No NavigationController found, trying dismiss")
+                    DispatchQueue.main.async {
+                        vc.dismiss(animated: true)
+                    }
                 }
             } else {
                 print("[BootpayWidget] ViewController not found")
@@ -539,13 +545,17 @@ extension BootpayWidgetView: WKNavigationDelegate, WKUIDelegate, WKScriptMessage
             // displayErrorResult = false 일 때: 바로 축소 + closeAction 수행
             let displayErrorResult = payload?.extra?.displayErrorResult == true
             if !displayErrorResult && isExpanded {
-                // 웹뷰를 window에서 제거하고 바로 closeAction 수행
+                // 웹뷰를 window에서 제거하고 closeAction 수행
                 backgroundView?.removeFromSuperview()
                 backgroundView = nil
                 self.removeFromSuperview()
                 isExpanded = false
                 isCloseHandled = true // close 이벤트 중복 방지
-                performCloseAction()
+
+                // 메인 스레드에서 약간의 딜레이 후 pop (UI 업데이트 완료 후)
+                DispatchQueue.main.async { [weak self] in
+                    self?.performCloseAction()
+                }
             }
 
         case "cancel":
@@ -564,13 +574,17 @@ extension BootpayWidgetView: WKNavigationDelegate, WKUIDelegate, WKScriptMessage
             // displaySuccessResult = false 일 때: 바로 축소 + closeAction 수행
             let displaySuccessResult = payload?.extra?.displaySuccessResult == true
             if !displaySuccessResult && isExpanded {
-                // 웹뷰를 window에서 제거하고 바로 closeAction 수행
+                // 웹뷰를 window에서 제거하고 closeAction 수행
                 backgroundView?.removeFromSuperview()
                 backgroundView = nil
                 self.removeFromSuperview()
                 isExpanded = false
                 isCloseHandled = true // close 이벤트 중복 방지
-                performCloseAction()
+
+                // 메인 스레드에서 약간의 딜레이 후 pop (UI 업데이트 완료 후)
+                DispatchQueue.main.async { [weak self] in
+                    self?.performCloseAction()
+                }
             }
 
         case "confirm":
