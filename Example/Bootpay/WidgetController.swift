@@ -199,22 +199,16 @@ class WidgetController: UIViewController {
         // 에러 콜백
         widgetController.onError = { [weak self] data in
             print("[Widget] Error: \(data)")
-            // displayErrorResult = false 일 때만 위젯 다시 로드
-            // displayErrorResult = true 면 에러 결과 화면 유지
-            let displayErrorResult = self?.payload.extra?.displayErrorResult == true
-            if !displayErrorResult {
-                // 축소 애니메이션(0.35초) 완료 후 위젯 다시 로드
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self?.widgetView.reloadWidget()
-                }
-            }
+            // displayErrorResult = false 일 때: SDK 내부에서 collapseAndReload 처리
+            // displayErrorResult = true 일 때: 에러 결과 화면 유지 (close 이벤트에서 처리)
+            // 가맹점에서 추가 처리가 필요한 경우 여기서 구현
         }
 
         // 취소 콜백
         widgetController.onCancel = { [weak self] data in
             print("[Widget] Cancel: \(data)")
-            // 취소 시 이전 화면으로 돌아가기
-            self?.navigationController?.popViewController(animated: true)
+            // 취소 시: SDK 내부에서 collapseAndReload 처리 (위젯이 다시 렌더링됨)
+            // 가맹점에서 추가 처리가 필요한 경우 여기서 구현
         }
 
         // 완료 콜백

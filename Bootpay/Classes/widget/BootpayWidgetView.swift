@@ -297,6 +297,15 @@ import WebKit
 
     /// 원래 크기로 복원합니다.
     @objc public func collapseToOriginal(animated: Bool = true) {
+        collapseToOriginal(animated: animated, reloadWidget: false)
+    }
+
+    /// 원래 크기로 복원하면서 위젯을 재로드합니다.
+    /// - Parameters:
+    ///   - animated: 애니메이션 여부
+    ///   - reloadWidget: 축소 시작 전에 위젯 URL을 먼저 로드할지 여부.
+    ///                   true로 설정하면 축소 애니메이션 중에 위젯이 렌더링되어 자연스러운 전환이 됩니다.
+    @objc public func collapseToOriginal(animated: Bool, reloadWidget: Bool) {
         guard isExpanded else { return }
         guard let window = getKeyWindow(), let originalSuperview = originalSuperview else { return }
 
@@ -314,6 +323,13 @@ import WebKit
 
         // 스크롤 비활성화 (위젯 모드에서는 스크롤 불필요)
         webview.scrollView.isScrollEnabled = false
+
+        // 축소 시작 전에 위젯 URL을 먼저 로드 (Android collapseAndReload와 동일)
+        // 이렇게 하면 축소 애니메이션 중에 위젯이 렌더링되어 자연스러운 전환이 됩니다.
+        if reloadWidget, let url = URL(string: BootpayConstant.WIDGET_URL) {
+            print("[BootpayWidget] collapseToOriginal - reloading widget URL before collapse animation")
+            webview.load(URLRequest(url: url))
+        }
 
         // 애니메이션으로 원래 크기로 축소
         let duration = animated ? 0.35 : 0
@@ -341,6 +357,15 @@ import WebKit
             // height constraint 복원
             self.originalHeightConstraint?.isActive = true
         }
+    }
+
+    /// 전체화면 축소 후 위젯 재로드 (결제 취소/에러 시)
+    /// Android의 BootpayWidget.collapseAndReload()와 동일한 동작
+    /// 축소 시작 전에 위젯 URL을 먼저 로드하여 자연스러운 전환
+    @objc public func collapseAndReload(animated: Bool = true) {
+        guard isExpanded else { return }
+        print("[BootpayWidget] collapseAndReload called")
+        collapseToOriginal(animated: animated, reloadWidget: true)
     }
 
     /// 전체화면 토글
@@ -542,23 +567,19 @@ extension BootpayWidgetView: WKNavigationDelegate, WKUIDelegate, WKScriptMessage
         case "error":
             controller?.handleError(data: data)
 
-            // displayErrorResult = false 일 때: 원래 위치로 복원 (위젯 재로드는 onError에서 처리)
+            // displayErrorResult = false 일 때: 위젯 URL 먼저 로드 후 축소 (Android collapseAndReload와 동일)
             let displayErrorResult = payload?.extra?.displayErrorResult == true
             if !displayErrorResult && isExpanded {
-                // 원래 위치로 축소 (제거하지 않고 복원)
-                collapseToOriginal(animated: true)
+                // 위젯 URL 먼저 로드 후 축소 (자연스러운 UX)
+                collapseAndReload(animated: true)
                 isCloseHandled = true // close 이벤트 중복 방지
             }
 
         case "cancel":
-            // 취소 시 원래 크기로 복원 후 위젯 재렌더링
-            collapseToOriginal(animated: true)
+            // 취소 시: 위젯 URL 먼저 로드 후 축소 (Android collapseAndReload와 동일)
+            // 이렇게 하면 축소되면서 이미 위젯이 렌더링되어 자연스러운 UX
             controller?.handleCancel(data: data)
-
-            // 축소 애니메이션 완료 후 위젯 재렌더링
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-                self?.reloadWidget()
-            }
+            collapseAndReload(animated: true)
 
         case "done":
             controller?.handleDone(data: data)
