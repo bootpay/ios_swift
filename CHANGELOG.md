@@ -1,3 +1,11 @@
+## 5.0.0
+* Widget 결제 기능 추가
+* CDN URL 5.2.2 업데이트
+* Example 앱 UI 전면 개선
+  - NativeController를 BasePaymentController + 4개 서브클래스로 분리
+  - 각 결제 타입별 실제 서비스와 유사한 UI 구현
+* 위젯 취소/에러 시 UX 개선 (collapseAndReload)
+
 ## 4.5.0
 * 모든 외부 의존성 제거 (ObjectMapper, CryptoSwift, NVActivityIndicatorView)
 * Swift Codable 적용 (ObjectMapper 대체)
