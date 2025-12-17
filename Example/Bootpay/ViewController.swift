@@ -21,25 +21,30 @@ class ViewController: UIViewController {
     func setUI() {
         self.view.backgroundColor = .white
 
-        for i in 0...2 {
-            let btn = UIButton()
-            if(i == 0) {
-                btn.setTitle("Native 연동 예제", for: .normal)
-                btn.addTarget(self, action: #selector(goNative), for: .touchUpInside)
-            } else if(i == 1) {
-                btn.setTitle("WebApp 연동 예제", for: .normal)
-                btn.addTarget(self, action: #selector(goWebApp), for: .touchUpInside)
-            } else {
-                btn.setTitle("Widget 연동 예제", for: .normal)
-                btn.addTarget(self, action: #selector(goWidget), for: .touchUpInside)
-            }
+        let buttons: [(String, Selector)] = [
+            ("PG일반 테스트", #selector(goPgPayment)),
+            ("통합결제 테스트", #selector(goTotalPayment)),
+            ("정기결제 테스트", #selector(goSubscription)),
+            ("본인인증 테스트", #selector(goAuthentication)),
+            ("WebApp 연동 예제", #selector(goWebApp)),
+            ("Widget 연동 예제", #selector(goWidget))
+        ]
 
+        let buttonHeight: CGFloat = 50
+        let buttonSpacing: CGFloat = 10
+        let totalHeight = CGFloat(buttons.count) * buttonHeight + CGFloat(buttons.count - 1) * buttonSpacing
+        let startY = (self.view.frame.height - totalHeight) / 2
+
+        for (i, buttonInfo) in buttons.enumerated() {
+            let btn = UIButton()
+            btn.setTitle(buttonInfo.0, for: .normal)
+            btn.addTarget(self, action: buttonInfo.1, for: .touchUpInside)
 
             btn.frame = CGRect(
                 x: self.view.frame.width/2 - 100,
-                y: self.view.frame.height/2 - 120 + CGFloat(90 * i),
+                y: startY + CGFloat(i) * (buttonHeight + buttonSpacing),
                 width: 200,
-                height: 80
+                height: buttonHeight
             )
             btn.setTitleColor(.darkGray, for: .normal)
             self.view.addSubview(btn)
@@ -47,11 +52,24 @@ class ViewController: UIViewController {
     }
 
 
-    @objc func goNative() {
-        let vc = NativeController()
-//        vc.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(vc, animated: true)
-//        self.navigationController?.pushViewController(vc, animated: true)
+    @objc func goPgPayment() {
+        let vc = PgPaymentController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func goTotalPayment() {
+        let vc = TotalPaymentController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func goSubscription() {
+        let vc = SubscriptionController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func goAuthentication() {
+        let vc = AuthenticationController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc func goWebApp() {
