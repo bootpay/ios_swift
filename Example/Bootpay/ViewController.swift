@@ -27,7 +27,8 @@ class ViewController: UIViewController {
             ("정기결제 테스트", #selector(goSubscription)),
             ("본인인증 테스트", #selector(goAuthentication)),
             ("WebApp 연동 예제", #selector(goWebApp)),
-            ("Widget 연동 예제", #selector(goWidget))
+            ("Widget 연동 예제", #selector(goWidget)),
+            ("Commerce 테스트", #selector(goCommerce))
         ]
 
         let buttonHeight: CGFloat = 50
@@ -79,6 +80,11 @@ class ViewController: UIViewController {
 
     @objc func goWidget() {
         let vc = WidgetController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func goCommerce() {
+        let vc = CommerceExampleController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

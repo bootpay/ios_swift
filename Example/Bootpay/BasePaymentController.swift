@@ -152,7 +152,7 @@ class BasePaymentController: UIViewController {
 
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "nicepay"
+        payload.pg = "다날"
         payload.method = "카드"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()

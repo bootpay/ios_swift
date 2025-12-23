@@ -10,9 +10,12 @@
 import Foundation
 
 public class BootpayConstant {
-    
+
     public static let CDN_URL = "https://webview.bootpay.co.kr/5.2.2";
     public static let BRIDGE_NAME = "Bootpay";
+
+    // Commerce WebView URL
+    public static let COMMERCE_URL = "https://webview.bootpay.co.kr/commerce/1.0.5/index.html";
     
     public static let ENV_SWIFT = 0
     public static let ENV_SWIFT_UI = 1

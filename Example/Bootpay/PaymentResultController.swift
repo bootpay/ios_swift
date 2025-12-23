@@ -16,6 +16,7 @@ class PaymentResultController: UIViewController {
 
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    private let cardView = UIView()
     private let statusImageView = UIImageView()
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
@@ -28,7 +29,7 @@ class PaymentResultController: UIViewController {
         super.viewDidLoad()
 
         self.title = "결제 결과"
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemBackground
         self.navigationItem.hidesBackButton = true
 
         setupUI()
@@ -46,43 +47,53 @@ class PaymentResultController: UIViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
 
+        // Card View (결과 카드)
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.backgroundColor = .secondarySystemBackground
+        cardView.layer.cornerRadius = 20
+        cardView.layer.shadowColor = UIColor.black.cgColor
+        cardView.layer.shadowOpacity = 0.1
+        cardView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        cardView.layer.shadowRadius = 12
+        contentView.addSubview(cardView)
+
         // Status Image
         statusImageView.translatesAutoresizingMaskIntoConstraints = false
         statusImageView.contentMode = .scaleAspectFit
-        statusImageView.tintColor = .systemGreen
-        contentView.addSubview(statusImageView)
+        cardView.addSubview(statusImageView)
 
         // Title Label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = .boldSystemFont(ofSize: 24)
+        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
         titleLabel.textAlignment = .center
-        contentView.addSubview(titleLabel)
+        titleLabel.textColor = .label
+        cardView.addSubview(titleLabel)
 
         // Message Label
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.font = .systemFont(ofSize: 16)
-        messageLabel.textColor = .darkGray
+        messageLabel.textColor = .secondaryLabel
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
-        contentView.addSubview(messageLabel)
+        cardView.addSubview(messageLabel)
 
         // Detail Stack View
         detailStackView.translatesAutoresizingMaskIntoConstraints = false
         detailStackView.axis = .vertical
-        detailStackView.spacing = 12
-        detailStackView.backgroundColor = .systemGray6
+        detailStackView.spacing = 16
+        detailStackView.backgroundColor = .tertiarySystemBackground
         detailStackView.layer.cornerRadius = 12
-        detailStackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        detailStackView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         detailStackView.isLayoutMarginsRelativeArrangement = true
-        contentView.addSubview(detailStackView)
+        cardView.addSubview(detailStackView)
 
         // Confirm Button
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.setTitle("확인", for: .normal)
-        confirmButton.titleLabel?.font = .boldSystemFont(ofSize: 18)
+        confirmButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
         confirmButton.backgroundColor = .systemBlue
         confirmButton.setTitleColor(.white, for: .normal)
-        confirmButton.layer.cornerRadius = 10
+        confirmButton.layer.cornerRadius = 14
         confirmButton.addTarget(self, action: #selector(confirmTapped), for: .touchUpInside)
         view.addSubview(confirmButton)
 
@@ -99,23 +110,28 @@ class PaymentResultController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            statusImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
-            statusImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+
+            statusImageView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 40),
+            statusImageView.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
             statusImageView.widthAnchor.constraint(equalToConstant: 80),
             statusImageView.heightAnchor.constraint(equalToConstant: 80),
 
             titleLabel.topAnchor.constraint(equalTo: statusImageView.bottomAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
 
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            messageLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            messageLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
 
             detailStackView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 30),
-            detailStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            detailStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            detailStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            detailStackView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            detailStackView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+            detailStackView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -30),
 
             confirmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             confirmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -125,8 +141,19 @@ class PaymentResultController: UIViewController {
     }
 
     private func displayResult() {
-        guard let data = paymentData,
-              let innerData = data["data"] as? [String: Any] else {
+        guard let data = paymentData else {
+            showError()
+            return
+        }
+
+        // Commerce 응답 형식 확인 (event 필드가 있으면 Commerce)
+        if let event = data["event"] as? String {
+            displayCommerceResult(data: data, event: event)
+            return
+        }
+
+        // Widget/일반 결제 응답 형식
+        guard let innerData = data["data"] as? [String: Any] else {
             showError()
             return
         }
@@ -138,14 +165,12 @@ class PaymentResultController: UIViewController {
             statusImageView.image = UIImage(systemName: "checkmark.circle.fill")
             statusImageView.tintColor = .systemGreen
             titleLabel.text = "결제 완료"
-            titleLabel.textColor = .systemGreen
             messageLabel.text = "결제가 성공적으로 완료되었습니다."
         } else {
             // 결제 실패
             statusImageView.image = UIImage(systemName: "xmark.circle.fill")
             statusImageView.tintColor = .systemRed
             titleLabel.text = "결제 실패"
-            titleLabel.textColor = .systemRed
             messageLabel.text = "결제 처리 중 문제가 발생했습니다."
         }
 
@@ -162,11 +187,58 @@ class PaymentResultController: UIViewController {
         }
     }
 
+    /// Commerce 결과 표시
+    private func displayCommerceResult(data: [String: Any], event: String) {
+        switch event {
+        case "done":
+            statusImageView.image = UIImage(systemName: "checkmark.circle.fill")
+            statusImageView.tintColor = .systemGreen
+            titleLabel.text = "구독 신청 완료"
+            messageLabel.text = "구독이 성공적으로 시작되었습니다."
+            confirmButton.backgroundColor = .systemGreen
+
+        case "cancel":
+            statusImageView.image = UIImage(systemName: "arrow.uturn.backward.circle.fill")
+            statusImageView.tintColor = .systemOrange
+            titleLabel.text = "결제 취소"
+            messageLabel.text = data["message"] as? String ?? "결제가 취소되었습니다."
+            confirmButton.backgroundColor = .systemOrange
+
+        case "error":
+            statusImageView.image = UIImage(systemName: "exclamationmark.circle.fill")
+            statusImageView.tintColor = .systemRed
+            titleLabel.text = "결제 실패"
+            messageLabel.text = data["message"] as? String ?? "결제 처리 중 오류가 발생했습니다."
+            confirmButton.backgroundColor = .systemRed
+
+        default:
+            showError()
+            return
+        }
+
+        // Commerce 상세 정보 표시
+        if let orderNumber = data["order_number"] as? String {
+            addDetailRow(title: "주문번호", value: orderNumber)
+        }
+        if let requestId = data["request_id"] as? String {
+            addDetailRow(title: "요청 ID", value: requestId)
+        }
+
+        // metadata 표시
+        if let metadata = data["metadata"] as? [String: Any] {
+            if let planKey = metadata["plan_key"] as? String {
+                addDetailRow(title: "플랜", value: planKey.capitalized)
+            }
+            if let billingType = metadata["billing_type"] as? String {
+                addDetailRow(title: "결제 주기", value: billingType)
+            }
+        }
+    }
+
     private func showError() {
         statusImageView.image = UIImage(systemName: "exclamationmark.triangle.fill")
         statusImageView.tintColor = .systemOrange
         titleLabel.text = "결과 확인 불가"
-        titleLabel.textColor = .systemOrange
         messageLabel.text = "결제 결과를 확인할 수 없습니다."
     }
 
@@ -177,13 +249,13 @@ class PaymentResultController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = .systemFont(ofSize: 14)
-        titleLabel.textColor = .darkGray
+        titleLabel.textColor = .secondaryLabel
         titleLabel.text = title
 
         let valueLabel = UILabel()
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         valueLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        valueLabel.textColor = .black
+        valueLabel.textColor = .label
         valueLabel.textAlignment = .right
         valueLabel.text = value
         valueLabel.numberOfLines = 0
@@ -200,7 +272,7 @@ class PaymentResultController: UIViewController {
             valueLabel.trailingAnchor.constraint(equalTo: rowView.trailingAnchor),
             valueLabel.topAnchor.constraint(equalTo: rowView.topAnchor),
             valueLabel.bottomAnchor.constraint(equalTo: rowView.bottomAnchor),
-            valueLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
+            valueLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 24)
         ])
 
         detailStackView.addArrangedSubview(rowView)

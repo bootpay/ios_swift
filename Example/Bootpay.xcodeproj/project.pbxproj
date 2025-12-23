@@ -22,6 +22,7 @@
 		8C07960B2EF2459D0034A7D9 /* TotalPaymentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0796072EF2459D0034A7D9 /* TotalPaymentController.swift */; };
 		8C07960D2EF245BF0034A7D9 /* BasePaymentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07960C2EF245BF0034A7D9 /* BasePaymentController.swift */; };
 		8C7E46102EEA4CB00059A5DF /* PaymentResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7E460F2EEA4CB00059A5DF /* PaymentResultController.swift */; };
+		8CAA81492EFA60EF00787891 /* CommerceExampleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAA81482EFA60EF00787891 /* CommerceExampleController.swift */; };
 		A1B2C3D4E5F6789012345678 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */; };
 		B1C2D3E4F5A6789012345680 /* WidgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5A6789012345681 /* WidgetController.swift */; };
 /* End PBXBuildFile section */
@@ -65,6 +66,7 @@
 		8C0796072EF2459D0034A7D9 /* TotalPaymentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalPaymentController.swift; sourceTree = "<group>"; };
 		8C07960C2EF245BF0034A7D9 /* BasePaymentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePaymentController.swift; sourceTree = "<group>"; };
 		8C7E460F2EEA4CB00059A5DF /* PaymentResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentResultController.swift; sourceTree = "<group>"; };
+		8CAA81482EFA60EF00787891 /* CommerceExampleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommerceExampleController.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B1C2D3E4F5A6789012345681 /* WidgetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetController.swift; sourceTree = "<group>"; };
 		CBEFB1576505BF731E9E3D09 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				8C0796072EF2459D0034A7D9 /* TotalPaymentController.swift */,
 				87E4F0D226A161950021C3F1 /* WebAppController.swift */,
 				B1C2D3E4F5A6789012345681 /* WidgetController.swift */,
+				8CAA81482EFA60EF00787891 /* CommerceExampleController.swift */,
 				8C7E460F2EEA4CB00059A5DF /* PaymentResultController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -377,6 +380,7 @@
 				8C0796082EF2459D0034A7D9 /* PgPaymentController.swift in Sources */,
 				8C0796092EF2459D0034A7D9 /* AuthenticationController.swift in Sources */,
 				8C07960A2EF2459D0034A7D9 /* SubscriptionController.swift in Sources */,
+				8CAA81492EFA60EF00787891 /* CommerceExampleController.swift in Sources */,
 				8C07960D2EF245BF0034A7D9 /* BasePaymentController.swift in Sources */,
 				8C07960B2EF2459D0034A7D9 /* TotalPaymentController.swift in Sources */,
 			);
