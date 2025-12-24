@@ -197,6 +197,13 @@ class PaymentResultController: UIViewController {
             messageLabel.text = "구독이 성공적으로 시작되었습니다."
             confirmButton.backgroundColor = .systemGreen
 
+        case "issued":
+            statusImageView.image = UIImage(systemName: "building.columns.circle.fill")
+            statusImageView.tintColor = .systemBlue
+            titleLabel.text = "가상계좌 발급 완료"
+            messageLabel.text = data["message"] as? String ?? "가상계좌가 발급되었습니다.\n입금 후 자동으로 구독이 시작됩니다."
+            confirmButton.backgroundColor = .systemBlue
+
         case "cancel":
             statusImageView.image = UIImage(systemName: "arrow.uturn.backward.circle.fill")
             statusImageView.tintColor = .systemOrange
@@ -222,6 +229,28 @@ class PaymentResultController: UIViewController {
         }
         if let requestId = data["request_id"] as? String {
             addDetailRow(title: "요청 ID", value: requestId)
+        }
+        if let receiptId = data["receipt_id"] as? String {
+            addDetailRow(title: "영수증 ID", value: receiptId)
+        }
+
+        // 가상계좌 정보 표시 (issued 이벤트)
+        if event == "issued" {
+            if let bankName = data["bankname"] as? String {
+                addDetailRow(title: "입금 은행", value: bankName)
+            }
+            if let account = data["account"] as? String {
+                addDetailRow(title: "계좌번호", value: account)
+            }
+            if let accountHolder = data["accounthodler"] as? String {
+                addDetailRow(title: "예금주", value: accountHolder)
+            }
+            if let expireDate = data["expiredate"] as? String {
+                addDetailRow(title: "입금 기한", value: formatExpireDate(expireDate))
+            }
+            if let price = data["price"] as? Int {
+                addDetailRow(title: "입금 금액", value: formatPrice(price))
+            }
         }
 
         // metadata 표시
@@ -292,6 +321,21 @@ class PaymentResultController: UIViewController {
         if let date = inputFormatter.date(from: dateString) {
             let outputFormatter = DateFormatter()
             outputFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+            outputFormatter.locale = Locale(identifier: "ko_KR")
+            return outputFormatter.string(from: date)
+        }
+        return dateString
+    }
+
+    private func formatExpireDate(_ dateString: String) -> String {
+        // 가상계좌 만료일 형식: "2021-01-17 00:00:00"
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        inputFormatter.locale = Locale(identifier: "ko_KR")
+
+        if let date = inputFormatter.date(from: dateString) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "yyyy년 MM월 dd일 HH:mm까지"
             outputFormatter.locale = Locale(identifier: "ko_KR")
             return outputFormatter.string(from: date)
         }
