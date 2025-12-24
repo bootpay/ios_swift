@@ -1,3 +1,7 @@
+## 5.0.1
+* BootpayCommerce issued 콜백 추가 (가상계좌 발급 완료)
+* 불필요한 console.log 제거
+
 ## 5.0.0
 * Widget 결제 기능 추가
 * CDN URL 5.2.2 업데이트

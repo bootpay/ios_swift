@@ -28,6 +28,7 @@ import WebKit
 
     // MARK: - 콜백
     @objc public var done: (([String: Any]) -> Void)?
+    @objc public var issued: (([String: Any]) -> Void)?
     @objc public var error: (([String: Any]) -> Void)?
     @objc public var cancel: (([String: Any]) -> Void)?
     @objc public var close: (() -> Void)?
@@ -41,6 +42,7 @@ import WebKit
             BootpayCommerce.shared.close?()
 
             BootpayCommerce.shared.done = nil
+            BootpayCommerce.shared.issued = nil
             BootpayCommerce.shared.error = nil
             BootpayCommerce.shared.cancel = nil
             BootpayCommerce.shared.close = nil
@@ -102,6 +104,11 @@ extension BootpayCommerce {
         return self
     }
 
+    @objc public static func onIssued(_ action: @escaping ([String: Any]) -> Void) -> BootpayCommerce.Type {
+        shared.issued = action
+        return self
+    }
+
     @objc public static func onError(_ action: @escaping ([String: Any]) -> Void) -> BootpayCommerce.Type {
         shared.error = action
         return self
@@ -140,10 +147,8 @@ extension BootpayCommerce {
         scripts.append(payloadJSON)
         scripts.append(")")
         scripts.append(".then(function(res) {")
-        scripts.append("  console.log('[BootpayCommerce] requestCheckout response:', res);")
         scripts.append("  webkit.messageHandlers.\(BootpayConstant.BRIDGE_NAME).postMessage(res);")
         scripts.append("}).catch(function(err) {")
-        scripts.append("  console.error('[BootpayCommerce] requestCheckout error:', err);")
         scripts.append("  webkit.messageHandlers.\(BootpayConstant.BRIDGE_NAME).postMessage({event: 'error', data: err});")
         scripts.append("});")
 
