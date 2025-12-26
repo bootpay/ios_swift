@@ -10,6 +10,21 @@ import WebKit
 
 @objc public class Bootpay: NSObject {
     @objc public static let shared = Bootpay()
+
+    // MARK: - WebView 프리워밍을 위한 공유 리소스
+    /// WKProcessPool을 공유하여 WebContent 프로세스 재사용
+    public static let sharedProcessPool = WKProcessPool()
+
+    /// 캐싱된 WKWebViewConfiguration (lazy 초기화)
+    public static var sharedConfiguration: WKWebViewConfiguration {
+        let config = WKWebViewConfiguration()
+        config.processPool = sharedProcessPool
+        return config
+    }
+
+    /// 프리워밍용 WebView (warmUp 호출 시 생성)
+    private static var prewarmedWebView: WKWebView?
+
     public var uuid = ""
     let ver = BootpayBuildConfig.VERSION
     var sk = ""
@@ -42,7 +57,30 @@ import WebKit
         self.key = getRandomKey(32)
         self.iv = getRandomKey(16)
     }
-    
+
+    // MARK: - WebView 프리워밍 API
+
+    /// WebView 프로세스를 미리 초기화하여 첫 결제 화면 로딩 속도를 개선합니다.
+    /// AppDelegate의 didFinishLaunchingWithOptions 또는 적절한 시점에 호출하세요.
+    /// - Note: iOS의 WKWebView는 첫 로딩 시 GPU, Networking, WebContent 프로세스를 생성하므로 3-7초가 걸릴 수 있습니다.
+    ///         이 메서드를 미리 호출하면 실제 결제 시 즉시 WebView가 표시됩니다.
+    @objc public static func warmUp() {
+        DispatchQueue.main.async {
+            if prewarmedWebView == nil {
+                let config = sharedConfiguration
+                prewarmedWebView = WKWebView(frame: .zero, configuration: config)
+                // 빈 HTML을 로드하여 WebContent 프로세스 초기화
+                prewarmedWebView?.loadHTMLString("", baseURL: nil)
+            }
+        }
+    }
+
+    /// 프리워밍된 WebView 리소스를 해제합니다.
+    /// 메모리가 부족할 때 호출할 수 있습니다.
+    @objc public static func releaseWarmUp() {
+        prewarmedWebView = nil
+    }
+
     public func debounceClose() {
         DispatchQueue.main.asyncDeduped(target: self, after: 0.5) { [] in
 

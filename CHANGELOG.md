@@ -1,3 +1,11 @@
+## 5.0.2
+* WebView 프리워밍 API 추가 (`Bootpay.warmUp()`)
+  - iOS WKWebView는 첫 로딩 시 GPU, Networking, WebContent 프로세스를 생성하므로 3-7초가 소요됨
+  - 앱 시작 시 `Bootpay.warmUp()`을 호출하면 WebView 프로세스를 미리 초기화하여 첫 결제 화면 로딩 속도 개선
+  - `Bootpay.releaseWarmUp()`으로 메모리 부족 시 리소스 해제 가능
+* ProcessPool 공유 구조 개선
+  - `Bootpay.sharedProcessPool`을 public으로 노출하여 세션/쿠키 유지 및 프로세스 재사용 지원
+
 ## 5.0.1
 * BootpayCommerce issued 콜백 추가 (가상계좌 발급 완료)
 * 불필요한 console.log 제거

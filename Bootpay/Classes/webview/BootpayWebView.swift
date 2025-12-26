@@ -7,7 +7,6 @@
 
 import WebKit
 
-
 @objc open class BootpayWebView: BTView {
     @objc public var webview: WKWebView!
     var circleView: UIActivityIndicatorView?
@@ -39,8 +38,10 @@ import WebKit
     
     func initComponent() {
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always  // 현대카드 등 쿠키설정 이슈 해결을 위해 필요
-        
+
+        // Bootpay의 공유 ProcessPool 사용 - warmUp() 호출 시 동일한 프로세스 재사용
         let configuration = WKWebViewConfiguration()
+        configuration.processPool = Bootpay.sharedProcessPool
 //        configuration.userContentController.add(self, name: BootpayConstant.BRIDGE_NAME)
         
         

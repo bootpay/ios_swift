@@ -152,11 +152,12 @@ class BasePaymentController: UIViewController {
 
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "다날"
+        payload.pg = "나이스페이"
         payload.method = "카드"
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.displaySuccessResult = true
+
         payload.extra?.appScheme = "bootpaySwift"
 
         let item1 = BootItem()
