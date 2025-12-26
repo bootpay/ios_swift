@@ -222,14 +222,23 @@ class SubscriptionController: BasePaymentController {
             print("-- confirm: \(data)")
             return true
         }
-        .onDone { data in
+        .onDone { [weak self] data in
             print("-- done: \(data)")
+            self?.showPaymentResult(data: data)
         }
         .onError { data in
             print("-- error: \(data)")
         }
         .onClose {
             print("-- close")
+        }
+    }
+
+    private func showPaymentResult(data: [String: Any]) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            let resultVC = PaymentResultController()
+            resultVC.paymentData = data
+            self?.navigationController?.pushViewController(resultVC, animated: true)
         }
     }
 }

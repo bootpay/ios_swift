@@ -84,6 +84,33 @@ docs: 문서 수정
 chore: 빌드, 설정 변경
 ```
 
+## WebView 프리워밍
+
+iOS의 WKWebView는 첫 로딩 시 GPU, Networking, WebContent 프로세스 초기화로 4-6초 지연이 발생합니다.
+
+### 프리워밍 API
+
+| API | 설명 |
+|-----|------|
+| `Bootpay.warmUp()` | WebView 프로세스를 미리 초기화 (AppDelegate에서 호출 권장) |
+| `Bootpay.isWarmedUp` | 프리워밍 완료 여부 확인 |
+| `Bootpay.releaseWarmUp()` | 프리워밍 리소스 해제 (메모리 부족 시) |
+
+### 구현 위치
+
+```
+Bootpay/Classes/core/Bootpay.swift
+├── warmUp()           # 명시적 프리워밍 함수 (line 110)
+├── isWarmedUp         # 프리워밍 완료 여부 (line 124)
+├── releaseWarmUp()    # 리소스 해제 (line 88)
+├── _autoWarmUp        # 자동 프리워밍 (shared/sharedProcessPool 접근 시)
+└── prewarmedWebView   # 프리워밍용 WebView 인스턴스
+```
+
+### Example 앱 적용
+
+`Example/Bootpay/AppDelegate.swift`에서 `Bootpay.warmUp()` 호출 예시 확인 가능.
+
 ## Example 앱 구조
 
 각 결제 타입별로 Controller가 분리되어 있습니다:

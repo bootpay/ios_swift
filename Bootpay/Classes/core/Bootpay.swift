@@ -10,36 +10,24 @@ import WebKit
 
 @objc public class Bootpay: NSObject {
 
-    // MARK: - WebView 프리워밍 (자동 실행)
+    // MARK: - WebView 프리워밍
 
     /// 프리워밍용 WebView
     private static var prewarmedWebView: WKWebView?
 
-    /// 자동 프리워밍 트리거 - shared 또는 sharedProcessPool 접근 시 자동 실행
-    private static let _autoWarmUp: Bool = {
-        DispatchQueue.main.async {
-            if prewarmedWebView == nil {
-                let config = WKWebViewConfiguration()
-                config.processPool = _sharedProcessPool
-                prewarmedWebView = WKWebView(frame: .zero, configuration: config)
-                prewarmedWebView?.loadHTMLString("", baseURL: nil)
-            }
-        }
-        return true
-    }()
+    /// 프리워밍 완료 여부
+    private static var _isWarmUpComplete = false
 
     /// 내부 ProcessPool (lazy 초기화)
     private static let _sharedProcessPool = WKProcessPool()
 
     /// WKProcessPool을 공유하여 WebContent 프로세스 재사용
     public static var sharedProcessPool: WKProcessPool {
-        _ = _autoWarmUp  // 자동 프리워밍 트리거
         return _sharedProcessPool
     }
 
     /// shared 접근 시 자동으로 프리워밍 시작
     @objc public static let shared: Bootpay = {
-        _ = _autoWarmUp  // 자동 프리워밍 트리거
         return Bootpay()
     }()
 
@@ -87,6 +75,72 @@ import WebKit
     /// 메모리가 부족할 때 호출할 수 있습니다.
     @objc public static func releaseWarmUp() {
         prewarmedWebView = nil
+        _isWarmUpComplete = false
+    }
+
+    // MARK: - 명시적 프리워밍 API
+
+    /// 프리워밍용 최소 HTML (GPU/WebContent/Networking 프로세스 초기화 트리거)
+    private static let warmUpHTML = """
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+    <body><canvas id="c" width="1" height="1"></canvas>
+    <script>
+    var c=document.getElementById('c').getContext('2d');
+    c.fillRect(0,0,1,1);
+    fetch('https://webview.bootpay.co.kr/health',{mode:'no-cors'}).catch(function(){});
+    </script>
+    </body>
+    </html>
+    """
+
+    /// WebView 프로세스를 미리 초기화합니다.
+    /// AppDelegate의 didFinishLaunchingWithOptions에서 호출하면
+    /// 첫 결제 화면 로딩 시간을 크게 단축할 수 있습니다.
+    ///
+    /// - Parameter delay: 프리워밍 시작 전 대기 시간 (초). 기본값 0.1초.
+    ///                    UI가 느려지면 0.5~1.0으로 늘려보세요.
+    /// - 소요 시간: 백그라운드에서 4-6초 (GPU, WebContent, Networking 프로세스 초기화)
+    /// - 메모리: 약 50-100MB 추가 사용
+    ///
+    /// ```swift
+    /// // AppDelegate.swift
+    /// Bootpay.warmUp()        // 기본 0.1초 후 시작
+    /// Bootpay.warmUp(delay: 0.5)  // UI 버벅임 시 딜레이 증가
+    /// ```
+    @objc public static func warmUp(delay: Double = 0.1) {
+        // 이미 프리워밍 중이면 스킵
+        guard prewarmedWebView == nil else { return }
+
+        // UI 초기화 완료 후 실행 (UI 블로킹 방지)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            startWarmUp()
+        }
+    }
+
+    private static func startWarmUp() {
+        guard prewarmedWebView == nil else { return }
+
+        let config = WKWebViewConfiguration()
+        config.processPool = _sharedProcessPool
+
+        // WebView 생성 - 이때 GPU/WebContent 프로세스 시작
+        prewarmedWebView = WKWebView(frame: CGRect(x: 0, y: 0, width: 1, height: 1), configuration: config)
+
+        // 실제 렌더링 + 네트워크 요청으로 모든 프로세스 초기화
+        prewarmedWebView?.loadHTMLString(warmUpHTML, baseURL: URL(string: BootpayConstant.CDN_URL))
+
+        _isWarmUpComplete = true
+
+        #if DEBUG
+        print("[Bootpay] warmUp started - WebView processes initializing...")
+        #endif
+    }
+
+    /// 프리워밍 완료 여부를 확인합니다.
+    @objc public static var isWarmedUp: Bool {
+        return _isWarmUpComplete && prewarmedWebView != nil
     }
 
     public func debounceClose() {

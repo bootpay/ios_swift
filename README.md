@@ -63,23 +63,46 @@ pod 'Bootpay'
 상단의 프로젝트 설정의 info.plist에서 CFBundleURLSchemes를 설정해주시면 부트페이 SDK가 해당 값을 읽어 extra.appScheme 에 값을 채워 결제데이터를 전송합니다.
 
 
-## WebView 프리워밍 (자동)
+## WebView 프리워밍 (수동)
 
-iOS의 WKWebView는 첫 로딩 시 GPU, Networking, WebContent 프로세스를 생성하므로 지연이 발생할 수 있습니다.
+iOS의 WKWebView는 첫 로딩 시 GPU, Networking, WebContent 프로세스를 생성하므로 4-6초의 지연이 발생할 수 있습니다.
 
-**Bootpay SDK 5.0.3부터는 프리워밍이 자동으로 실행됩니다.** SDK가 처음 사용될 때 WebView 프로세스가 자동으로 초기화되어 결제 화면 로딩 속도가 개선됩니다.
+**iOS Swift SDK는 수동으로 `Bootpay.warmUp()`을 호출해야 합니다.** 앱 시작 시점에 호출하면 첫 결제 화면 로딩 속도가 크게 개선됩니다.
 
 ```swift
-// (선택) 메모리 경고 시 프리워밍 리소스 해제
+// AppDelegate.swift
+import Bootpay
+
+func application(_ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    Bootpay.warmUp()  // 앱 시작과 동시에 WebView 프로세스 초기화
+    return true
+}
+
+// (선택) 메모리 경고 시 리소스 해제
 func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
     Bootpay.releaseWarmUp()
 }
 ```
 
+### 커스텀 딜레이
+
+UI가 버벅이면 딜레이를 늘릴 수 있습니다:
+
+```swift
+Bootpay.warmUp(delay: 0.5)  // 0.5초 후 프리워밍 시작
+```
+
+### API
+
 | API | 설명 |
 |-----|------|
-| `Bootpay.releaseWarmUp()` | 프리워밍에 사용된 리소스를 해제합니다 (메모리 부족 시) |
-| `Bootpay.sharedProcessPool` | 공유 ProcessPool에 직접 접근할 수 있습니다 |
+| `Bootpay.warmUp()` | WebView 프로세스 미리 초기화 (기본 0.1초 딜레이) |
+| `Bootpay.warmUp(delay: 0.5)` | 커스텀 딜레이로 프리워밍 |
+| `Bootpay.isWarmedUp` | 프리워밍 완료 여부 확인 |
+| `Bootpay.releaseWarmUp()` | 프리워밍 리소스 해제 (메모리 부족 시) |
+| `Bootpay.sharedProcessPool` | 공유 ProcessPool에 직접 접근 |
 
 
 ## 결제창 띄우는 iOS 코드

@@ -7,12 +7,20 @@
 //
 
 import UIKit
+import Bootpay
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // WebView 프로세스 프리워밍 - 첫 결제 화면 로딩 속도 개선
+        Bootpay.warmUp()
         return true
+    }
+
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        // 메모리 부족 시 프리워밍 리소스 해제
+        Bootpay.releaseWarmUp()
     }
 
     // MARK: UISceneSession Lifecycle

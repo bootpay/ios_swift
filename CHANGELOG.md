@@ -1,7 +1,8 @@
 ## 5.0.3
-* WebView 프리워밍 자동화
-  - SDK 사용 시 자동으로 WebView 프로세스 초기화 (별도 호출 불필요)
-  - 첫 결제 화면 로딩 속도 개선
+* WebView 프리워밍 개선
+  - `Bootpay.warmUp()` 명시적 호출 API 추가 (AppDelegate에서 앱 시작 시 호출 권장)
+  - `Bootpay.isWarmedUp` 프리워밍 완료 여부 확인 속성 추가
+  - SDK 사용 시 자동 프리워밍도 유지 (기존 앱 호환)
   - `Bootpay.releaseWarmUp()`으로 메모리 부족 시 리소스 해제 가능
 * ProcessPool 공유 구조 개선
   - `Bootpay.sharedProcessPool`을 통한 세션/쿠키 유지 및 프로세스 재사용
