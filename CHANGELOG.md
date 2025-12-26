@@ -1,8 +1,14 @@
+## 5.0.4
+* 결제 완료 후 결과 페이지 이동 (Example 앱)
+  - PgPaymentController, TotalPaymentController, SubscriptionController에서 onDone 시 PaymentResultController로 이동
+* WebView 프리워밍 수동 호출 방식으로 변경
+  - `Bootpay.warmUp()` AppDelegate에서 명시적 호출 필요
+  - GPU/WebContent/Networking 프로세스 초기화용 실제 HTML 로드
+
 ## 5.0.3
-* WebView 프리워밍 개선
-  - `Bootpay.warmUp()` 명시적 호출 API 추가 (AppDelegate에서 앱 시작 시 호출 권장)
+* WebView 프리워밍 API 추가
+  - `Bootpay.warmUp()` 명시적 호출 API 추가
   - `Bootpay.isWarmedUp` 프리워밍 완료 여부 확인 속성 추가
-  - SDK 사용 시 자동 프리워밍도 유지 (기존 앱 호환)
   - `Bootpay.releaseWarmUp()`으로 메모리 부족 시 리소스 해제 가능
 * ProcessPool 공유 구조 개선
   - `Bootpay.sharedProcessPool`을 통한 세션/쿠키 유지 및 프로세스 재사용
