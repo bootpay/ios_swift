@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (5.7.1)
-  - Bootpay (5.0.3)
+  - Bootpay (5.0.5)
 
 DEPENDENCIES:
   - Alamofire
@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  Bootpay: 6595a6a6194cd1f4e940ea076b07a9631d7c5b17
+  Bootpay: f303b1048458bb0ffd98c10cc4aa9caf773b05ec
 
 PODFILE CHECKSUM: 378c16e2a4828f95c32f797d20f37fcf16a5c761
 

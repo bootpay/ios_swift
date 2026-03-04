@@ -5,7 +5,11 @@
 //  Created by Taesup Yoon on 2024/12/23.
 //
 
+#if os(macOS)
+import AppKit
+#elseif os(iOS)
 import UIKit
+#endif
 
 class CommerceController: UIViewController {
     let commerceWebView = CommerceWebView()

@@ -1,3 +1,7 @@
+## 5.0.5
+* SwiftUI 래퍼(BootpayUI) 병합 - 단일 패키지로 UIKit/SwiftUI 모두 지원
+* SPM 빌드 시 `import UIKit` 누락으로 인한 빌드 에러 수정
+
 ## 5.0.4
 * 결제 완료 후 결과 페이지 이동 (Example 앱)
   - PgPaymentController, TotalPaymentController, SubscriptionController에서 onDone 시 PaymentResultController로 이동

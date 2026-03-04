@@ -5,6 +5,11 @@
 //  Created by Taesup Yoon on 2021/05/12.
 //
 
+#if os(macOS)
+import AppKit
+#elseif os(iOS)
+import UIKit
+#endif
 import WebKit
 
 @objc open class BootpayWebView: BTView {

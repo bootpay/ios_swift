@@ -5,7 +5,8 @@
 //  Created by Taesup Yoon on 2022/06/03.
 //
 
-import Foundation
+#if os(iOS)
+import UIKit
 
 extension UIView {
     public var safeTopAnchor: NSLayoutYAxisAnchor {
@@ -24,3 +25,4 @@ extension UIView {
         return safeAreaLayoutGuide.bottomAnchor
     }
 }
+#endif

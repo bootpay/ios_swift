@@ -5,6 +5,12 @@
 //  Created by Taesup Yoon on 2021/05/12.
 //
 
+#if os(macOS)
+import AppKit
+#elseif os(iOS)
+import UIKit
+#endif
+
 class BootpayController: BTViewController {
     let bootpayWebView = BootpayWebView()
     

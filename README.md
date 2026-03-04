@@ -1,73 +1,177 @@
-# Bootpay
+# Bootpay iOS SDK
 
-[![CI Status](https://img.shields.io/travis/bootpay/Bootpay.svg?style=flat)](https://travis-ci.org/bootpay/Bootpay)
 [![Version](https://img.shields.io/cocoapods/v/Bootpay.svg?style=flat)](https://cocoapods.org/pods/Bootpay)
 [![License](https://img.shields.io/cocoapods/l/Bootpay.svg?style=flat)](https://cocoapods.org/pods/Bootpay)
 [![Platform](https://img.shields.io/cocoapods/p/Bootpay.svg?style=flat)](https://cocoapods.org/pods/Bootpay)
 
-# Bootpay iOS
+Bootpay 결제 연동을 위한 iOS Swift SDK입니다. UIKit과 SwiftUI를 모두 지원합니다.
 
-자세한 내용은 [부트페이 개발연동 문서](https://app.gitbook.com/@bootpay/s/docs/client/pg/android)를 참고해주세요.
+- iOS 14.0+
+- Swift 5.9+
+- 외부 의존성 없음
 
-Native 방식으로 iOS 앱을 만들때 이 페이지를 참조하시면 됩니다. 
+## 설치
 
-PG 결제창은 기본적으로 Javascript로 연동됩니다. 부트페이 iOS SDK는 내부적으로 Webview 방식으로 구현하였으며, 사용방법은 아래와 같습니다. 
+### Swift Package Manager (SPM)
 
+Xcode에서 `File` > `Add Package Dependencies...` 선택 후 URL 입력:
 
-iOS 10 버전부터는 보안정책으로 **LSApplicationQueriesSchemes** 을 통하여 사용하고자 하는 URL scheme들을 등록하길 권장합니다.  하지만 부트페이에서는 각 은행사들의 scheme를 변경/추가/삭제에 대응하기 어렵다고 판단하여,  custom URL scheme 요청시 WKWebView에서 앱투앱 처리를 합니다. 코드가 궁금하신 분들인[ 이 곳](https://github.com/bootpay/SwiftyBootpay/blob/master/SwiftyBootpay/Classes/BootpayWebView.swift)을 참고하세요
+```
+https://github.com/bootpay/ios_swift.git
+```
 
+또는 `Package.swift`에 직접 추가:
 
-### Cocoapod을 통한 설치 
+```swift
+dependencies: [
+    .package(url: "https://github.com/bootpay/ios_swift.git", from: "5.0.5")
+]
+```
 
-```java
+타겟에 의존성 추가:
+
+```swift
+.target(
+    name: "YourApp",
+    dependencies: [
+        .product(name: "Bootpay", package: "ios_swift")
+    ]
+)
+```
+
+### CocoaPods
+
+`Podfile`에 추가:
+
+```ruby
 pod 'Bootpay'
 ```
 
-### info.plist
+설치:
 
-```markup
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    ...
-
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLName</key>
-            <string>kr.co.bootpaySample</string> // 사용하고자 하시는 앱의 bundle url name
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>bootpaySample</string> // 사용하고자 하시는 앱의 bundle url scheme
-            </array>
-        </dict>
-    </array>
-
-    ...
-    <key>NSFaceIDUsageDescription</key>
-    <string>생체인증 결제 진행시 권한이 필요합니다</string>
-</dict>
-</plist>
+```bash
+pod install
 ```
 
-**카드사 앱 실행 후 개발중인 원래 앱으로 돌아오지 않는 경우**
+## info.plist 설정
 
-상단의 프로젝트 설정의 info.plist에서 CFBundleURLSchemes를 설정해주시면 부트페이 SDK가 해당 값을 읽어 extra.appScheme 에 값을 채워 결제데이터를 전송합니다.
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>kr.co.bootpaySample</string> <!-- 앱의 bundle url name -->
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>bootpaySample</string> <!-- 앱의 bundle url scheme -->
+        </array>
+    </dict>
+</array>
+```
 
+카드사 앱 실행 후 원래 앱으로 돌아오지 않는 경우, `CFBundleURLSchemes`를 설정하면 부트페이 SDK가 해당 값을 읽어 `extra.appScheme`에 자동으로 채웁니다.
 
-## WebView 프리워밍 (수동)
+## 사용법
 
-iOS의 WKWebView는 첫 로딩 시 GPU, Networking, WebContent 프로세스를 생성하므로 4-6초의 지연이 발생할 수 있습니다.
+### UIKit
 
-**iOS Swift SDK는 수동으로 `Bootpay.warmUp()`을 호출해야 합니다.** 앱 시작 시점에 호출하면 첫 결제 화면 로딩 속도가 크게 개선됩니다.
+```swift
+import UIKit
+import Bootpay
+
+class PaymentController: UIViewController {
+
+    @objc func showBootpay() {
+        let payload = Payload()
+        payload.applicationId = "YOUR_APPLICATION_ID"
+        payload.price = 1000
+        payload.orderId = String(NSTimeIntervalSince1970)
+        payload.orderName = "테스트 아이템"
+        payload.pg = "kcp"
+        payload.method = "card"
+
+        let user = BootUser()
+        user.username = "테스트 유저"
+        user.phone = "01012345678"
+        payload.user = user
+
+        Bootpay.requestPayment(viewController: self, payload: payload)
+            .onCancel { data in
+                print("-- cancel: \(data)")
+            }
+            .onConfirm { data in
+                print("-- confirm: \(data)")
+                return true // 결제 승인
+            }
+            .onDone { data in
+                print("-- done: \(data)")
+            }
+            .onError { data in
+                print("-- error: \(data)")
+            }
+        Bootpay.onClose {
+            print("-- close")
+        }
+    }
+}
+```
+
+### SwiftUI
+
+```swift
+import SwiftUI
+import Bootpay
+
+struct PaymentView: View {
+    var body: some View {
+        BootpayUI(
+            payload: makePayload(),
+            requestType: BootpayConstant.REQUEST_TYPE_PAYMENT
+        )
+        .onDone { data in
+            print("결제 완료: \(data)")
+        }
+        .onCancel { data in
+            print("결제 취소: \(data)")
+        }
+        .onError { data in
+            print("결제 에러: \(data)")
+        }
+        .onClose {
+            print("결제창 닫힘")
+        }
+    }
+
+    func makePayload() -> Payload {
+        let payload = Payload()
+        payload.applicationId = "YOUR_APPLICATION_ID"
+        payload.orderName = "테스트 결제"
+        payload.price = 1000
+        payload.orderId = "order_\(Int(Date().timeIntervalSince1970))"
+        return payload
+    }
+}
+```
+
+### 결제 타입
+
+| 타입 | UIKit | SwiftUI requestType |
+|------|-------|---------------------|
+| 일반결제 | `Bootpay.requestPayment(...)` | `BootpayConstant.REQUEST_TYPE_PAYMENT` (1) |
+| 정기결제 | `Bootpay.requestSubscription(...)` | `BootpayConstant.REQUEST_TYPE_SUBSCRIPT` (2) |
+| 본인인증 | `Bootpay.requestAuthentication(...)` | `BootpayConstant.REQUEST_TYPE_AUTH` (3) |
+| 비밀번호결제 | `Bootpay.requestPassword(...)` | `BootpayConstant.REQUEST_TYPE_PASSWORD` (4) |
+
+## WebView 프리워밍
+
+iOS의 WKWebView는 첫 로딩 시 GPU, Networking, WebContent 프로세스를 생성하므로 4-6초의 지연이 발생할 수 있습니다. AppDelegate에서 프리워밍을 호출하면 첫 결제 화면 로딩 속도가 크게 개선됩니다.
 
 ```swift
 // AppDelegate.swift
@@ -75,8 +179,7 @@ import Bootpay
 
 func application(_ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-    Bootpay.warmUp()  // 앱 시작과 동시에 WebView 프로세스 초기화
+    Bootpay.warmUp()
     return true
 }
 
@@ -86,273 +189,37 @@ func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
 }
 ```
 
-### 커스텀 딜레이
-
-UI가 버벅이면 딜레이를 늘릴 수 있습니다:
-
-```swift
-Bootpay.warmUp(delay: 0.5)  // 0.5초 후 프리워밍 시작
-```
-
-### API
-
 | API | 설명 |
 |-----|------|
 | `Bootpay.warmUp()` | WebView 프로세스 미리 초기화 (기본 0.1초 딜레이) |
 | `Bootpay.warmUp(delay: 0.5)` | 커스텀 딜레이로 프리워밍 |
 | `Bootpay.isWarmedUp` | 프리워밍 완료 여부 확인 |
 | `Bootpay.releaseWarmUp()` | 프리워밍 리소스 해제 (메모리 부족 시) |
-| `Bootpay.sharedProcessPool` | 공유 ProcessPool에 직접 접근 |
 
+## 콜백 함수 설명
 
-## 결제창 띄우는 iOS 코드
+| 함수 | 설명 |
+|------|------|
+| `onError` | 결제 진행 중 오류 발생 시 호출 |
+| `onCancel` | 사용자가 결제창에서 취소/닫기 시 호출 |
+| `onConfirm` | 결제 승인 직전 호출. `return true`로 승인, `return false`로 중단 |
+| `onIssued` | 가상계좌 발급 완료 시 호출 |
+| `onDone` | 결제 완료 시 호출. 반드시 REST API로 [결제검증](https://docs.bootpay.co.kr/rest/verify) 필요 |
+| `onClose` | 결제창이 닫힐 때 호출 |
 
+## ios_swiftui에서 마이그레이션
 
-```swift
+5.0.5부터 SwiftUI 래퍼(`BootpayUI`)가 이 패키지에 포함되었습니다. 기존 `ios_swiftui` 패키지 사용자는:
 
-import UIKit
-import Bootpay
+1. `ios_swiftui` 의존성을 제거하고 `ios_swift`로 교체
+2. `import BootpayUI` → `import Bootpay`로 변경
+3. `BootpayRequest.TYPE_PAYMENT` → `BootpayConstant.REQUEST_TYPE_PAYMENT`로 변경 (또는 정수 리터럴 1, 2, 3, 4 사용)
 
-class NativeController: UIViewController {
+## 문서
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        setUI()
-    }
-    
-    func setUI() {
-        self.view.backgroundColor = .white
-        let btn = UIButton()
-        btn.setTitle("결제하기", for: .normal)
-        btn.addTarget(self, action: #selector(showBootpay), for: .touchUpInside)
-        btn.frame = CGRect(
-            x: self.view.frame.width/2 - 40,
-            y: self.view.frame.height/2 - 40,
-            width: 80,
-            height: 80
-        )
-        btn.setTitleColor(.darkGray, for: .normal)
-        self.view.addSubview(btn)
-    }
-    
-    @objc func showBootpay() {
-        let payload = Payload()
-        payload.applicationId = "5b8f6a4d396fa665fdc2b5e9" //ios application id
-                
-        payload.price = 1000
-        payload.orderId = String(NSTimeIntervalSince1970)
-        payload.pg = "payletter"
-        payload.method = "card"
-        payload.name = "테스트 아이템"
-        payload.extra = BootExtra()
-        payload.extra?.popup = 0
-        payload.extra?.quickPopup = 0
-        
+- [부트페이 공식 문서](https://docs.bootpay.co.kr/)
+- [변경 이력](CHANGELOG.md)
 
-        let user = BootUser()
-        user.username = "테스트 유저"
-        user.phone = "01012345678"
-        payload.userInfo = user
-                
-        Bootpay.requestPayment(viewController: self, payload: payload)
-            .onCancel { data in
-                print("-- cancel: \(data)")
-            }
-            .onReady { data in
-                print("-- ready: \(data)")
-            }
-            .onConfirm { data in
-                print("-- confirm: \(data)")
-                return true //재고가 있어서 결제를 최종 승인하려 할 경우
-//                            return false //재고가 없어서 결제를 승인하지 않을때
-            }
-            .onDone { data in
-                print("-- done: \(data)")
-            }
-            .onError { data in
-                print("-- error: \(data)")
-            }
-            .onClose {
-                print("-- close")
-            }
-    }
-}
-``` 
- 
- 결제 진행 상태에 따라 LifeCycle 함수가 실행됩니다. 각 함수에 대한 상세 설명은 아래를 참고하세요.
+## 라이선스
 
-
-```swift
-//MARK: Bootpay Callback Protocol
-extension ViewController: BootpayRequestProtocol {
-    // 에러가 났을때 호출되는 부분
-    func onError(data: [String: Any]) {
-        print(data)
-    }
-
-    // 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
-    func onReady(data: [String: Any]) {
-        print("ready")
-        print(data)
-    }
-
-    // 결제가 진행되기 바로 직전 호출되는 함수로, 주로 재고처리 등의 로직이 수행
-    func onConfirm(data: [String: Any]) {
-        print(data)
-
-        var iWantPay = true
-        if iWantPay == true {  // 재고가 있을 경우.
-            Bootpay.transactionConfirm(data: data) // 결제 승인
-        } else { // 재고가 없어 중간에 결제창을 닫고 싶을 경우
-            Bootpay.dismiss() // 결제창 종료
-        }
-    }
-
-    // 결제 취소시 호출
-    func onCancel(data: [String: Any]) {
-        print(data)
-    }
-
-    // 결제완료시 호출
-    // 아이템 지급 등 데이터 동기화 로직을 수행합니다
-    func onDone(data: [String: Any]) {
-        print(data)
-    }
-
-    //결제창이 닫힐때 실행되는 부분
-    func onClose() {
-        print("close")
-        Bootpay.dismiss() // 결제창 종료
-    }
-}
-```
-
-### onError 함수
-
-결제 진행 중 오류가 발생된 경우 호출되는 함수입니다. 진행중 에러가 발생되는 경우는 다음과 같습니다.
-
-1. **부트페이 관리자에서 활성화 하지 않은 PG, 결제수단을 사용하고자 할 때**
-2. **PG에서 보내온 결제 정보를 부트페이 관리자에 잘못 입력하거나 입력하지 않은 경우**
-3. **결제 진행 도중 한도초과, 카드정지, 휴대폰소액결제 막힘, 계좌이체 불가 등의 사유로 결제가 안되는 경우**
-4. **PG에서 리턴된 값이 다른 Client에 의해 변조된 경우**
-
-에러가 난 경우 해당 함수를 통해 관련 에러 메세지를 사용자에게 보여줄 수 있습니다.
-
- data 포맷은 아래와 같습니다.
-
-```text
-{
-  action: "BootpayError",
-  message: "카드사 거절",
-  receipt_id: "5fffab350c20b903e88a2cff"
-}
-```
-
-### onCancel 함수
-결제 진행 중 사용자가 PG 결제창에서 취소 혹은 닫기 버튼을 눌러 나온 경우 입니다. ****
-
- data 포맷은 아래와 같습니다.
-
-```text
-{
-  action: "BootpayCancel",
-  message: "사용자가 결제를 취소하였습니다.",
-  receipt_id: "5fffab350c20b903e88a2cff"
-}
-```
-
-### onReady 함수
-
-가상계좌 발급이 완료되면 호출되는 함수입니다. 가상계좌는 다른 결제와 다르게 입금할 계좌 번호 발급 이후 입금 후에 Feedback URL을 통해 통지가 됩니다. 발급된 가상계좌 정보를 ready 함수를 통해 확인하실 수 있습니다.
-
-  data 포맷은 아래와 같습니다.
-
-```text
-{
-  account: "T0309260001169"
-  accounthodler: "한국사이버결제"
-  action: "BootpayBankReady"
-  bankcode: "BK03"
-  bankname: "기업은행"
-  expiredate: "2021-01-17 00:00:00"
-  item_name: "테스트 아이템"
-  method: "vbank"
-  method_name: "가상계좌"
-  order_id: "1610591554856"
-  params: null
-  payment_group: "vbank"
-  payment_group_name: "가상계좌"
-  payment_name: "가상계좌"
-  pg: "kcp"
-  pg_name: "KCP"
-  price: 3000
-  purchased_at: null
-  ready_url: "https://dev-app.bootpay.co.kr/bank/7o044QyX7p"
-  receipt_id: "5fffad430c20b903e88a2d17"
-  requested_at: "2021-01-14 11:32:35"
-  status: 2
-  tax_free: 0
-  url: "https://d-cdn.bootapi.com"
-  username: "홍길동"
-}
-```
-
-### onConfirm 함수
-
-결제 승인이 되기 전 호출되는 함수입니다. 승인 이전 관련 로직을 서버 혹은 클라이언트에서 수행 후 결제를 승인해도 될 경우 
-
-`BootPay.transactionConfirm(data); 또는 return true;`
-
-코드를 실행해주시면 PG에서 결제 승인이 진행이 됩니다.
-
-**\* 페이앱, 페이레터 PG는 이 함수가 실행되지 않고 바로 결제가 승인되는 PG 입니다. 참고해주시기 바랍니다.**
-
- data 포맷은 아래와 같습니다.
-
-```text
-{
-  receipt_id: "5fffc0460c20b903e88a2d2c",
-  action: "BootpayConfirm"
-}
-```
-{% endtab %}
-
-{% tab title="onDone 함수" %}
-PG에서 거래 승인 이후에 호출 되는 함수입니다. 결제 완료 후 다음 결제 결과를 호출 할 수 있는 함수 입니다.
-
-이 함수가 호출 된 후 반드시 REST API를 통해 [결제검증](https://docs.bootpay.co.kr/rest/verify)을 수행해야합니다. data 포맷은 아래와 같습니다.
-
-```text
-{
-  action: "BootpayDone"
-  card_code: "CCKM",
-  card_name: "KB국민카드",
-  card_no: "0000120000000014",
-  card_quota: "00",
-  item_name: "테스트 아이템",
-  method: "card",
-  method_name: "카드결제",
-  order_id: "1610596422328",
-  payment_group: "card",
-  payment_group_name: "신용카드",
-  payment_name: "카드결제",
-  pg: "kcp",
-  pg_name: "KCP",
-  price: 100,
-  purchased_at: "2021-01-14 12:54:53",
-  receipt_id: "5fffc0460c20b903e88a2d2c",
-  receipt_url: "https://app.bootpay.co.kr/bill/UFMvZzJqSWNDNU9ERWh1YmUycU9hdnBkV29DVlJqdzUxRzZyNXRXbkNVZW81%0AQT09LS1XYlNJN1VoMDI4Q1hRdDh1LS10MEtZVmE4c1dyWHNHTXpZTVVLUk1R%0APT0%3D%0A",
-  requested_at: "2021-01-14 12:53:42",
-  status: 1,
-  tax_free: 0,
-  url: "https://d-cdn.bootapi.com"
-}
-```  
-
-
-
-# 기타 문의사항이 있으시다면
-
-1. [부트페이 개발연동 문서](https://app.gitbook.com/@bootpay/s/docs/client/pg/android) 참고
-2. [부트페이 홈페이지](https://www.bootpay.co.kr) 참고 - 사이트 우측 하단에 채팅으로 기술문의 주시면 됩니다.
+MIT

@@ -5,6 +5,11 @@
 //  Created by Taesup Yoon on 2021/05/07.
 //
 
+#if os(macOS)
+import AppKit
+#elseif os(iOS)
+import UIKit
+#endif
 import Foundation
 import WebKit
 
