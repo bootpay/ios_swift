@@ -1,3 +1,9 @@
+## 5.1.0
+* webview CDN URL을 5.3.0으로 업데이트
+* client_key 인증 방식 추가 (기존 application_id 방식과 병행 지원)
+* iOS 최소 지원 버전 14.0 → 16.0으로 상향
+* WIDGET_URL도 5.3.0으로 업데이트
+
 ## 5.0.5
 * SwiftUI 래퍼(BootpayUI) 병합 - 단일 패키지로 UIKit/SwiftUI 모두 지원
 * SPM 빌드 시 `import UIKit` 누락으로 인한 빌드 에러 수정

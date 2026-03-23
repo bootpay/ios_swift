@@ -11,40 +11,34 @@ import Bootpay
 
 class CommerceExampleController: BasePaymentController {
 
-    // 환경별 설정
-    let ENV_CONFIG: [String: [String: Any]] = [
+    // 환경별 플랜 설정 (product ID)
+    let ENV_PLANS: [String: [String: [String: String]]] = [
         "development": [
-            "client_key": "hxS-Up--5RvT6oU6QJE0JA",
-            "plans": [
-                "starter": [
-                    "monthly_product_id": "69268625d8df8fa1837cf661",
-                    "yearly_product_id": "692686c4d8df8fa1837cf666"
-                ],
-                "pro": [
-                    "monthly_product_id": "692686e5d8df8fa1837cf66b",
-                    "yearly_product_id": "69268721d8df8fa1837cf670"
-                ],
-                "enterprise": [
-                    "monthly_product_id": "69268783d8df8fa1837cf675",
-                    "yearly_product_id": "692687a2d8df8fa1837cf67a"
-                ]
+            "starter": [
+                "monthly_product_id": "69268625d8df8fa1837cf661",
+                "yearly_product_id": "692686c4d8df8fa1837cf666"
+            ],
+            "pro": [
+                "monthly_product_id": "692686e5d8df8fa1837cf66b",
+                "yearly_product_id": "69268721d8df8fa1837cf670"
+            ],
+            "enterprise": [
+                "monthly_product_id": "69268783d8df8fa1837cf675",
+                "yearly_product_id": "692687a2d8df8fa1837cf67a"
             ]
         ],
         "production": [
-            "client_key": "sEN72kYZBiyMNytA8nUGxQ",
-            "plans": [
-                "starter": [
-                    "monthly_product_id": "6927d893ff30795ff003d374",
-                    "yearly_product_id": "6927d8c310561eabadddcfae"
-                ],
-                "pro": [
-                    "monthly_product_id": "6927d8f9ff30795ff003d379",
-                    "yearly_product_id": "6927d9167f65277ba9ddcf71"
-                ],
-                "enterprise": [
-                    "monthly_product_id": "6927d8f9ff30795ff003d379",
-                    "yearly_product_id": "6927d9167f65277ba9ddcf71"
-                ]
+            "starter": [
+                "monthly_product_id": "6927d893ff30795ff003d374",
+                "yearly_product_id": "6927d8c310561eabadddcfae"
+            ],
+            "pro": [
+                "monthly_product_id": "6927d8f9ff30795ff003d379",
+                "yearly_product_id": "6927d9167f65277ba9ddcf71"
+            ],
+            "enterprise": [
+                "monthly_product_id": "6927d8f9ff30795ff003d379",
+                "yearly_product_id": "6927d9167f65277ba9ddcf71"
             ]
         ]
     ]
@@ -71,7 +65,7 @@ class CommerceExampleController: BasePaymentController {
         ]
     ]
 
-    var currentEnv = "production"  // development API 500 에러로 인해 production으로 테스트
+    var currentEnv: String { BootpayConfig.env }
     var isYearlyBilling = false
     var selectedPlan = "pro"
 
@@ -442,15 +436,15 @@ class CommerceExampleController: BasePaymentController {
     }
 
     override func startPayment() {
-        guard let config = ENV_CONFIG[currentEnv] as? [String: Any],
-              let clientKey = config["client_key"] as? String,
-              let plans = config["plans"] as? [String: [String: String]],
+        let clientKey = BootpayConfig.clientKey
+        guard !clientKey.isEmpty,
+              let plans = ENV_PLANS[currentEnv],
               let planConfig = plans[selectedPlan],
               let planInfo = PLAN_INFO[selectedPlan] as? [String: Any],
               let planName = planInfo["name"] as? String,
               let monthlyPrice = planInfo["monthly_price"] as? Int,
               let yearlyPrice = planInfo["yearly_price"] as? Int else {
-            print("[CommerceExample] Configuration error")
+            print("[CommerceExample] Configuration error - check Config.xcconfig")
             return
         }
 

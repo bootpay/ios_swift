@@ -18,6 +18,9 @@ open class Payload: NSObject, Codable {
         if let applicationId = JSON["application_id"] as? String {
             self.applicationId = applicationId
         }
+        if let clientKey = JSON["client_key"] as? String {
+            self.clientKey = clientKey
+        }
         self.pg = JSON["pg"] as? String
         self.method = JSON["method"] as? String
         self.methods = JSON["methods"] as? [String]
@@ -59,6 +62,7 @@ open class Payload: NSObject, Codable {
 
     enum CodingKeys: String, CodingKey {
         case applicationId = "application_id"
+        case clientKey = "client_key"
         case pg
         case method
         case methods
@@ -78,7 +82,11 @@ open class Payload: NSObject, Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encodeIfPresent(applicationId, forKey: .applicationId)
+        if !clientKey.isEmpty {
+            try container.encode(clientKey, forKey: .clientKey)
+        } else {
+            try container.encodeIfPresent(applicationId, forKey: .applicationId)
+        }
         try container.encodeIfPresent(pg, forKey: .pg)
 
         if (methods?.count ?? 0) > 0 {
@@ -104,6 +112,7 @@ open class Payload: NSObject, Codable {
     }
 
     @objc public var applicationId = ""
+    @objc public var clientKey = ""
     @objc public var pg: String?
     @objc public var method: String?
     @objc public var methods: [String]?

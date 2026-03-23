@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Bootpay'
-  s.version          = '5.0.5'
+  s.version          = '5.1.0'
   s.summary          = 'Bootpay에서 지원하는 공식 Swift 라이브러리 입니다. ios 14 이상부터 사용가능합니다.'
 
 # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/bootpay/ios_swift.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '14.0'
+  s.ios.deployment_target = '16.0'
 #  s.osx.deployment_target = '10.12'
 
   s.source_files = 'Bootpay/Classes/**/*'
