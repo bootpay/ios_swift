@@ -11,7 +11,7 @@ import Foundation
 
 public class BootpayConstant {
 
-    public static let CDN_URL = "https://webview.bootpay.co.kr/5.2.2";
+    public static let CDN_URL = "https://webview.bootpay.co.kr/5.3.0";
     public static let BRIDGE_NAME = "Bootpay";
 
     // Commerce WebView URL
@@ -185,7 +185,7 @@ public class BootpayConstant {
     // MARK: - Widget JavaScript Functions
 
     /// 위젯 CDN URL (HTTP 사용 - 위젯 전용)
-    public static let WIDGET_URL = "https://webview.bootpay.co.kr/5.2.2/widget.html"
+    public static let WIDGET_URL = "https://webview.bootpay.co.kr/5.3.0/widget.html"
 
     /// 위젯 초기화 JavaScript (위젯 전용 - Flutter 방식 참조)
     public static func getJSWidgetBeforeStart() -> [String] {
