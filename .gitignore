@@ -1,3 +1,7 @@
+# Bootpay 환경 키 (xcconfig)
+Bootpay.xcconfig
+!Bootpay.xcconfig.example
+
 # OS X
 .DS_Store
 

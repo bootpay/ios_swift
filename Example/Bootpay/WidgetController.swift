@@ -12,7 +12,7 @@ import Bootpay
 class WidgetController: UIViewController {
 
     // MARK: -
-    let _applicationId = "5b8f6a4d396fa665fdc2b5e9"
+    let _applicationId = BootpayConfig.applicationId
 
     var widgetView: BootpayWidgetView!
     var widgetController: BootpayWidgetController!

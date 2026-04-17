@@ -16,13 +16,9 @@ extension String {
 }
 
 class BasePaymentController: UIViewController {
-    let _applicationId = "5b8f6a4d396fa665fdc2b5e9" //production
-    let _restApplicationId = "5b8f6a4d396fa665fdc2b5ea" //production
-    let _privateKey = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=" //production
-
-//    let _applicationId = "5b9f51264457636ab9a07cdd" //development
-//    let _restApplicationId = "5b9f51264457636ab9a07cde" //development
-//    let _privateKey = "sfilSOSVakw+PZA+PRux4Iuwm7a//9CXXudCq9TMDHk=" //development
+    let _applicationId = BootpayConfig.applicationId
+    let _restApplicationId = BootpayConfig.restApplicationId
+    let _privateKey = BootpayConfig.privateKey
 
     override func viewDidLoad() {
         super.viewDidLoad()

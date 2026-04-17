@@ -41,8 +41,8 @@ struct BootpayBuildConfig {
 ```swift
 // 경로: Bootpay/Classes/constants/BootpayConstant.swift
 public class BootpayConstant {
-    public static let CDN_URL = "https://webview.bootpay.co.kr/5.2.2";     // ← CDN 버전 수정
-    public static let WIDGET_URL = "https://webview.bootpay.co.kr/5.2.2/widget.html"  // ← 위젯 URL 버전 수정
+    public static let CDN_URL = "https://webview.bootpay.co.kr/5.3.0";     // ← CDN 버전 수정
+    public static let WIDGET_URL = "https://webview.bootpay.co.kr/5.3.0/widget.html"  // ← 위젯 URL 버전 수정
 }
 ```
 
