@@ -1,3 +1,9 @@
+## 5.1.1
+* `startItunesToInstall()` 라우팅 보강 (Android 5.1.1과 동기화)
+  - `monimopay://`, `smcard://` 스킴 → 삼성 모니모 App Store 매핑 추가
+  - 기존: 매핑 분기 부재로 모니모 앱 미설치 시 버튼 무반응
+  - 이후: 다른 카드사와 동일하게 App Store fallback 동작
+
 ## 5.1.0
 * webview CDN URL을 5.3.0으로 업데이트
 * client_key 인증 방식 추가 (기존 application_id 방식과 병행 지원)
