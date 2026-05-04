@@ -540,6 +540,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.co.bootpay.Bootpay-Example";
+				BOOTPAY_ENV = "production";
+				BOOTPAY_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5e9";
+				BOOTPAY_REST_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5ea";
+				BOOTPAY_PRIVATE_KEY = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=";
+				BOOTPAY_CLIENT_KEY = "sEN72kYZBiyMNytA8nUGxQ";
+				BOOTPAY_SERVER_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
+				BOOTPAY_SECRET_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -559,6 +566,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.co.bootpay.Bootpay-Example";
+				BOOTPAY_ENV = "production";
+				BOOTPAY_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5e9";
+				BOOTPAY_REST_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5ea";
+				BOOTPAY_PRIVATE_KEY = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=";
+				BOOTPAY_CLIENT_KEY = "sEN72kYZBiyMNytA8nUGxQ";
+				BOOTPAY_SERVER_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
+				BOOTPAY_SECRET_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
