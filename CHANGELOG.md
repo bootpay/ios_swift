@@ -1,3 +1,7 @@
+## Unreleased
+- example: Bootpay.xcconfig 기반 client_key 예제로 정리하고 production fallback 유지
+- legacy application_id/private_key 설정은 호환용으로 유지
+
 ## 5.1.1
 * `startItunesToInstall()` 라우팅 보강 (Android 5.1.1과 동기화)
   - `monimopay://`, `smcard://` 스킴 → 삼성 모니모 App Store 매핑 추가

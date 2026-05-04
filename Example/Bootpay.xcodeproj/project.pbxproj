@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B007C0DE2F00000100000002 /* BootpayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007C0DE2F00000100000001 /* BootpayConfig.swift */; };
 		2673FB0E3A931A45B72026A6 /* Pods_Bootpay_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD10264F5E787FBD1255005 /* Pods_Bootpay_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B007C0DE2F00000100000001 /* BootpayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootpayConfig.swift; sourceTree = "<group>"; };
 		1C8B30230C2048C415DDD4FB /* Pods_Bootpay_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bootpay_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A42AE97372397FB9BD67365 /* Pods-Bootpay_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bootpay_Example.release.xcconfig"; path = "Target Support Files/Pods-Bootpay_Example/Pods-Bootpay_Example.release.xcconfig"; sourceTree = "<group>"; };
 		2DD10264F5E787FBD1255005 /* Pods_Bootpay_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bootpay_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +123,7 @@
 				A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				8C07960C2EF245BF0034A7D9 /* BasePaymentController.swift */,
+				B007C0DE2F00000100000001 /* BootpayConfig.swift */,
 				8C0796042EF2459D0034A7D9 /* AuthenticationController.swift */,
 				8C0796052EF2459D0034A7D9 /* PgPaymentController.swift */,
 				8C0796062EF2459D0034A7D9 /* SubscriptionController.swift */,
@@ -372,6 +375,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87E4F0D326A161950021C3F1 /* WebAppController.swift in Sources */,
+				B007C0DE2F00000100000002 /* BootpayConfig.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				A1B2C3D4E5F6789012345678 /* SceneDelegate.swift in Sources */,

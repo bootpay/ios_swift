@@ -11,7 +11,7 @@
 // `Bootpay.xcconfig`는 .gitignore 처리됨.
 
 // 환경 스위치 (development | production)
-// BOOTPAY_ENV = development
+BOOTPAY_ENV = production
 
 // PG API - Application ID (iOS)
 // BOOTPAY_APPLICATION_ID = 5b9f51264457636ab9a07cdd
@@ -19,8 +19,12 @@
 // PG API - REST Application ID (EasyPay/REST 전용)
 // BOOTPAY_REST_APPLICATION_ID = 59b731f084382614ebf72215
 
-// Commerce API - Client Key
+// PG API - Client/Server Key (권장)
 // BOOTPAY_CLIENT_KEY = hxS-Up--5RvT6oU6QJE0JA
+// BOOTPAY_SERVER_KEY = r5zxvDcQJiAP2PBQ0aJjSHQtblNmYFt6uFoEMhti_mg=
 
-// Commerce API - Secret Key
+// Legacy PG API - Private Key (deprecated; 기존 코드 호환용)
+// BOOTPAY_PRIVATE_KEY = WwDv0UjfwFa04wYG0LJZZv1xwraQnlhnHE375n52X0U=
+
+// Commerce API - Secret Key (legacy alias)
 // BOOTPAY_SECRET_KEY = r5zxvDcQJiAP2PBQ0aJjSHQtblNmYFt6uFoEMhti_mg=

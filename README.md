@@ -90,7 +90,7 @@ class PaymentController: UIViewController {
 
     @objc func showBootpay() {
         let payload = Payload()
-        payload.applicationId = "YOUR_APPLICATION_ID"
+        payload.clientKey = "YOUR_CLIENT_KEY"
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.orderName = "테스트 아이템"
@@ -151,7 +151,7 @@ struct PaymentView: View {
 
     func makePayload() -> Payload {
         let payload = Payload()
-        payload.applicationId = "YOUR_APPLICATION_ID"
+        payload.clientKey = "YOUR_CLIENT_KEY"
         payload.orderName = "테스트 결제"
         payload.price = 1000
         payload.orderId = "order_\(Int(Date().timeIntervalSince1970))"

@@ -16,9 +16,10 @@ extension String {
 }
 
 class BasePaymentController: UIViewController {
-    let _applicationId = BootpayConfig.applicationId
+    let _applicationId = BootpayConfig.applicationId // analytics/legacy 호환용
+    let _clientKey = BootpayConfig.clientKey
     let _restApplicationId = BootpayConfig.restApplicationId
-    let _privateKey = BootpayConfig.privateKey
+    let _serverKey = BootpayConfig.serverKey
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,7 +145,7 @@ class BasePaymentController: UIViewController {
 
     func generatePayload() -> Payload {
         let payload = Payload()
-        payload.applicationId = _applicationId
+        payload.clientKey = _clientKey
 
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)

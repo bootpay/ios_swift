@@ -12,7 +12,7 @@ import Bootpay
 class WidgetController: UIViewController {
 
     // MARK: -
-    let _applicationId = BootpayConfig.applicationId
+    let _clientKey = BootpayConfig.clientKey
 
     var widgetView: BootpayWidgetView!
     var widgetController: BootpayWidgetController!
@@ -41,7 +41,7 @@ class WidgetController: UIViewController {
 
     func setupPayload() {
         payload = Payload()
-        payload.applicationId = _applicationId
+        payload.clientKey = _clientKey
         payload.price = 1000
         payload.orderId = String(Int(Date().timeIntervalSince1970 * 1000))
         payload.orderName = "테스트 상품"
@@ -288,7 +288,7 @@ class WidgetController: UIViewController {
 extension Payload {
     func toJSON() -> [String: Any] {
         var dict: [String: Any] = [:]
-        dict["application_id"] = applicationId
+        dict["client_key"] = clientKey
         if let pg = pg { dict["pg"] = pg }
         if let method = method { dict["method"] = method }
         if let orderName = orderName { dict["order_name"] = orderName }
