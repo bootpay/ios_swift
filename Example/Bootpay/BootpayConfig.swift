@@ -33,7 +33,12 @@ struct BootpayConfig {
               !value.isEmpty else {
             return nil
         }
-        return value
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty,
+              !(trimmed.hasPrefix("$(") && trimmed.hasSuffix(")")) else {
+            return nil
+        }
+        return trimmed
     }
 
     static let env: String = infoString("BootpayEnv") ?? "production"
