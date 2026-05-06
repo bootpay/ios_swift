@@ -2,8 +2,8 @@ import Foundation
 
 /// Bootpay 환경 설정
 ///
-/// 키는 모두 xcconfig 에서 주입 — `BootpayDefaults.xcconfig` (production, 커밋됨) 가 단일 출처.
-/// 로컬 dev 환경 시 `Bootpay.xcconfig` (gitignored) 를 만들어 BOOTPAY_ENV/키를 override.
+/// 키는 모두 xcconfig 에서 주입 — `BootpayKeys.{debug,release}.xcconfig` 가 production 기본값
+/// (committed baseline). 로컬 dev 환경 시 `Bootpay.xcconfig` (gitignored) 를 만들어 BOOTPAY_ENV/키를 override.
 ///
 /// 흐름: xcconfig → Info.plist 변수 expansion → `Bundle.main.infoDictionary`
 struct BootpayConfig {

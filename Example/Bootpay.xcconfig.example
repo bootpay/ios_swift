@@ -7,8 +7,8 @@
 //   4. Info.plist에 아래 키들을 `$(BOOTPAY_*)` 변수 expansion으로 등록 (선택)
 //      예: <key>BootpayApplicationId</key><string>$(BOOTPAY_APPLICATION_ID)</string>
 //
-// 미설정 시 BootpayConfig.swift의 production 기본값으로 자동 fallback.
-// `Bootpay.xcconfig`는 .gitignore 처리됨.
+// 미설정/파일 없음 시 `BootpayKeys.{debug,release}.xcconfig` 의 production 기본값으로 fallback.
+// `Bootpay.xcconfig` 는 .gitignore 처리됨.
 
 // 환경 스위치 (development | production)
 BOOTPAY_ENV = production
