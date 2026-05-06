@@ -1,7 +1,22 @@
 // Production defaults. Local Bootpay.xcconfig may override these values.
+//
+// 로컬 dev 테스트 시:
+//   1. 아래 PROD 블록의 라인들을 // 로 주석 처리
+//   2. DEV 블록의 // 를 제거
+// 이 파일은 production 으로 유지 — 토글 변경은 커밋하지 말 것.
+
+// ===== PROD (default) =====
 BOOTPAY_ENV = production
 BOOTPAY_APPLICATION_ID = 5b8f6a4d396fa665fdc2b5e9
 BOOTPAY_REST_APPLICATION_ID = 5b8f6a4d396fa665fdc2b5ea
 BOOTPAY_PRIVATE_KEY = rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=
 BOOTPAY_CLIENT_KEY = OdKci2s0ux9iyFWsgYHdKw
 BOOTPAY_SERVER_KEY = L15AxIjXxGwFj9xe7NUUOt9VPHqP-CvyXJuK-FqMHto=
+
+// ===== DEV =====
+// BOOTPAY_ENV = development
+// BOOTPAY_APPLICATION_ID = 5b9f51264457636ab9a07cdd
+// BOOTPAY_REST_APPLICATION_ID = 59b731f084382614ebf72215
+// BOOTPAY_PRIVATE_KEY = WwDv0UjfwFa04wYG0LJZZv1xwraQnlhnHE375n52X0U=
+// BOOTPAY_CLIENT_KEY = K1Xok7RzFxbT7zMBmiBXNw
+// BOOTPAY_SERVER_KEY = vcd_5OXoQAxTA8JSg2VGaSnwmQPkd8DgQ6xiyL6QkyE=
