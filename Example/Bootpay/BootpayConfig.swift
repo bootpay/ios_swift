@@ -16,17 +16,15 @@ struct BootpayConfig {
     private static let prodApplicationId = "5b8f6a4d396fa665fdc2b5e9"
     private static let prodRestApplicationId = "5b8f6a4d396fa665fdc2b5ea"
     private static let prodPrivateKey = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw="
-    private static let prodClientKey = "sEN72kYZBiyMNytA8nUGxQ"
-    private static let prodServerKey = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU="
-    private static let prodSecretKey = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU="
+    private static let prodClientKey = "OdKci2s0ux9iyFWsgYHdKw"
+    private static let prodServerKey = "L15AxIjXxGwFj9xe7NUUOt9VPHqP-CvyXJuK-FqMHto="
 
     // ===== Development 기본값 =====
     private static let devApplicationId = "5b9f51264457636ab9a07cdd"
     private static let devRestApplicationId = "59b731f084382614ebf72215"
     private static let devPrivateKey = "WwDv0UjfwFa04wYG0LJZZv1xwraQnlhnHE375n52X0U="
-    private static let devClientKey = "hxS-Up--5RvT6oU6QJE0JA"
-    private static let devServerKey = "r5zxvDcQJiAP2PBQ0aJjSHQtblNmYFt6uFoEMhti_mg="
-    private static let devSecretKey = "r5zxvDcQJiAP2PBQ0aJjSHQtblNmYFt6uFoEMhti_mg="
+    private static let devClientKey = "K1Xok7RzFxbT7zMBmiBXNw"
+    private static let devServerKey = "vcd_5OXoQAxTA8JSg2VGaSnwmQPkd8DgQ6xiyL6QkyE="
 
     private static func infoString(_ key: String) -> String? {
         guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String,
@@ -66,9 +64,5 @@ struct BootpayConfig {
     // Commerce API
     static var clientKey: String {
         infoString("BootpayClientKey") ?? (isDevelopment ? devClientKey : prodClientKey)
-    }
-
-    static var secretKey: String {
-        infoString("BootpaySecretKey") ?? (isDevelopment ? devSecretKey : prodSecretKey)
     }
 }

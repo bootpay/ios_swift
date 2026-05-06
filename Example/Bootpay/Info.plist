@@ -84,8 +84,6 @@
 	<string>$(BOOTPAY_CLIENT_KEY)</string>
 	<key>BootpayServerKey</key>
 	<string>$(BOOTPAY_SERVER_KEY)</string>
-	<key>BootpaySecretKey</key>
-	<string>$(BOOTPAY_SECRET_KEY)</string>
 	<key>BootpayPrivateKey</key>
 	<string>$(BOOTPAY_PRIVATE_KEY)</string>
 </dict>

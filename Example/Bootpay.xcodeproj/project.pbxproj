@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B007C0DE2F00000100000002 /* BootpayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007C0DE2F00000100000001 /* BootpayConfig.swift */; };
 		2673FB0E3A931A45B72026A6 /* Pods_Bootpay_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD10264F5E787FBD1255005 /* Pods_Bootpay_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -25,6 +24,7 @@
 		8C7E46102EEA4CB00059A5DF /* PaymentResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7E460F2EEA4CB00059A5DF /* PaymentResultController.swift */; };
 		8CAA81492EFA60EF00787891 /* CommerceExampleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAA81482EFA60EF00787891 /* CommerceExampleController.swift */; };
 		A1B2C3D4E5F6789012345678 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */; };
+		B007C0DE2F00000100000002 /* BootpayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007C0DE2F00000100000001 /* BootpayConfig.swift */; };
 		B1C2D3E4F5A6789012345680 /* WidgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5A6789012345681 /* WidgetController.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,8 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B007C0DE2F00000100000001 /* BootpayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootpayConfig.swift; sourceTree = "<group>"; };
 		1C8B30230C2048C415DDD4FB /* Pods_Bootpay_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bootpay_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		28C26F121F40395D13D78799 /* BootpayKeys.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BootpayKeys.release.xcconfig; sourceTree = "<group>"; };
 		2A42AE97372397FB9BD67365 /* Pods-Bootpay_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bootpay_Example.release.xcconfig"; path = "Target Support Files/Pods-Bootpay_Example/Pods-Bootpay_Example.release.xcconfig"; sourceTree = "<group>"; };
 		2DD10264F5E787FBD1255005 /* Pods_Bootpay_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bootpay_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C767DEF970821CDF7D7DBA9 /* Pods-Bootpay_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bootpay_Tests.release.xcconfig"; path = "Target Support Files/Pods-Bootpay_Tests/Pods-Bootpay_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -70,8 +70,10 @@
 		8C7E460F2EEA4CB00059A5DF /* PaymentResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentResultController.swift; sourceTree = "<group>"; };
 		8CAA81482EFA60EF00787891 /* CommerceExampleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommerceExampleController.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6789012345679 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		B007C0DE2F00000100000001 /* BootpayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootpayConfig.swift; sourceTree = "<group>"; };
 		B1C2D3E4F5A6789012345681 /* WidgetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetController.swift; sourceTree = "<group>"; };
 		CBEFB1576505BF731E9E3D09 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		D3FFBBAC4375475D0AC9CBC5 /* BootpayKeys.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BootpayKeys.debug.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,8 @@
 				607FACD11AFB9204008FA782 /* Products */,
 				AD58A29B4FC697648950A7A0 /* Pods */,
 				C7B6C6B943824AC453DEFA26 /* Frameworks */,
+				D3FFBBAC4375475D0AC9CBC5 /* BootpayKeys.debug.xcconfig */,
+				28C26F121F40395D13D78799 /* BootpayKeys.release.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -529,7 +533,7 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5A59A0205EE49245C5689777 /* Pods-Bootpay_Example.debug.xcconfig */;
+			baseConfigurationReference = D3FFBBAC4375475D0AC9CBC5 /* BootpayKeys.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bootpay_Example.entitlements;
@@ -540,13 +544,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.co.bootpay.Bootpay-Example";
-				BOOTPAY_ENV = "production";
-				BOOTPAY_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5e9";
-				BOOTPAY_REST_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5ea";
-				BOOTPAY_PRIVATE_KEY = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=";
-				BOOTPAY_CLIENT_KEY = "sEN72kYZBiyMNytA8nUGxQ";
-				BOOTPAY_SERVER_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
-				BOOTPAY_SECRET_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -556,7 +553,7 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A42AE97372397FB9BD67365 /* Pods-Bootpay_Example.release.xcconfig */;
+			baseConfigurationReference = 28C26F121F40395D13D78799 /* BootpayKeys.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bootpay_Example.entitlements;
@@ -566,13 +563,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "kr.co.bootpay.Bootpay-Example";
-				BOOTPAY_ENV = "production";
-				BOOTPAY_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5e9";
-				BOOTPAY_REST_APPLICATION_ID = "5b8f6a4d396fa665fdc2b5ea";
-				BOOTPAY_PRIVATE_KEY = "rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=";
-				BOOTPAY_CLIENT_KEY = "sEN72kYZBiyMNytA8nUGxQ";
-				BOOTPAY_SERVER_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
-				BOOTPAY_SECRET_KEY = "rnZLJamENRgfwTccwmI_Uu9cxsPpAV9X2W-Htg73yfU=";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;

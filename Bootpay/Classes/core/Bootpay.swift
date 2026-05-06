@@ -76,6 +76,12 @@ import WebKit
         self.iv = getRandomKey(16)
     }
 
+    /// WebView 결제 환경을 설정합니다. 기본값은 production 입니다.
+    /// - Parameter mode: "production" 또는 "development"
+    @objc public static func setEnvironmentMode(_ mode: String) {
+        BootpayConstant.ENVIRONMENT_MODE = mode == "development" ? "development" : "production"
+    }
+
     /// 프리워밍된 WebView 리소스를 해제합니다.
     /// 메모리가 부족할 때 호출할 수 있습니다.
     @objc public static func releaseWarmUp() {

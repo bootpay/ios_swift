@@ -1,0 +1,7 @@
+// Production defaults. Local Bootpay.xcconfig may override these values.
+BOOTPAY_ENV = production
+BOOTPAY_APPLICATION_ID = 5b8f6a4d396fa665fdc2b5e9
+BOOTPAY_REST_APPLICATION_ID = 5b8f6a4d396fa665fdc2b5ea
+BOOTPAY_PRIVATE_KEY = rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=
+BOOTPAY_CLIENT_KEY = OdKci2s0ux9iyFWsgYHdKw
+BOOTPAY_SERVER_KEY = L15AxIjXxGwFj9xe7NUUOt9VPHqP-CvyXJuK-FqMHto=

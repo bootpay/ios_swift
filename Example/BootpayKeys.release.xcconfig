@@ -1,0 +1,3 @@
+#include "Pods/Target Support Files/Pods-Bootpay_Example/Pods-Bootpay_Example.release.xcconfig"
+#include "BootpayDefaults.xcconfig"
+#include? "Bootpay.xcconfig"

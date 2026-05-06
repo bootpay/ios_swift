@@ -56,8 +56,12 @@ class PgPaymentController: BasePaymentController {
         let shippingLabel = createSubtitleLabel("무료배송 | 내일 도착 예정")
 
         // 구매 버튼
-        let buyButton = createActionButton("구매하기", color: UIColor(red: 0/255, green: 123/255, blue: 255/255, alpha: 1))
+        let buyButton = createActionButton("구매하기 (client_key)", color: UIColor(red: 0/255, green: 123/255, blue: 255/255, alpha: 1))
         buyButton.addTarget(self, action: #selector(onBuyButtonTapped), for: .touchUpInside)
+        let legacyButton = createActionButton("레거시 결제 (application_id)", color: UIColor(red: 108/255, green: 117/255, blue: 125/255, alpha: 1))
+        legacyButton.addTarget(self, action: #selector(onLegacyButtonTapped), for: .touchUpInside)
+        let missingKeyButton = createActionButton("키 없음 테스트 (NEED_CLIENT_KEY)", color: UIColor(red: 220/255, green: 53/255, blue: 69/255, alpha: 1))
+        missingKeyButton.addTarget(self, action: #selector(onMissingKeyButtonTapped), for: .touchUpInside)
 
         // Add subviews
         contentView.addSubview(imageContainer)
@@ -70,6 +74,8 @@ class PgPaymentController: BasePaymentController {
         infoCard.addSubview(shippingIcon)
         infoCard.addSubview(shippingLabel)
         contentView.addSubview(buyButton)
+        contentView.addSubview(legacyButton)
+        contentView.addSubview(missingKeyButton)
 
         // Constraints
         NSLayoutConstraint.activate([
@@ -128,11 +134,32 @@ class PgPaymentController: BasePaymentController {
             buyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             buyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             buyButton.heightAnchor.constraint(equalToConstant: 56),
-            buyButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32)
+
+            legacyButton.topAnchor.constraint(equalTo: buyButton.bottomAnchor, constant: 12),
+            legacyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            legacyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            legacyButton.heightAnchor.constraint(equalToConstant: 56),
+
+            missingKeyButton.topAnchor.constraint(equalTo: legacyButton.bottomAnchor, constant: 12),
+            missingKeyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            missingKeyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            missingKeyButton.heightAnchor.constraint(equalToConstant: 56),
+            missingKeyButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32)
         ])
     }
 
     @objc func onBuyButtonTapped() {
+        paymentAuthMode = .clientKey
+        startPayment()
+    }
+
+    @objc func onLegacyButtonTapped() {
+        paymentAuthMode = .legacyApplicationId
+        startPayment()
+    }
+
+    @objc func onMissingKeyButtonTapped() {
+        paymentAuthMode = .missingKey
         startPayment()
     }
 

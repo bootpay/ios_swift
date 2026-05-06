@@ -16,13 +16,21 @@ extension String {
 }
 
 class BasePaymentController: UIViewController {
+    enum PaymentAuthMode {
+        case clientKey
+        case legacyApplicationId
+        case missingKey
+    }
+
     let _applicationId = BootpayConfig.applicationId // analytics/legacy 호환용
     let _clientKey = BootpayConfig.clientKey
     let _restApplicationId = BootpayConfig.restApplicationId
     let _serverKey = BootpayConfig.serverKey
+    var paymentAuthMode: PaymentAuthMode = .clientKey
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        Bootpay.setEnvironmentMode(BootpayConfig.env)
         self.view.backgroundColor = UIColor(red: 248/255, green: 249/255, blue: 250/255, alpha: 1)
         bootpayAnalyticsUserTrace()
         bootpayAnalyticsPageTrace()
@@ -145,7 +153,7 @@ class BasePaymentController: UIViewController {
 
     func generatePayload() -> Payload {
         let payload = Payload()
-        payload.clientKey = _clientKey
+        applyAuth(to: payload, mode: paymentAuthMode)
 
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
@@ -187,6 +195,17 @@ class BasePaymentController: UIViewController {
         payload.user = generateUser()
 
         return payload
+    }
+
+    func applyAuth(to payload: Payload, mode: PaymentAuthMode) {
+        switch mode {
+        case .clientKey:
+            payload.clientKey = _clientKey
+        case .legacyApplicationId:
+            payload.applicationId = _applicationId
+        case .missingKey:
+            break // NEED_CLIENT_KEY 검증용
+        }
     }
 
     func dicToJson(_ data: [String: Any]) -> String {

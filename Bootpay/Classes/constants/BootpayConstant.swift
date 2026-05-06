@@ -13,6 +13,7 @@ public class BootpayConstant {
 
     public static let CDN_URL = "https://webview.bootpay.co.kr/5.3.0";
     public static let BRIDGE_NAME = "Bootpay";
+    public static var ENVIRONMENT_MODE = "production";
 
     // Commerce WebView URL
     public static let COMMERCE_URL = "https://webview.bootpay.co.kr/commerce/1.0.5/index.html";
@@ -50,7 +51,7 @@ public class BootpayConstant {
         array.append("BootpaySDK.setUUID('\(Bootpay.getUUID())');")
         #endif
         array.append(getAnalyticsData())
-        if(BootpayBuildConfig.DEBUG) {
+        if(BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE == "development") {
             array.append("Bootpay.setEnvironmentMode('development');")
             array.append("BootpaySDK.setEnvironmentMode('development');")
         }
@@ -191,7 +192,7 @@ public class BootpayConstant {
     public static func getJSWidgetBeforeStart() -> [String] {
         var array = [String]()
         // 환경 설정만 (setDevice, setVersion 등은 위젯에서 미지원)
-        if BootpayBuildConfig.DEBUG {
+        if BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE == "development" {
             array.append("BootpayWidget.setEnvironmentMode('development');")
         }
         return array
@@ -213,7 +214,7 @@ public class BootpayConstant {
         var scripts = [String]()
 
         // 환경 설정
-        if BootpayBuildConfig.DEBUG {
+        if BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE == "development" {
             scripts.append("BootpayWidget.setEnvironmentMode('development');")
         }
 

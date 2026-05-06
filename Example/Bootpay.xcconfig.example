@@ -20,11 +20,8 @@ BOOTPAY_ENV = production
 // BOOTPAY_REST_APPLICATION_ID = 59b731f084382614ebf72215
 
 // PG API - Client/Server Key (권장)
-// BOOTPAY_CLIENT_KEY = hxS-Up--5RvT6oU6QJE0JA
-// BOOTPAY_SERVER_KEY = r5zxvDcQJiAP2PBQ0aJjSHQtblNmYFt6uFoEMhti_mg=
+// BOOTPAY_CLIENT_KEY = K1Xok7RzFxbT7zMBmiBXNw
+// BOOTPAY_SERVER_KEY = vcd_5OXoQAxTA8JSg2VGaSnwmQPkd8DgQ6xiyL6QkyE=
 
 // Legacy PG API - Private Key (deprecated; 기존 코드 호환용)
 // BOOTPAY_PRIVATE_KEY = WwDv0UjfwFa04wYG0LJZZv1xwraQnlhnHE375n52X0U=
-
-// Commerce API - Secret Key (legacy alias)
-// BOOTPAY_SECRET_KEY = r5zxvDcQJiAP2PBQ0aJjSHQtblNmYFt6uFoEMhti_mg=

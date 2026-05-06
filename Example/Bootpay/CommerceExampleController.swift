@@ -504,7 +504,7 @@ class CommerceExampleController: BasePaymentController {
         payload.extra = extra
 
         // 환경 설정
-        // BootpayCommerce.setEnvironmentMode(currentEnv)
+        BootpayCommerce.setEnvironmentMode(currentEnv)
 
         // 결제 요청
         BootpayCommerce.requestCheckout(
