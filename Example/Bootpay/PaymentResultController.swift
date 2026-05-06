@@ -146,18 +146,24 @@ class PaymentResultController: UIViewController {
             return
         }
 
-        // Commerce 응답 형식 확인 (event 필드가 있으면 Commerce)
+        // PG/Widget 응답은 nested `data["data"]` 를 가지므로 이를 우선 검사한다.
+        // Commerce 응답은 top-level (`order_number`, `metadata`, `event`) 만 있고 nested data 가 없다.
+        // (PG onDone 도 `event: "done"` 을 동봉하므로 event 필드로는 분기할 수 없음)
+        if let innerData = data["data"] as? [String: Any] {
+            displayPgResult(innerData: innerData)
+            return
+        }
+
+        // Commerce 응답 형식
         if let event = data["event"] as? String {
             displayCommerceResult(data: data, event: event)
             return
         }
 
-        // Widget/일반 결제 응답 형식
-        guard let innerData = data["data"] as? [String: Any] else {
-            showError()
-            return
-        }
+        showError()
+    }
 
+    private func displayPgResult(innerData: [String: Any]) {
         let status = innerData["status"] as? Int ?? 0
 
         if status == 1 {
@@ -189,12 +195,21 @@ class PaymentResultController: UIViewController {
 
     /// Commerce 결과 표시
     private func displayCommerceResult(data: [String: Any], event: String) {
+        // 구독 결제는 metadata.billing_type 이 세팅되어 있고 단건은 비어 있다.
+        let metadata = data["metadata"] as? [String: Any]
+        let isSubscription = (metadata?["billing_type"] as? String)?.isEmpty == false
+
         switch event {
         case "done":
             statusImageView.image = UIImage(systemName: "checkmark.circle.fill")
             statusImageView.tintColor = .systemGreen
-            titleLabel.text = "구독 신청 완료"
-            messageLabel.text = "구독이 성공적으로 시작되었습니다."
+            if isSubscription {
+                titleLabel.text = "구독 신청 완료"
+                messageLabel.text = "구독이 성공적으로 시작되었습니다."
+            } else {
+                titleLabel.text = "결제 완료"
+                messageLabel.text = "결제가 성공적으로 완료되었습니다."
+            }
             confirmButton.backgroundColor = .systemGreen
 
         case "issued":
@@ -254,11 +269,11 @@ class PaymentResultController: UIViewController {
         }
 
         // metadata 표시
-        if let metadata = data["metadata"] as? [String: Any] {
+        if let metadata = metadata {
             if let planKey = metadata["plan_key"] as? String {
                 addDetailRow(title: "플랜", value: planKey.capitalized)
             }
-            if let billingType = metadata["billing_type"] as? String {
+            if let billingType = metadata["billing_type"] as? String, !billingType.isEmpty {
                 addDetailRow(title: "결제 주기", value: billingType)
             }
         }
