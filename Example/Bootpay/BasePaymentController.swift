@@ -158,7 +158,8 @@ class BasePaymentController: UIViewController {
         payload.price = 1000
         payload.orderId = String(NSTimeIntervalSince1970)
         payload.pg = "나이스페이"
-        payload.method = "카드"
+        // method 는 자식 컨트롤러가 책임지고 설정한다 (PG/구독/본인인증).
+        // 통합결제는 method 를 비워두어 결제수단 선택 UI 가 직접 노출되도록 한다.
         payload.orderName = "테스트 아이템"
         payload.extra = BootExtra()
         payload.extra?.displaySuccessResult = true

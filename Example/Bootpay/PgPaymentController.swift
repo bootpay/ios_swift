@@ -165,6 +165,7 @@ class PgPaymentController: BasePaymentController {
 
     override func startPayment() {
         let payload = generatePayload()
+        payload.method = "카드"
 
         if #available(iOS 13.0, *) {
             Bootpay.requestPayment(
