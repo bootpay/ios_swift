@@ -220,6 +220,14 @@ class TotalPaymentController: BasePaymentController {
         startPayment()
     }
 
+    override func generatePayload() -> Payload {
+        let payload = super.generatePayload()
+        // 통합결제는 method/methods 를 지정하지 않는다 — 결제수단 선택 UI 가 직접 노출됨
+        payload.method = nil
+        payload.methods = nil
+        return payload
+    }
+
     override func startPayment() {
         let payload = generatePayload()
 
