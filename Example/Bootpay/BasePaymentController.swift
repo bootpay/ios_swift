@@ -25,7 +25,7 @@ class BasePaymentController: UIViewController {
     let _applicationId = BootpayConfig.applicationId // analytics/legacy 호환용
     let _clientKey = BootpayConfig.clientKey
     let _restApplicationId = BootpayConfig.restApplicationId
-    // 주의: server_key (secret) 는 클라이언트에 절대 포함하지 말 것 — 서버 SDK 에서만 사용
+    // 주의: secret_key (secret) 는 클라이언트에 절대 포함하지 말 것 — 서버 SDK 에서만 사용
     var paymentAuthMode: PaymentAuthMode = .clientKey
 
     override func viewDidLoad() {
