@@ -1,6 +1,16 @@
-## Unreleased
-- example: Bootpay.xcconfig 기반 client_key 예제로 정리하고 production fallback 유지
-- legacy application_id/private_key 설정은 호환용으로 유지
+## 5.2.0
+* feat: 통합 환경 모드 API `Bootpay.setEnvironmentMode(_:)` 추가 (`@objc` 노출)
+  - 다른 SDK (JS / Android / Flutter / RN) 와 일관된 인터페이스
+  - `"development"` | `"stage"` | `"production"` (그 외 값은 production fallback)
+  - 내부적으로 `BootpayConstant.ENVIRONMENT_MODE` 와 매핑
+* feat: 결제/위젯 WebView stage 환경 지원
+  - DEBUG 빌드는 자동으로 development, ENVIRONMENT_MODE 가 stage 면 stage 주입
+  - `Bootpay.setEnvironmentMode("stage")` 런타임 호출로 토글
+* chore: `BootpayConstant.ENVIRONMENT_MODE` 기본값을 `"production"` 으로 명시
+  - 배포 안전성 강화 — 별도 호출 없이도 항상 실서비스로 동작
+* chore(example): Bootpay.xcconfig 기반 client_key 예제로 정리, production fallback 유지
+  - legacy application_id/private_key 설정은 호환용으로 유지
+  - `BOOTPAY_SECRET_KEY` 등 secret 는 클라이언트 예제에서 제거
 
 ## 5.1.1
 * `startItunesToInstall()` 라우팅 보강 (Android 5.1.1과 동기화)
