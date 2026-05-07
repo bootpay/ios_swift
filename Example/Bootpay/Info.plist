@@ -82,8 +82,6 @@
 	<string>$(BOOTPAY_REST_APPLICATION_ID)</string>
 	<key>BootpayClientKey</key>
 	<string>$(BOOTPAY_CLIENT_KEY)</string>
-	<key>BootpayServerKey</key>
-	<string>$(BOOTPAY_SERVER_KEY)</string>
 	<key>BootpayPrivateKey</key>
 	<string>$(BOOTPAY_PRIVATE_KEY)</string>
 </dict>

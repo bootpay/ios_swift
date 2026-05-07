@@ -13,6 +13,9 @@ public class BootpayConstant {
 
     public static let CDN_URL = "https://webview.bootpay.co.kr/5.3.0";
     public static let BRIDGE_NAME = "Bootpay";
+    /// WebView 결제 환경. "development" | "stage" | "production".
+    /// 기본값은 항상 "production". 배포 시 절대 변경하지 말 것.
+    /// 로컬 테스트는 `Bootpay.setEnvironmentMode("development")` 등을 런타임에 호출.
     public static var ENVIRONMENT_MODE = "production";
 
     // Commerce WebView URL
@@ -51,9 +54,10 @@ public class BootpayConstant {
         array.append("BootpaySDK.setUUID('\(Bootpay.getUUID())');")
         #endif
         array.append(getAnalyticsData())
-        if(BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE == "development") {
-            array.append("Bootpay.setEnvironmentMode('development');")
-            array.append("BootpaySDK.setEnvironmentMode('development');")
+        if BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE != "production" {
+            let mode = BootpayBuildConfig.DEBUG && ENVIRONMENT_MODE == "production" ? "development" : ENVIRONMENT_MODE
+            array.append("Bootpay.setEnvironmentMode('\(mode)');")
+            array.append("BootpaySDK.setEnvironmentMode('\(mode)');")
         }
         array.append(close())
         return array
@@ -192,8 +196,9 @@ public class BootpayConstant {
     public static func getJSWidgetBeforeStart() -> [String] {
         var array = [String]()
         // 환경 설정만 (setDevice, setVersion 등은 위젯에서 미지원)
-        if BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE == "development" {
-            array.append("BootpayWidget.setEnvironmentMode('development');")
+        if BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE != "production" {
+            let mode = BootpayBuildConfig.DEBUG && ENVIRONMENT_MODE == "production" ? "development" : ENVIRONMENT_MODE
+            array.append("BootpayWidget.setEnvironmentMode('\(mode)');")
         }
         return array
     }
@@ -214,8 +219,9 @@ public class BootpayConstant {
         var scripts = [String]()
 
         // 환경 설정
-        if BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE == "development" {
-            scripts.append("BootpayWidget.setEnvironmentMode('development');")
+        if BootpayBuildConfig.DEBUG || ENVIRONMENT_MODE != "production" {
+            let mode = BootpayBuildConfig.DEBUG && ENVIRONMENT_MODE == "production" ? "development" : ENVIRONMENT_MODE
+            scripts.append("BootpayWidget.setEnvironmentMode('\(mode)');")
         }
 
         // 이벤트 리스너 등록 (Flutter 방식과 동일)

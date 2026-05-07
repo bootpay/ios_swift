@@ -77,9 +77,14 @@ import WebKit
     }
 
     /// WebView 결제 환경을 설정합니다. 기본값은 production 입니다.
-    /// - Parameter mode: "production" 또는 "development"
+    /// - Parameter mode: "development" | "stage" | "production" (그 외 값은 production 으로 fallback)
     @objc public static func setEnvironmentMode(_ mode: String) {
-        BootpayConstant.ENVIRONMENT_MODE = mode == "development" ? "development" : "production"
+        switch mode {
+        case "development", "stage", "production":
+            BootpayConstant.ENVIRONMENT_MODE = mode
+        default:
+            BootpayConstant.ENVIRONMENT_MODE = "production"
+        }
     }
 
     /// 프리워밍된 WebView 리소스를 해제합니다.

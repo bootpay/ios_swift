@@ -30,7 +30,7 @@ struct BootpayConfig {
     // PG REST API (EasyPay 전용)
     static var restApplicationId: String { infoString("BootpayRestApplicationId") ?? "" }
 
-    static var serverKey: String { infoString("BootpayServerKey") ?? "" }
+    // 주의: server_key (secret) 는 클라이언트에 절대 포함하지 말 것 — 서버 SDK 에서만 사용
 
     /// Legacy alias. 기존 예제/사용자 코드 호환을 위해 유지합니다.
     static var privateKey: String { infoString("BootpayPrivateKey") ?? "" }

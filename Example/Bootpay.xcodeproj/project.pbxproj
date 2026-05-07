@@ -255,12 +255,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 3CYBZ4B4T4;
+						DevelopmentTeam = L4JEYZGQBD;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 3CYBZ4B4T4;
+						DevelopmentTeam = L4JEYZGQBD;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -538,7 +538,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bootpay_Example.entitlements;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 3CYBZ4B4T4;
+				DEVELOPMENT_TEAM = L4JEYZGQBD;
 				INFOPLIST_FILE = Bootpay/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -557,7 +557,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bootpay_Example.entitlements;
-				DEVELOPMENT_TEAM = 3CYBZ4B4T4;
+				DEVELOPMENT_TEAM = L4JEYZGQBD;
 				INFOPLIST_FILE = Bootpay/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -574,7 +574,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88B17C87C4A678DE9140C2BB /* Pods-Bootpay_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 3CYBZ4B4T4;
+				DEVELOPMENT_TEAM = L4JEYZGQBD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -596,7 +596,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3C767DEF970821CDF7D7DBA9 /* Pods-Bootpay_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 3CYBZ4B4T4;
+				DEVELOPMENT_TEAM = L4JEYZGQBD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",

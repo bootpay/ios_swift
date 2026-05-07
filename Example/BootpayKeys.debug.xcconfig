@@ -1,12 +1,23 @@
 #include "Pods/Target Support Files/Pods-Bootpay_Example/Pods-Bootpay_Example.debug.xcconfig"
 
 // Production 기본값 (committed baseline) — 신규 클론에서 별도 설정 없이 빌드/실행 가능.
-// 로컬에서 dev 키 등으로 갈아끼우려면 `Bootpay.xcconfig` (gitignored) 를 만들어 override.
+// 로컬에서 dev 키로 갈아끼우려면 `Bootpay.xcconfig` (gitignored) 를 만들어 override
+// (DEV 블록 참고용으로 아래 함께 두었다 — 토글 변경은 커밋하지 말 것).
+
+// ===== PROD (default) =====
 BOOTPAY_ENV = production
 BOOTPAY_APPLICATION_ID = 5b8f6a4d396fa665fdc2b5e9
 BOOTPAY_REST_APPLICATION_ID = 5b8f6a4d396fa665fdc2b5ea
 BOOTPAY_PRIVATE_KEY = rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=
 BOOTPAY_CLIENT_KEY = OdKci2s0ux9iyFWsgYHdKw
-BOOTPAY_SERVER_KEY = L15AxIjXxGwFj9xe7NUUOt9VPHqP-CvyXJuK-FqMHto=
+
+// ===== DEV (reference) =====
+// BOOTPAY_ENV = development
+// BOOTPAY_APPLICATION_ID = 5b9f51264457636ab9a07cdd
+// BOOTPAY_REST_APPLICATION_ID = 59b731f084382614ebf72215
+// BOOTPAY_PRIVATE_KEY = WwDv0UjfwFa04wYG0LJZZv1xwraQnlhnHE375n52X0U=
+// BOOTPAY_CLIENT_KEY = K1Xok7RzFxbT7zMBmiBXNw
+
+// 주의: server_key (secret) 는 클라이언트에 절대 포함하지 말 것 — 서버 SDK 에서만 사용
 
 #include? "Bootpay.xcconfig"
