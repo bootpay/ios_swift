@@ -50,3 +50,6 @@ fastlane/test_output/
 
 # Code Injection
 iOSInjectionProject/
+
+# omj automation runtime
+.omj/
