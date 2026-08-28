@@ -20,5 +20,5 @@ public typealias BTViewController = UIViewController
 
 struct BootpayBuildConfig {
     static let DEBUG = false
-    static let VERSION = "5.2.0"
+    static let VERSION = "5.2.1"
 }

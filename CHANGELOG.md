@@ -1,3 +1,11 @@
+## 5.2.1
+* fix: `webViewDidClose(_:)` 가 본체 webview 를 뜯어내고 close 를 알리지 않던 문제 (3곳)
+  - `BootpayWebView` / `BootpayWidgetView` / `CommerceWebView` 모두
+    `webView.removeFromSuperview()` 한 줄이라 결제 페이지가 `window.close()` 를 부르면
+    화면이 빈 채로 남고 SDK 사용자 쪽 close 콜백도 호출되지 않았다
+  - 팝업일 때만 제거하고, 본체가 닫히는 경우에만 close 를 통지한다
+    (팝업에서 통지하면 결제창 전체가 닫히므로 본체 여부로 분기)
+
 ## 5.2.0
 * feat: 통합 환경 모드 API `Bootpay.setEnvironmentMode(_:)` 추가 (`@objc` 노출)
   - 다른 SDK (JS / Android / Flutter / RN) 와 일관된 인터페이스
