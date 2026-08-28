@@ -296,7 +296,14 @@ extension CommerceWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHa
     }
 
     public func webViewDidClose(_ webView: WKWebView) {
-        webView.removeFromSuperview()
+        // 팝업만 제거한다. 본체 webview 를 떼어내면 화면이 비어버린다.
+        if webView != self.webview {
+            webView.removeFromSuperview()
+            return
+        }
+        // 본체가 닫히는 경우에만 close 를 통지한다.
+        BootpayCommerce.shared.debounceClose()
+        BootpayCommerce.removePaymentWindow()
     }
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {

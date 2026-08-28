@@ -247,7 +247,16 @@ extension BootpayWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHan
     }
         
     public func webViewDidClose(_ webView: WKWebView) {
-      webView.removeFromSuperview()
+        // window.close() 로 닫히는 것은 createWebViewWith 가 만든 팝업뿐이다.
+        // 본체 webview 를 superview 에서 떼어내면 화면이 빈 채로 남고 다시 붙일 방법이 없다.
+        if webView != self.webview {
+            webView.removeFromSuperview()
+            return
+        }
+        // 본체가 닫히는 경우. WKWebView 는 window.close() 를 JS 로 알리지 않아
+        // 그대로 두면 결제 페이지의 닫기(X) 가 SDK 사용자에게 전달되지 않고 결제창이 남는다.
+        Bootpay.shared.debounceClose()
+        Bootpay.removePaymentWindow()
     }
     
     open func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) { 
