@@ -204,7 +204,7 @@ func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
 | `onCancel` | 사용자가 결제창에서 취소/닫기 시 호출 |
 | `onConfirm` | 결제 승인 직전 호출. `return true`로 승인, `return false`로 중단 |
 | `onIssued` | 가상계좌 발급 완료 시 호출 |
-| `onDone` | 결제 완료 시 호출. 반드시 REST API로 [결제검증](https://docs.bootpay.co.kr/rest/verify) 필요 |
+| `onDone` | 결제 완료 시 호출. 반드시 REST API로 [결제검증](https://developers.bootpay.ai/pg/server/receipt) 필요 |
 | `onClose` | 결제창이 닫힐 때 호출 |
 
 ## ios_swiftui에서 마이그레이션
@@ -217,7 +217,7 @@ func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
 
 ## 문서
 
-- [부트페이 공식 문서](https://docs.bootpay.co.kr/)
+- [부트페이 결제 개발문서](https://developers.bootpay.ai)
 - [변경 이력](CHANGELOG.md)
 
 ## 라이선스
